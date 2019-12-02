@@ -2,3 +2,5 @@
 *.out
 tags
 __pycache__/
+.ccls*/
+.idea
