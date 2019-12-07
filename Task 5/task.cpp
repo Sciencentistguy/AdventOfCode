@@ -1,6 +1,6 @@
 #include <fstream>
 #include <iostream>
-#include "cpu.h"
+#include "../Intcode/cpu.h"
 
 std::string getInput() {
     std::string str{};

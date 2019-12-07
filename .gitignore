@@ -4,3 +4,5 @@ tags
 __pycache__/
 .ccls*/
 .idea
+CMakeLists.txt
+cmake*/

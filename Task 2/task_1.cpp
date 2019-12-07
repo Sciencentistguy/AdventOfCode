@@ -3,7 +3,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-#include "cpu.h"
+#include "../Intcode/cpu.h"
 
 std::string getInput() {
     std::string str{};
