@@ -71,7 +71,7 @@ void CPU::parse() {
             break;
         case 8:
             std::cerr << "more_than(" << parC << ", " << parA << ", " << parB << ")" << std::endl;
-            parC = parA > parB;
+            parC = parA == parB;
             pc += 4;
             break;
 
