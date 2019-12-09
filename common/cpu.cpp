@@ -16,12 +16,15 @@ CPU::CPU(const std::string& program) {
     for (const auto& s : inputVector) {
         mem.push_back(std::stoi(s));
     }
+
+    IOFlag = 0;
+
 }
 
 void CPU::parse() {
     if (mem[pc] == 99) {
         std::cout << "halt()" << std::endl;
-        flag = 1;
+        haltFlag = 1;
         return;
     }
 
@@ -35,7 +38,7 @@ void CPU::parse() {
 
     switch (instruction) {
         case 1:
-            std::cerr << "add(" << parC << ", " << parA << ", " << parB << ")" << std::endl;
+//            std::cerr << "add(" << parC << ", " << parA << ", " << parB << ")" << std::endl;
             parC = parA + parB;
             pc += 4;
             break;
@@ -48,14 +51,19 @@ void CPU::parse() {
 
         case 3:
             std::cerr << "input(" << parA << ")" << std::endl;
-            std::cout << "Input: ";
-            std::cin >> parA;
+            if (!IOFlag) {
+                std::cout << "Input: ";
+                std::cin >> parA;
+            } else {
+                parA = inputs[inputCounter++];
+            }
             pc += 2;
             break;
 
         case 4:
             std::cerr << "output(" << parA << ")" << std::endl;
             std::cout << parA << std::endl;
+            outputs.push_back(parA);
             pc += 2;
             break;
 
@@ -88,12 +96,29 @@ void CPU::parse() {
 }
 
 std::vector<int> CPU::run() {
+    inputCounter = 0;
     pc = 0;
-    flag = 0;
-
-    while (flag != 1) {
+    haltFlag = 0;
+    while (haltFlag != 1) {
         parse();
     }
 
     return mem;
 }
+
+const std::vector<int>& CPU::getOutputs() const {
+    return outputs;
+}
+
+void CPU::setInputs(const std::vector<int>& inputs) {
+    CPU::inputs = inputs;
+}
+
+void CPU::setIoFlag(IO_MODE ioFlag) {
+    IOFlag = static_cast<int>(ioFlag);
+}
+
+int CPU::getHaltFlag() const {
+    return haltFlag;
+}
+
