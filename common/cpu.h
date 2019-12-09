@@ -9,7 +9,8 @@ private:
     int IOFlag;
     std::vector<int> outputs;
     int inputCounter;
-    volatile int pc;
+    volatile long int pc;
+    int relativeBase;
 
 
     void parse();
@@ -19,12 +20,12 @@ public:
 
     std::vector<int> inputs;
     enum class IO_MODE {
-        COMMAND_LINE = 0, VARIABLE = 1
+        COMMAND_LINE = 0, VARIABLE
     };
 
-    std::vector<int> mem;
+    std::vector<long int> mem;
 
-    std::vector<int> run();
+    std::vector<long int> run();
 
     void setInputs(const std::vector<int>& inputs);
 
