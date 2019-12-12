@@ -10,6 +10,12 @@
 CPU::CPU(const std::string& program) {
     setIoFlag(IO_MODE::COMMAND_LINE);
     relativeBase = 0;
+    pauseFlag = 0;
+    haltFlag = 0;
+    inputCounter = 0;
+    pc = 0;
+    inputs = {};
+    outputs = {};
 
 
     std::istringstream ss(program);
@@ -21,7 +27,7 @@ CPU::CPU(const std::string& program) {
     }
 
     for (const auto& s : inputVector) {
-        mem.push_back(std::stoi(s));
+        mem.push_back(std::stol(s));
     }
 
     for (int i = 0; i < 0xffff; ++i) {
@@ -32,7 +38,6 @@ CPU::CPU(const std::string& program) {
 
 void CPU::parse() {
     if (mem[pc] == 99) {
-        std::cout << "halt()" << std::endl;
         haltFlag = 1;
         return;
     }
@@ -86,14 +91,22 @@ void CPU::parse() {
                 std::cout << "Input: ";
                 std::cin >> *parA;
             } else {
-                *parA = inputs[inputCounter++];
+                if (inputCounter >= inputs.size()) {
+                    pauseFlag = 1;
+                    break;
+                } else {
+                    *parA = inputs[inputCounter++];
+                }
             }
             pc += 2;
             break;
 
         case 4:
-            std::cout << *parA << std::endl;
-            outputs.push_back(*parA);
+            if (!IOFlag) {
+                std::cout << *parA << std::endl;
+            } else {
+                outputs.push_back(*parA);
+            }
             pc += 2;
             break;
 
@@ -120,7 +133,6 @@ void CPU::parse() {
             pc += 2;
             break;
 
-
         default:
             std::cout << "You broke it\n";
             exit(1);
@@ -128,10 +140,8 @@ void CPU::parse() {
 }
 
 std::vector<long int> CPU::run() {
-    inputCounter = 0;
-    pc = 0;
-    haltFlag = 0;
-    while (haltFlag != 1) {
+    pauseFlag = 0;
+    while (haltFlag != 1 && pauseFlag != 1) {
         parse();
     }
 
@@ -152,5 +162,17 @@ void CPU::setIoFlag(IO_MODE ioFlag) {
 
 int CPU::getHaltFlag() const {
     return haltFlag;
+}
+
+bool CPU::isHalted() const {
+    return (bool) haltFlag;
+}
+
+void CPU::addInput(const int& i) {
+    inputs.push_back(i);
+}
+
+std::vector<long int>& CPU::getMem() {
+    return mem;
 }
 

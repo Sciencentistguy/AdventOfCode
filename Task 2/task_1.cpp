@@ -7,7 +7,7 @@
 
 std::string getInput() {
     std::string str{};
-    std::ifstream infile{"input"};
+    std::ifstream infile{"../Task 2/input"};
 
     if (!infile) {
         exit(1);
@@ -24,8 +24,8 @@ std::string getInput() {
 
 int main(int argc, char* argv[]) {
     CPU cpu{getInput()};
-    cpu.mem[1] = 12;
-    cpu.mem[2] = 02;
+    cpu.getMem()[1] = 12;
+    cpu.getMem()[2] = 02;
     auto mem = cpu.run();
     std::cout << mem[0] << std::endl;
 }

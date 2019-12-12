@@ -4,7 +4,7 @@
 
 std::string getInput() {
     std::string str{};
-    std::ifstream infile{"input"};
+    std::ifstream infile{"../Task 5/input"};
 
     if (!infile) {
         exit(1);
