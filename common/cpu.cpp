@@ -4,11 +4,8 @@
 #include "cpu.h"
 
 
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wshadow"
-
 CPU::CPU(const std::string& program) {
-    setIoFlag(IO_MODE::COMMAND_LINE);
+    setIOMode(IO_MODE::COMMAND_LINE);
     relativeBase = 0;
     pauseFlag = 0;
     haltFlag = 0;
@@ -156,7 +153,7 @@ void CPU::setInputs(const std::vector<int>& inputs) {
     CPU::inputs = inputs;
 }
 
-void CPU::setIoFlag(IO_MODE ioFlag) {
+void CPU::setIOMode(IO_MODE ioFlag) {
     IOFlag = static_cast<int>(ioFlag);
 }
 

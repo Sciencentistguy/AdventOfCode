@@ -34,7 +34,7 @@ public:
 
     void setInputs(const std::vector<int>& inputs);
 
-    void setIoFlag(IO_MODE ioFlag);
+    void setIOMode(IO_MODE ioFlag);
 
     const std::vector<int>& getOutputs() const;
 

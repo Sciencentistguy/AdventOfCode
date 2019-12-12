@@ -1,11 +1,14 @@
 #include <fstream>
 #include <iostream>
 #include <algorithm>
+#include <utility>
+#include <map>
+#include <set>
 #include "../common/cpu.h"
 
 std::string getInput() {
     std::string str{};
-    std::ifstream infile{"input"};
+    std::ifstream infile{"../Task 11/input"};
 
     if (!infile) {
         exit(1);
@@ -20,54 +23,110 @@ std::string getInput() {
     return str;
 }
 
-void findPermutations(int a[], std::vector<std::vector<int>>& vec) {
+class Painter {
+public:
 
-    // Sort the given array
-    std::sort(a, a + 5);
+    enum class COLOUR {
+        BLACK = 0, WHITE
+    };
 
-    // Find all possible permutations
-    do {
-        vec.push_back({a[0], a[1], a[2], a[3], a[4]});
-    } while (std::next_permutation(a, a + 5));
-}
+    enum class DIRECTION {
+        UP, RIGHT, DOWN, LEFT
+    };
 
+    CPU cpu;
+    std::map<std::pair<int, int>, COLOUR> page;
+    std::map<std::pair<int, int>, bool> modified_page;
+    int x;
+    int y;
+    DIRECTION direction;
+    int count;
+    std::set<std::pair<int, int>> painted;
 
-int main(int argc, char* argv[]) {
+    Painter(CPU cpu, int x, int y) : cpu(std::move(cpu)) {
+        for (int i = 0; i < y; ++i) {
+            for (int j = 0; j < x; ++j) {
+                page[std::make_pair(j, i)] = COLOUR::BLACK;
+                modified_page[std::make_pair(j, i)] = false;
+            }
+        }
+        Painter::cpu.setIOMode(CPU::IO_MODE::VARIABLE);
+        count = 0;
+        Painter::x = x / 2;
+        Painter::y = y / 2;
+        direction = DIRECTION::UP;
+    }
 
-    std::vector<std::vector<int>> vec;
-
-    int arr[5] = {0, 1, 2, 3, 4};
-
-    findPermutations(arr, vec);
-
-    int max=0;
-
-    for (auto a : vec) {
-        CPU amp1 = CPU(getInput());
-        CPU amp2 = CPU(getInput());
-        CPU amp3 = CPU(getInput());
-        CPU amp4 = CPU(getInput());
-        CPU amp5 = CPU(getInput());
-        amp1.setIoFlag(CPU::IO_MODE::VARIABLE);
-        amp2.setIoFlag(CPU::IO_MODE::VARIABLE);
-        amp3.setIoFlag(CPU::IO_MODE::VARIABLE);
-        amp4.setIoFlag(CPU::IO_MODE::VARIABLE);
-        amp5.setIoFlag(CPU::IO_MODE::VARIABLE);
-        amp1.setInputs({a[0], 0});
-        amp1.run();
-        amp2.setInputs({a[1], amp1.getOutputs()[0]});
-        amp2.run();
-        amp3.setInputs({a[2], amp2.getOutputs()[0]});
-        amp3.run();
-        amp4.setInputs({a[3], amp3.getOutputs()[0]});
-        amp4.run();
-        amp5.setInputs({a[4], amp4.getOutputs()[0]});
-        amp5.run();
-
-        if (amp5.getOutputs()[0] > max) {
-            max = amp5.getOutputs()[0];
+    void move_forward() {
+        switch (direction) {
+            case DIRECTION::UP:
+                y++;
+                break;
+            case DIRECTION::RIGHT:
+                x++;
+                break;
+            case DIRECTION::DOWN:
+                y--;
+                break;
+            case DIRECTION::LEFT:
+                x--;
+                break;
         }
     }
 
-    std::cout << max << std::endl;
+    void turn_left() {
+        switch (direction) {
+            case DIRECTION::UP:
+                direction = DIRECTION::LEFT;
+                break;
+            case DIRECTION::RIGHT:
+                direction = DIRECTION::UP;
+                break;
+            case DIRECTION::DOWN:
+                direction = DIRECTION::RIGHT;
+                break;
+            case DIRECTION::LEFT:
+                direction = DIRECTION::DOWN;
+                break;
+        }
+    }
+
+    void turn_right() {
+        switch (direction) {
+            case DIRECTION::UP:
+                direction = DIRECTION::RIGHT;
+                break;
+            case DIRECTION::RIGHT:
+                direction = DIRECTION::DOWN;
+                break;
+            case DIRECTION::DOWN:
+                direction = DIRECTION::LEFT;
+                break;
+            case DIRECTION::LEFT:
+                direction = DIRECTION::UP;
+                break;
+        }
+    }
+
+    void run() {
+        while (!cpu.isHalted()) {
+            cpu.addInput(page[std::make_pair(x, y)] == COLOUR::BLACK ? 0 : 1);
+            cpu.run();
+            auto location = std::make_pair(x,y);
+            if (page[location] != (COLOUR) cpu.getOutputs().back()) {
+                page[location] = (COLOUR) cpu.getOutputs().back();
+                painted.emplace(location);
+            }
+            cpu.getOutputs().end()[-2] ? turn_right() : turn_left();
+            move_forward();
+        }
+    }
+};
+
+
+int main(int argc, char* argv[]) {
+    std::string input = getInput();
+    Painter p{CPU(input), 100, 100};
+    p.run();
+    std::cout << p.painted.size() << std::endl;
 }
