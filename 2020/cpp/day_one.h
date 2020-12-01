@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <vector>
 
 #include <fmt/core.h>
@@ -17,10 +18,13 @@ struct day_one {
     }
 
     void part_one() const {
+        auto begin = std::chrono::high_resolution_clock::now();
         for (auto i : input) {
             for (auto j : input) {
                 if (i + j == target) {
+                    auto end = std::chrono::high_resolution_clock::now();
                     fmt::print("The answer for day one part one is {}\n", i * j);
+                    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count());
                     return;
                 }
             }
@@ -28,11 +32,14 @@ struct day_one {
     }
 
     void part_two() const {
+        auto begin = std::chrono::high_resolution_clock::now();
         for (auto i : input) {
             for (auto j : input) {
                 for (auto k : input) {
                     if (i + k + j == target) {
+                        auto end = std::chrono::high_resolution_clock::now();
                         fmt::print("The answer for day one part two is {}\n", i * j * k);
+                        fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count());
                         return;
                     }
                 }
