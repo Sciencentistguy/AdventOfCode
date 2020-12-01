@@ -19,11 +19,11 @@ struct day_one {
 
     void part_one() const {
         auto begin = std::chrono::high_resolution_clock::now();
-        for (auto i : input) {
-            for (auto j : input) {
-                if (i + j == target) {
+        for (int i = 0; i < input.size(); ++i) {
+            for (int j = 0; j < i; ++j) {
+                if (input[i] + input[j] == target) {
                     auto end = std::chrono::high_resolution_clock::now();
-                    fmt::print("The answer for day one part one is {}\n", i * j);
+                    fmt::print("The answer for day one part one is {}\n", input[i] * input[j]);
                     fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count());
                     return;
                 }
@@ -33,12 +33,13 @@ struct day_one {
 
     void part_two() const {
         auto begin = std::chrono::high_resolution_clock::now();
-        for (auto i : input) {
-            for (auto j : input) {
-                for (auto k : input) {
-                    if (i + k + j == target) {
+
+        for (int i = 0; i < input.size(); ++i) {
+            for (int j = 0; j < i; ++j) {
+                for (int k = 0; k < j; ++k) {
+                    if (input[i] + input[j] + input[k] == target) {
                         auto end = std::chrono::high_resolution_clock::now();
-                        fmt::print("The answer for day one part two is {}\n", i * j * k);
+                        fmt::print("The answer for day one part two is {}\n", input[i] * input[j] * input[k]);
                         fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count());
                         return;
                     }
