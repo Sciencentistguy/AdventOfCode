@@ -28,10 +28,6 @@ partTwo (firstNum, secondNum, char, string) = (pos1 == char) /= (pos2 == char)
     pos1 = string !! (firstNum - 1)
     pos2 = string !! (secondNum - 1)
 
-countTrues :: [Bool] -> Int
-countTrues a = length $ filter id a
-
-
 dayTwo :: IO ()
 dayTwo = do
     input_Text <- fmap Text.lines (Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_two.txt")
@@ -39,10 +35,10 @@ dayTwo = do
     let removedHyphens = map (map replaceHyphen) input_strs
     let filteredColon  = map (filter (/= ':')) removedHyphens
     let split          = map words filteredColon
-    let parsed         = map parse split
+    let parsedInput    = map parse split
     -- part 1
     putStr "The answer for day two part one is "
-    print $ countTrues $ map partOne parsed
+    print $ length $ filter partOne parsedInput
     -- part 2
     putStr "The answer for day two part two is "
-    print $ countTrues $ map partTwo parsed
+    print $ length $ filter partTwo parsedInput
