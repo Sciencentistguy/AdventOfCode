@@ -1,7 +1,9 @@
 module Main where
 
-import           Lib
+import           DayOne
+import           DayTwo
 
 main :: IO ()
 main = do
     dayOne
+    dayTwo
