@@ -44,3 +44,32 @@ inline std::vector<std::string_view> split(const std::string_view& str, char del
     out.emplace_back(begin + lastSplit, begin + str.length());
     return out;
 }
+
+template<typename T, typename Iterator>
+inline constexpr auto enumerate(T&& range) requires std::input_iterator<Iterator> {
+    struct iterator {
+        size_t i;
+        Iterator iter;
+        bool operator!=(const iterator& other) const {
+            return iter != other.iter;
+        }
+        void operator++() {
+            ++i;
+            ++iter;
+        }
+        auto operator*() const {
+            return std::tie(i, *iter);
+        }
+    };
+    static_assert(std::input_iterator<iterator>);
+    struct iterable_wrapper {
+        T iterable;
+        auto begin() {
+            return iterator{0, std::begin(iterable)};
+        }
+        auto end() {
+            return iterator{0, std::end(iterable)};
+        }
+    };
+    return iterable_wrapper{std::forward<T>(range)};
+}
