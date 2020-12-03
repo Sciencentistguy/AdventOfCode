@@ -23,7 +23,7 @@ getTreesSlope worldMap xStep yStep = getTreesSlopeRecursive worldMap xStep yStep
 
 dayThree :: IO ()
 dayThree = do
-    input_Text <- fmap Text.lines (Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_three.txt")
+    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_three.txt"
     let input_strs = map Text.unpack input_Text
     -- part 1
     putStr "The answer for day three part one is "

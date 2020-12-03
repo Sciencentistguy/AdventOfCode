@@ -30,7 +30,7 @@ partTwo (firstNum, secondNum, char, string) = (pos1 == char) /= (pos2 == char)
 
 dayTwo :: IO ()
 dayTwo = do
-    input_Text <- fmap Text.lines (Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_two.txt")
+    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_two.txt"
     let input_strs     = map Text.unpack input_Text
     let removedHyphens = map (map replaceHyphen) input_strs
     let filteredColon  = map (filter (/= ':')) removedHyphens
