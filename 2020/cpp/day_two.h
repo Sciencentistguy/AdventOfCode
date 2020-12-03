@@ -22,7 +22,6 @@ struct day_two {
         std::string str;
     };
     std::vector<line_t> input;
-    static constexpr int target = 2020;
 
     static bool homogenous(std::string_view sv) {
         return sv.find_first_not_of(sv[0]) == std::string_view::npos;
