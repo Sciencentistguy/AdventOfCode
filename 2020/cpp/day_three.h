@@ -16,7 +16,7 @@
 #include "common.h"
 
 struct day_three {
-    std::vector<std::string> input;
+    const std::vector<std::string> input;
 
     day_three() : input{readFile("Inputs/day_three.txt")} {
         fmt::print("Parsing input for day three took 0ns\n");
@@ -28,9 +28,9 @@ struct day_three {
     }
 
     inline unsigned int getTreesSlope(unsigned int x_step, unsigned int y_step) const {
-        unsigned int x{};
-        unsigned int y{};
-        unsigned int count{};
+        unsigned int x{0};
+        unsigned int y{0};
+        unsigned int count{0};
         const auto y_limit = input.size() - y_step;
         do {
             count += isTree(x, y);
@@ -41,21 +41,21 @@ struct day_three {
     }
 
     void part_one() const {
-        auto start = std::chrono::high_resolution_clock::now();
-        auto count = getTreesSlope(3u, 1u);
-        auto end = std::chrono::high_resolution_clock::now();
+        const auto start = std::chrono::high_resolution_clock::now();
+        const auto count = getTreesSlope(3u, 1u);
+        const auto end = std::chrono::high_resolution_clock::now();
         fmt::print("The answer for day three part one is {}\n", count);
         fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
     }
 
     void part_two() const {
-        auto start = std::chrono::high_resolution_clock::now();
+        const auto start = std::chrono::high_resolution_clock::now();
         long count = getTreesSlope(1u, 1u);
         count *= getTreesSlope(3u, 1u);
         count *= getTreesSlope(5u, 1u);
         count *= getTreesSlope(7u, 1u);
         count *= getTreesSlope(1u, 2u);
-        auto end = std::chrono::high_resolution_clock::now();
+        const auto end = std::chrono::high_resolution_clock::now();
         fmt::print("The answer for day three part two is {}\n", count);
         fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
     }
