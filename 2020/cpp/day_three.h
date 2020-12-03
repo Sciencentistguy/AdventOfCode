@@ -56,7 +56,7 @@ struct day_three {
         count *= getTreesSlope(7u, 1u);
         count *= getTreesSlope(1u, 2u);
         auto end = std::chrono::high_resolution_clock::now();
-        fmt::print("The answer for day three part one is {}\n", count);
+        fmt::print("The answer for day three part two is {}\n", count);
         fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
     }
 };
