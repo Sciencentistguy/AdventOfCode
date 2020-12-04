@@ -30,7 +30,7 @@ inline std::vector<std::string> readFile(const char* filename) {
     return out;
 }
 
-inline std::vector<std::string_view> split(const std::string_view& str, char delimiter) {
+inline std::vector<std::string_view> split(std::string_view str, char delimiter) {
     int lastSplit{0};
     std::vector<std::string_view> out;
     const auto begin = std::begin(str);
