@@ -9,3 +9,5 @@ cmake*/
 build/
 .stack-work/
 *~
+.cache/
+*.cabal
