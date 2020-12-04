@@ -31,12 +31,12 @@ struct day_three {
         unsigned int x{0};
         unsigned int y{0};
         unsigned int count{0};
-        const auto y_limit = input.size() - y_step;
-        do {
+        const auto y_limit = input.size();
+        while (y < y_limit) {
             count += isTree(x, y);
             x += x_step;
             y += y_step;
-        } while (y <= y_limit);
+        }
         return count;
     }
 
