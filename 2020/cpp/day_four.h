@@ -34,9 +34,9 @@ struct day_four {
                 auto words = split(*current_line, ' ');
                 for (const auto& sv : words) {
                     auto t = split(sv, ':');
-                    if (t.size() != 2) {
-                        throw std::runtime_error("Invalid input");
-                    }
+                    // if (t.size() != 2) {
+                    // throw std::runtime_error("Invalid input");
+                    //}
                     passport.emplace(t[0], t[1]);
                 }
                 ++current_line;
@@ -83,16 +83,13 @@ struct day_four {
                 continue;
             }
 
-            const char* c = passport.at("hgt").data();
-            while (std::isdigit(*c)) {
-                ++c;
-            }
-            if (*c == 'i') {
+            const auto hgt = passport.at("hgt");
+            if (hgt.ends_with("in")) {
                 const auto hgt = std::atoi(passport.at("hgt").data());
                 if (hgt < 59 || hgt > 76) {
                     continue;
                 }
-            } else if (*c == 'c') {
+            } else if (hgt.ends_with("cm")) {
                 const auto hgt = std::atoi(passport.at("hgt").data());
                 if (hgt < 150 || hgt > 193) {
                     continue;
