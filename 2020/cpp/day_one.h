@@ -14,7 +14,7 @@ struct day_one {
     day_one() {
         auto input_strings = readFile("Inputs/day_one.txt");
         auto start = std::chrono::high_resolution_clock::now();
-        auto range = input_strings | std::ranges::views::transform([](const std::string& string) { return std::atoi(string.c_str()); });
+        auto range = input_strings | std::ranges::views::transform([](const std::string& string) { return static_cast<int>(fast_atol(string.c_str())); });
         input = std::vector(range.begin(), range.end());
         auto end = std::chrono::high_resolution_clock::now();
         fmt::print("Parsing input for day one took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());

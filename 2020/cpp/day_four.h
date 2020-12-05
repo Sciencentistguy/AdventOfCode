@@ -35,8 +35,7 @@ struct day_four {
     std::vector<std::string> input_strings;
     std::vector<passport_t> input;
 
-    day_four() {
-        input_strings = readFile("Inputs/day_four.txt");
+    day_four() : input_strings{readFile("Inputs/day_four.txt")} {
         const auto start = std::chrono::high_resolution_clock::now();
         auto current_line = std::begin(input_strings);
         while (current_line != std::end(input_strings)) {

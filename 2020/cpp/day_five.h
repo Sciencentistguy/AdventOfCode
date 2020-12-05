@@ -40,8 +40,8 @@ struct day_five {
 
             auto firstSeven = std::string_view(std::begin(str), std::begin(str) + 7);
             auto lastThree = std::string_view(std::end(str) - 3, std::end(str));
-            const auto row = fast_atoi(firstSeven.data(), 7, 2);
-            const auto col = fast_atoi(lastThree.data(), 3, 2);
+            const auto row = fast_atol(firstSeven.data(), 7, 2);
+            const auto col = fast_atol(lastThree.data(), 3, 2);
             input.emplace_back(row, col);
         }
         const auto end = std::chrono::high_resolution_clock::now();

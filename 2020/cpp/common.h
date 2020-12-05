@@ -74,9 +74,18 @@ inline constexpr auto enumerate(T&& range) requires std::input_iterator<Iterator
     return iterable_wrapper{std::forward<T>(range)};
 }
 
-inline constexpr unsigned int fast_atoi(const char* buf, size_t len, int base = 10) {
+/**
+ * @warning this function does not work for bases > 10
+ */
+inline constexpr unsigned long long int fast_atol(const char* buf, size_t len = 0, int base = 10) {
+    if (len == 0) {
+        len = std::strlen(buf);
+    }
     unsigned int n = 0;
     while (len--) {
+        if (!std::isdigit(*buf)){
+            return n;
+        }
         n = (n * base) + (*buf++ - '0');
     }
     return n;
