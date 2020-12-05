@@ -1,7 +1,8 @@
+#include "day_five.h"
+#include "day_four.h"
 #include "day_one.h"
 #include "day_three.h"
 #include "day_two.h"
-#include "day_four.h"
 
 int main(int argc, char* argv[]) {
     day_one dayOne{};
@@ -22,4 +23,9 @@ int main(int argc, char* argv[]) {
     day_four dayFour{};
     dayFour.part_one();
     dayFour.part_two();
+    fmt::print("\n");
+
+    day_five dayFive{};
+    dayFive.part_one();
+    dayFive.part_two();
 }
