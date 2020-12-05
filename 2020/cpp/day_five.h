@@ -20,65 +20,65 @@
 
 struct day_five {
     struct boarding_pass_t {
-        const std::string_view rowPath;
-        const std::string_view colPath;
+        const int row;
+        const int col;
+        //        const std::string_view rowPath;
+        //        const std::string_view colPath;
 
-        inline int getRow() const {
-            int upper_limit{127};
-            int lower_limit{0};
-            for (const auto c : rowPath) {
-                switch (c) {
-                    case 'F':
-                        upper_limit = std::midpoint(upper_limit, lower_limit) - 1;
-                        break;
-                    case 'B':
-                        lower_limit = std::midpoint(upper_limit, lower_limit);
-                        break;
-                        // default:
-                        // throw std::runtime_error("borken");
-                }
-            }
-            // if (upper_limit != lower_limit) {
-            // throw std::runtime_error("borken");
-            //}
-            return lower_limit;
-        }
-
-        inline int getCol() const {
-            int upper_limit{7};
-            int lower_limit{0};
-            for (const auto c : colPath) {
-                switch (c) {
-                    case 'L':
-                        upper_limit = std::midpoint(upper_limit, lower_limit) - 1;
-                        break;
-                    case 'R':
-                        lower_limit = std::midpoint(upper_limit, lower_limit);
-                        break;
-                        // default:
-                        // throw std::runtime_error("borken");
-                }
-            }
-            // if (upper_limit != lower_limit) {
-            // throw std::runtime_error("borken");
-            //}
-            return lower_limit;
-        }
+        //        inline int getRow() const {
+        //
+        //            int upper_limit{127};
+        //            int lower_limit{0};
+        //            for (const auto c : rowPath) {
+        //                switch (c) {
+        //                    case 'F':
+        //                        upper_limit = std::midpoint(upper_limit, lower_limit) - 1;
+        //                        break;
+        //                    case 'B':
+        //                        lower_limit = std::midpoint(upper_limit, lower_limit);
+        //                        break;
+        //                }
+        //            }
+        //
+        //            return lower_limit;
+        //        }
+        //
+        //        inline int getCol() const {
+        //            int upper_limit{7};
+        //            int lower_limit{0};
+        //            for (const auto c : colPath) {
+        //                switch (c) {
+        //                    case 'L':
+        //                        upper_limit = std::midpoint(upper_limit, lower_limit) - 1;
+        //                        break;
+        //                    case 'R':
+        //                        lower_limit = std::midpoint(upper_limit, lower_limit);
+        //                        break;
+        //                }
+        //            }
+        //            return lower_limit;
+        //        }
 
         inline int getSeatID() const {
-            return (getRow() * 8) + getCol();
+            return (row * 8) + col;
         }
     };
     std::vector<std::string> input_strings;
     std::vector<boarding_pass_t> input;
 
-    day_five() {
-        input_strings = readFile("Inputs/day_five.txt");
+    day_five() : input_strings{readFile("Inputs/day_five.txt")}{
         const auto start = std::chrono::high_resolution_clock::now();
-        for (const auto& str : input_strings) {
+        for (auto& str : input_strings) {
+            std::replace_if(
+                std::begin(str), std::end(str), [](char c) { return c == 'F' || c == 'L'; }, '0');
+            std::replace_if(
+                std::begin(str), std::end(str), [](char c) { return c == 'B' || c == 'R'; }, '1');
+
             auto firstSeven = std::string_view(std::begin(str), std::begin(str) + 7);
             auto lastThree = std::string_view(std::end(str) - 3, std::end(str));
-            input.emplace_back(firstSeven, lastThree);
+            const auto row = fast_atoi(firstSeven.data(), 7, 2);
+            const auto col = fast_atoi(lastThree.data(), 3, 2);
+            input.emplace_back(row, col);
         }
         const auto end = std::chrono::high_resolution_clock::now();
         fmt::print("Parsing input for day five took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
@@ -100,15 +100,18 @@ struct day_five {
         auto rng = input | std::ranges::views::transform([](const boarding_pass_t& boarding_pass) { return boarding_pass.getSeatID(); });
         std::vector<int> ids{rng.begin(), rng.end()};
 
-        std::sort(ids.begin(), ids.end());
-        auto lowest = *ids.begin();
-        auto highest = *(ids.end() - 1);
+        std::ranges::sort(ids);
+
+        const auto lowest = ids.front();
+        const auto highest = ids.back();
+
         for (int i = lowest; i <= highest; ++i) {
-            if (std::find(ids.begin(), ids.end(), i) == std::end(ids))
-                if (std::find(ids.begin(), ids.end(), i + 1) != std::end(ids) && std::find(ids.begin(), ids.end(), i + 1) != std::end(ids)) {
+            if (!std::ranges::binary_search(ids, i))
+                if (std::ranges::binary_search(ids, i-1) && std::ranges::binary_search(ids, i+1)) {
                     const auto end = std::chrono::high_resolution_clock::now();
                     fmt::print("The answer for day five part two is {}\n", i);
                     fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+                    return;
                 }
         }
     }
