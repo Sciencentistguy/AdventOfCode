@@ -83,7 +83,7 @@ inline constexpr unsigned long long int fast_atol(const char* buf, size_t len = 
     }
     unsigned int n = 0;
     while (len--) {
-        if (!std::isdigit(*buf)){
+        if (!std::isdigit(*buf)) {
             return n;
         }
         n = (n * base) + (*buf++ - '0');
