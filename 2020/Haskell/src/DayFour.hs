@@ -11,11 +11,6 @@ import           Common
 requiredFields :: [Text.Text]
 requiredFields = map Text.pack ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
 
-groupEntries :: [String] -> [String]
-groupEntries strings | null strings = []
-                     | otherwise    = unwords pass : groupEntries (drop (length pass + 1) strings)
-    where pass = takeWhile (not . null) strings
-
 validatePassport :: [String] -> Bool
 validatePassport ("hgt" : value : _) | unit == "cm" = not $ height < 150 || height > 193
                                      | unit == "in" = not $ height < 59 || height > 76

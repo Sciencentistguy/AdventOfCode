@@ -5,6 +5,7 @@ where
 
 import qualified Data.Text                     as Text
 import qualified Data.Text.IO                  as Text
+import           Common
 
 type Line = (Int, Int, Char, String)
 
@@ -14,9 +15,6 @@ replaceHyphen c   = c
 
 parse :: [String] -> Line
 parse (a : b : c : d : _) = (read a, read b, head c, d)
-
-countCharString :: String -> Char -> Int
-countCharString str c = length $ filter (== c) str
 
 partOne :: Line -> Bool
 partOne (firstNum, secondNum, char, string) = (count >= firstNum) && (count <= secondNum)
