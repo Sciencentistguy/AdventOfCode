@@ -4,6 +4,7 @@ import           DayOne
 import           DayTwo
 import           DayThree
 import           DayFour
+import           DayFive
 
 main :: IO ()
 main = do
@@ -11,3 +12,4 @@ main = do
     dayTwo
     dayThree
     dayFour
+    dayFive
