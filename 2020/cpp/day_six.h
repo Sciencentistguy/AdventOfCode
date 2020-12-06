@@ -17,28 +17,25 @@
 
 struct day_six {
     struct group_t {
-        std::vector<std::string_view> responses;
+        int number_of_responses{};
+        std::string responses;
+
         int anyYes() const {
-            std::array<bool, std::numeric_limits<char>::max()> isThere{};
-            for (auto sv : responses) {
-                for (char c : sv) {
-                    isThere[c] = true;
-                }
+            std::array<bool, 26> isThere{};
+            for (auto c : responses) {
+                isThere[c - 'a'] = true;
             }
             return std::accumulate(std::begin(isThere), std::end(isThere), 0);
         }
 
         int allYes() const {
-            std::array<int, std::numeric_limits<char>::max()> isThere{};
-            for (auto sv : responses) {
-                for (char c : sv) {
-                    ++isThere[c];
-                }
+            std::array<int, 26> isThere{};
+            for (auto c : responses) {
+                ++isThere[c - 'a'];
             }
             int count{0};
-            const auto limit = responses.size();
             for (int i : isThere)
-                count += i == limit;
+                count += i == number_of_responses;
             return count;
         }
     };
@@ -53,7 +50,8 @@ struct day_six {
             if (*current_line == "")
                 ++current_line;
             while (*current_line != "") {
-                group.responses.push_back(*current_line);
+                group.responses += *current_line;
+                ++group.number_of_responses;
                 ++current_line;
             }
         }
