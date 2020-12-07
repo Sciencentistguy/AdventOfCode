@@ -90,3 +90,9 @@ inline constexpr unsigned long long int fast_atol(const char* buf, size_t len = 
     }
     return n;
 }
+
+template<typename T>
+inline void pop_front(std::vector<T>& vector) {
+    vector.front()=std::move(vector.back());
+    vector.pop_back();
+}

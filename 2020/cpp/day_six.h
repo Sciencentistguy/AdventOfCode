@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <numeric>
 #include <ranges>
 #include <set>
 #include <stdexcept>
