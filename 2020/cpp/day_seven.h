@@ -15,6 +15,7 @@
 
 #include <ctre.hpp>
 #include <fmt/core.h>
+#include <tsl/robin_map.h>
 
 #include "common.h"
 
@@ -24,7 +25,7 @@ struct day_seven {
         int number;
     };
     std::vector<std::string> input_strings;
-    std::unordered_map<std::string_view, std::vector<rule_t>> rules;
+    tsl::robin_map<std::string_view, std::vector<rule_t>> rules;
     std::vector<std::string_view> bags;
 
     day_seven() : input_strings{readFile("Inputs/day_seven.txt")} {
@@ -85,7 +86,7 @@ struct day_seven {
             count += bag.number;
 
             for (const auto& subbag : rules[bag.colour]) {
-                candidates.emplace_back(subbag.colour, subbag.number* bag.number);
+                candidates.emplace_back(subbag.colour, subbag.number * bag.number);
             }
             pop_front(candidates);
         }
