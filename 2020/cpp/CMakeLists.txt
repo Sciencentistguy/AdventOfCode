@@ -8,7 +8,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(fmt)
 find_package(ctre)
 
-add_executable(AdventOfCode2020 main.cpp)
+add_executable(AdventOfCode2020 main.cpp computer.h)
 
 target_link_libraries(AdventOfCode2020 fmt::fmt)
 target_link_libraries(AdventOfCode2020 ctre::ctre)
