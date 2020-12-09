@@ -34,8 +34,7 @@ struct day_seven {
             auto words = split(line, ' ');
             const std::string_view colour = {&line.front(), &(words[1].back()) + 1};
             rules[colour] = {};
-            std::span span{words.begin() + 4, words.end()};
-            for (auto i = span.begin(); i < span.end(); i += 4) {
+            for (auto i = words.begin() + 4; i < words.end(); i += 4) {
                 auto& pair = rules[colour].emplace_back();
                 pair.colour = {&i[1].front(), &(i[2].back()) + 1};
                 pair.number = fast_atol(i[0].begin(), 1);
