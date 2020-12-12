@@ -1,17 +1,17 @@
 module Main where
 
-import           DayOne
-import           DayTwo
-import           DayThree
-import           DayFour
-import           DayFive
-import           DaySix
+import           Day01
+import           Day02
+import           Day03
+import           Day04
+import           Day05
+import           Day06
 
 main :: IO ()
 main = do
-    dayOne
-    dayTwo
-    dayThree
-    dayFour
-    dayFive
-    daySix
+    day01
+    day02
+    day03
+    day04
+    day05
+    day06

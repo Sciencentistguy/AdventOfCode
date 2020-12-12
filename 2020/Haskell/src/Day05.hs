@@ -1,5 +1,5 @@
-module DayFive
-    ( dayFive
+module Day05
+    ( day05
     )
 where
 
@@ -23,9 +23,9 @@ readBinary = List.foldl' (\acc x -> acc * 2 + digitToInt x) 0
 getId :: BoardingPass -> Int
 getId (row, col) = col + (row * 8)
 
-dayFive :: IO ()
-dayFive = do
-    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_five.txt"
+day05 :: IO ()
+day05 = do
+    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_05.txt"
     let input_strs        = map Text.unpack input_Text
     let input_strs_binary = map (map repl) input_strs
     let rows_strs         = map (take 7) input_strs_binary

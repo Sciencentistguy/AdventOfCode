@@ -1,5 +1,5 @@
-module DayFour
-    ( dayFour
+module Day04
+    ( day04
     )
 where
 
@@ -30,9 +30,9 @@ validatePassport (key : value : _)
     where valueAsInt = read value :: Int
 
 
-dayFour :: IO ()
-dayFour = do
-    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_four.txt"
+day04 :: IO ()
+day04 = do
+    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_04.txt"
     let input_strs = map Text.unpack input_Text
     -- part 1
     let filtered = filter (\passport -> all (\need -> Text.isInfixOf need (Text.pack passport)) requiredFields)

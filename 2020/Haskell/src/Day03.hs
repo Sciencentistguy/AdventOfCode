@@ -1,5 +1,5 @@
-module DayThree
-    ( dayThree
+module Day03
+    ( day03
     )
 where
 
@@ -21,9 +21,9 @@ getTreesSlopeRecursive worldMap xStep yStep x y acc
 getTreesSlope :: Map -> Int -> Int -> Int
 getTreesSlope worldMap xStep yStep = getTreesSlopeRecursive worldMap xStep yStep 0 0 0
 
-dayThree :: IO ()
-dayThree = do
-    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_three.txt"
+day03 :: IO ()
+day03 = do
+    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_03.txt"
     let input_strs = map Text.unpack input_Text
     -- part 1
     putStr "The answer for day three part one is "

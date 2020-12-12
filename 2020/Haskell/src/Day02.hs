@@ -1,5 +1,5 @@
-module DayTwo
-    ( dayTwo
+module Day02
+    ( day02
     )
 where
 
@@ -26,9 +26,9 @@ partTwo (firstNum, secondNum, char, string) = (pos1 == char) /= (pos2 == char)
     pos1 = string !! (firstNum - 1)
     pos2 = string !! (secondNum - 1)
 
-dayTwo :: IO ()
-dayTwo = do
-    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_two.txt"
+day02 :: IO ()
+day02 = do
+    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_02.txt"
     let input_strs     = map Text.unpack input_Text
     let removedHyphens = map (map replaceHyphen) input_strs
     let filteredColon  = map (filter (/= ':')) removedHyphens
