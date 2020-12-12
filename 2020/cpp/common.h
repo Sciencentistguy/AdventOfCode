@@ -93,6 +93,16 @@ inline constexpr unsigned long long int fast_atol(const char* buf, size_t len = 
 
 template<typename T>
 inline void pop_front(std::vector<T>& vector) {
-    vector.front()=std::move(vector.back());
+    vector.front() = std::move(vector.back());
     vector.pop_back();
 }
+
+struct hash_pair {
+    template<class T1, class T2>
+    size_t operator()(const std::pair<T1, T2>& p) const {
+        const auto hash1 = std::hash<T1>{}(p.first);
+        const auto hash2 = std::hash<T2>{}(p.second);
+        using t = decltype(std::hash<T1>{}(p.first) + std::hash<T2>{}(p.second));
+        return std::hash<t>{}(hash1 + hash2);
+    }
+};
