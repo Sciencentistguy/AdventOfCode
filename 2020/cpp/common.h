@@ -76,7 +76,7 @@ inline constexpr auto enumerate(T&& range) requires std::input_iterator<Iterator
 /**
  * @warning this function does not work for bases > 10
  */
-inline constexpr unsigned long long int fast_atol(const char* buf, size_t len = 0, int base = 10) {
+inline constexpr uint64_t fast_atol(const char* buf, size_t len = 0, int base = 10) {
     if (len == 0) {
         len = std::strlen(buf);
     }
