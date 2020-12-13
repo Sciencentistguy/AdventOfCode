@@ -9,6 +9,7 @@
 #include "day_09.h"
 #include "day_10.h"
 #include "day_11.h"
+#include "day_12.h"
 
 int main(int argc, char* argv[]) {
     day_01 dayOne{};
@@ -64,4 +65,9 @@ int main(int argc, char* argv[]) {
     day_11 dayEleven{};
     dayEleven.part_one();
     dayEleven.part_two();
+    fmt::print("\n");
+
+    day_12 dayTwelve{};
+    dayTwelve.part_one();
+    dayTwelve.part_two();
 }
