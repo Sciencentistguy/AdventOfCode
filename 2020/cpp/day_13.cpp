@@ -1,7 +1,5 @@
 #include "day_13.h"
 
-#include <tsl/robin_map.h>
-
 day_13::day_13() {
     auto input_strings = readFile("Inputs/day_13.txt");
     const auto start = std::chrono::high_resolution_clock::now();
