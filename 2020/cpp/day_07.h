@@ -15,8 +15,8 @@
 
 #include <ctre.hpp>
 #include <fmt/core.h>
-#include <tsl/robin_map.h>
 
+#include <robin_hood.h>
 #include "common.h"
 
 struct day_07 {
@@ -26,7 +26,7 @@ struct day_07 {
     };
 
     std::vector<std::string> input_strings;
-    tsl::robin_map<std::string_view, std::vector<rule_t>> rules;
+    robin_hood::unordered_map<std::string_view, std::vector<rule_t>> rules;
     std::vector<std::string_view> bags;
 
     day_07();

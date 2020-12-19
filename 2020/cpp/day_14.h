@@ -1,6 +1,6 @@
 #pragma once
 
-#include <tsl/robin_map.h>
+#include <robin_hood.h>
 
 #include "common.h"
 
@@ -19,7 +19,7 @@ struct day_14 {
             mask_t mask{};
         };
 
-        tsl::robin_map<uint64_t, uint64_t> memory{};
+        robin_hood::unordered_map<uint64_t, uint64_t> memory{};
         const std::vector<instruction_t>& input;
         std::vector<instruction_t>::const_iterator instruction_pointer;
         mask_t mask{};
