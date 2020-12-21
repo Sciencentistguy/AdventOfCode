@@ -3,6 +3,7 @@
 #include <chrono>
 #include <fstream>
 #include <iterator>
+#include <span>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -108,4 +109,26 @@ struct hash_pair {
 
 constexpr int manhattan_distance(int x1, int y1, int x2, int y2) {
     return std::abs(x1 - x2) + std::abs(y1 - y2);
+}
+
+template<typename Range, typename T>
+requires(requires(Range r) {
+    std::begin(r);
+    std::end(r);
+}) inline std::vector<std::span<const T>> split_range(const Range& original,
+                                                      const T&
+                                                          delimiter) requires(std::is_same_v<std::decay_t<decltype(original.front())>, std::decay_t<T>>) {
+    int lastSplit{0};
+    std::vector<std::span<const T>> out;
+    const auto begin = std::begin(original);
+    const auto len = std::distance(begin, std::end(original));
+    for (int i = 0; i < len; i++) {
+        if (original[i] == delimiter) {
+            out.emplace_back(begin + lastSplit, i - lastSplit);
+            ++i;
+            lastSplit = i;
+        }
+    }
+    out.emplace_back(begin + lastSplit, begin + len);
+    return out;
 }
