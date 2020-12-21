@@ -9,7 +9,7 @@ day_07::day_07() : input_strings{readFile("Inputs/day_07.txt")} {
         for (auto i = words.begin() + 4; i < words.end(); i += 4) {
             auto& pair = rules[colour].emplace_back();
             pair.colour = {&i[1].front(), &(i[2].back()) + 1};
-            pair.number = fast_atol(i[0].begin(), 1);
+            pair.number = fast_atol(i[0].data(), 1);
             fmt::print("");
         }
         bags.emplace_back(colour);

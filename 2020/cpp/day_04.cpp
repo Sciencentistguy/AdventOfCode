@@ -1,6 +1,7 @@
 #include "day_04.h"
 
 #include <ctre.hpp>
+#include <range/v3/view/transform.hpp>
 
 bool day_04::passport_t::hasAllFields() const {
     return birth_year && issue_year && expiration_year && height && !height_unit.empty() && !hair_colour.empty() && !eye_colour.empty()
@@ -18,23 +19,24 @@ day_04::day_04() : input_strings{readFile("Inputs/day_04.txt")} {
         while (*current_line != "") {
             auto words = split(*current_line, ' ');
             for (const auto& pair : words) {
-                auto t = split(pair, ':');
-                if (t[0] == "byr") {
-                    passport.birth_year = std::atoi(t[1].data());
-                } else if (t[0] == "iyr") {
-                    passport.issue_year = std::atoi(t[1].data());
-                } else if (t[0] == "eyr") {
-                    passport.expiration_year = std::atoi(t[1].data());
-                } else if (t[0] == "hgt") {
-                    passport.height_unit = std::string_view{std::end(t[1]) - 2, 2};
-                    passport.height = std::atoi(t[1].data());
-                } else if (t[0] == "hcl") {
-                    passport.hair_colour = t[1];
-                } else if (t[0] == "ecl") {
-                    passport.eye_colour = t[1];
-                } else if (t[0] == "pid") {
-                    passport.passport_id = t[1];
-                } else if (t[0] == "cid") {
+                auto v = split(pair, ':');
+                auto splitted = v | ranges::views::transform([](auto i) { return std::string_view(i.begin(), i.end()); });
+                if (splitted[0] == "byr") {
+                    passport.birth_year = fast_atol(splitted[1].data());
+                } else if (splitted[0] == "iyr") {
+                    passport.issue_year = fast_atol(splitted[1].data());
+                } else if (splitted[0] == "eyr") {
+                    passport.expiration_year = fast_atol(splitted[1].data());
+                } else if (splitted[0] == "hgt") {
+                    passport.height_unit = std::string_view{std::end(splitted[1]) - 2, 2};
+                    passport.height = fast_atol(splitted[1].data());
+                } else if (splitted[0] == "hcl") {
+                    passport.hair_colour = splitted[1];
+                } else if (splitted[0] == "ecl") {
+                    passport.eye_colour = splitted[1];
+                } else if (splitted[0] == "pid") {
+                    passport.passport_id = splitted[1];
+                } else if (splitted[0] == "cid") {
                     // We do not care
                 } else {
                     throw std::runtime_error("Invalid input");

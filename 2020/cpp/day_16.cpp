@@ -14,28 +14,21 @@ bool day_16::range_t::contains(int i) const {
 
 day_16::day_16() : input_strings{readFile("Inputs/day_16.txt")} {
     const auto start = std::chrono::high_resolution_clock::now();
-    int i;
-    for (i = 0; i < input_strings.size(); ++i) {
-        if (input_strings[i].starts_with("your")) {
-            ++i;
-            for (const auto num : split(input_strings[i], ',')) {
-                your_ticket.push_back(fast_atol(num.data()));
-            }
-        }
-        if (input_strings[i].starts_with("nearby")) {
-            ++i;
-            break;
-        }
-        auto m = ctre::match<R"(^([\w ]+): (\d+)-(\d+) or (\d+)-(\d+))">(input_strings[i]);
-        if (!m) {
-            continue;
-        }
+    auto sections = split(input_strings, std::string(""));
+
+    for (const auto& line : sections[0]) {
+        auto m = ctre::match<R"(^([\w ]+): (\d+)-(\d+) or (\d+)-(\d+))">(line);
         fields[m.get<1>().to_view()] = {fast_atol(m.get<2>().to_view().data()), fast_atol(m.get<3>().to_view().data()),
                                         fast_atol(m.get<4>().to_view().data()), fast_atol(m.get<5>().to_view().data())};
     }
-    for (; i < input_strings.size(); ++i) {
+
+    for (const auto num : split(sections[1][1], ',')) {
+        your_ticket.push_back(fast_atol(num.data()));
+    }
+
+    for (int i = 1; i < sections[2].size(); ++i) {
         auto& ticket = nearby_tickets.emplace_back();
-        for (const auto num : split(input_strings[i], ',')) {
+        for (const auto num : split(sections[2][i], ',')) {
             ticket.push_back(fast_atol(num.data()));
         }
     }

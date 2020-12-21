@@ -30,21 +30,6 @@ inline std::vector<std::string> readFile(const char* filename) {
     return out;
 }
 
-inline std::vector<std::string_view> split(std::string_view str, char delimiter) {
-    int lastSplit{0};
-    std::vector<std::string_view> out;
-    const auto begin = std::begin(str);
-    for (int i = 0; i < str.length(); i++) {
-        if (str[i] == delimiter) {
-            out.emplace_back(begin + lastSplit, i - lastSplit);
-            ++i;
-            lastSplit = i;
-        }
-    }
-    out.emplace_back(begin + lastSplit, begin + str.length());
-    return out;
-}
-
 template<typename T, typename Iterator>
 inline constexpr auto enumerate(T&& range) requires std::input_iterator<Iterator> {
     struct iterator {
@@ -115,9 +100,8 @@ template<typename Range, typename T>
 requires(requires(Range r) {
     std::begin(r);
     std::end(r);
-}) inline std::vector<std::span<const T>> split_range(const Range& original,
-                                                      const T&
-                                                          delimiter) requires(std::is_same_v<std::decay_t<decltype(original.front())>, std::decay_t<T>>) {
+}) inline std::vector<std::span<const T>> split(const Range& original,
+                                                const T& delimiter) requires(std::is_same_v<std::decay_t<decltype(original.front())>, std::decay_t<T>>) {
     int lastSplit{0};
     std::vector<std::span<const T>> out;
     const auto begin = std::begin(original);
