@@ -10,7 +10,7 @@ struct day_16 {
         uint64_t low2;
         uint64_t high2;
 
-        [[nodiscard]] bool contains(int i) const;
+        [[nodiscard]] bool contains(uint64_t i) const;
     };
 
     const std::vector<std::string> input_strings;

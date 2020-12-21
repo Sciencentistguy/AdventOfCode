@@ -38,7 +38,7 @@ constexpr const int64_t* day_09::sequenceOfNumbersSum(int64_t target, const int6
 void day_09::part_one() {
     const auto start = std::chrono::high_resolution_clock::now();
     constexpr int offset{25};
-    for (int i = offset; i < input.size(); ++i) {
+    for (size_t i = offset; i < input.size(); ++i) {
         if (!sumOfPairs(input[i], &input[i - offset])) {
             const auto end = std::chrono::high_resolution_clock::now();
             fmt::print("The answer for day nine part one is {}\n", input[i]);

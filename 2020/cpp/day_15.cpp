@@ -38,7 +38,7 @@ void day_15::part_two() const {
 int day_15::do_task(int limit) const {
     auto vec = input;
     robin_hood::unordered_map<int, int> previous_occurence{};
-    for (int i = 0; i < vec.size(); ++i) {
+    for (size_t i = 0; i < vec.size(); ++i) {
         previous_occurence[vec[i]] = i;
     }
     previous_occurence.erase(vec.back());

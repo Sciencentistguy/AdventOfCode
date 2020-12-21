@@ -15,14 +15,15 @@
 
 #include <ctre.hpp>
 #include <fmt/core.h>
-
 #include <robin_hood.h>
+
 #include "common.h"
 
 struct day_07 {
     struct rule_t {
         std::string_view colour;
         int number;
+        rule_t(std::string_view colour, int number);
     };
 
     std::vector<std::string> input_strings;

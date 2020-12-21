@@ -3,15 +3,18 @@
 #include <algorithm>
 #include <cmath>
 
+#include <range/v3/all.hpp>
+
 day_10::day_10() :
     input{[] {
-        std::vector<int> input;
         auto input_strings{readFile("Inputs/day_10.txt")};
         const auto start = std::chrono::high_resolution_clock::now();
+        std::vector<int> input;
+        input.reserve(input_strings.size());
         for (const auto& line : input_strings) {
             input.push_back(fast_atol(line.c_str()));
         }
-        std::ranges::sort(input);
+        ranges::sort(input);
         const auto end = std::chrono::high_resolution_clock::now();
         fmt::print("Parsing input for day ten took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
         return input;
@@ -22,7 +25,7 @@ void day_10::part_one() {
     const auto start = std::chrono::high_resolution_clock::now();
     int count1Diff = 0;
     int count3Diff = 1;
-    for (int i = 0; i < input.size(); ++i) {
+    for (size_t i = 0; i < input.size(); ++i) {
         const auto diff = input[i + 1] - input[i];
         count1Diff += diff == 1;
         count3Diff += diff == 3;
@@ -36,13 +39,16 @@ void day_10::part_one() {
 void day_10::part_two() {
     const auto start = std::chrono::high_resolution_clock::now();
     std::vector<int> part2_input{0};
-    std::ranges::copy(input, std::back_inserter(part2_input));
+    ranges::copy(input, std::back_inserter(part2_input));
     part2_input.push_back(part2_input.back() + 3);
 
     struct interval_t {
         int64_t begin;
         int64_t end;
         uint64_t width;
+
+        interval_t(int64_t begin, int64_t end, uint64_t width) : begin{begin}, end{end}, width{width} {
+        }
     };
 
     size_t i = 0;
@@ -62,9 +68,7 @@ void day_10::part_two() {
             } else {
                 const auto& interval = intervals.back();
                 if (part2_input[i] < interval.end) {  // an intersection
-                    const interval_t iv{interval.begin, part2_input[j - 1], interval.width + width - 1};
-                    intervals.pop_back();
-                    intervals.push_back(iv);
+                    intervals.back() = {interval.begin, part2_input[j - 1], interval.width + width - 1};
                 } else {
                     intervals.emplace_back(part2_input[i], part2_input[j - 1], width);
                 }

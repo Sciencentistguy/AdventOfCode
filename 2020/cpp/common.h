@@ -1,6 +1,7 @@
 #pragma once
 
 #include <chrono>
+#include <cstdint>
 #include <fstream>
 #include <iterator>
 #include <span>
@@ -92,8 +93,11 @@ struct hash_pair {
     }
 };
 
-constexpr int manhattan_distance(int x1, int y1, int x2, int y2) {
-    return std::abs(x1 - x2) + std::abs(y1 - y2);
+inline constexpr int manhattan_distance(int x1, int y1, int x2, int y2) {
+    constexpr auto abs = [](int x) {
+        return x < 0 ? -x : x;
+    };
+    return abs(x1 - x2) + abs(y1 - y2);
 }
 
 template<typename Range, typename T>

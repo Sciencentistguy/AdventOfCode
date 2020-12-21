@@ -1,5 +1,10 @@
 #include "day_07.h"
 
+#include <range/v3/all.hpp>
+
+day_07::rule_t::rule_t(std::string_view colour, int number) : colour{colour}, number{number} {
+}
+
 day_07::day_07() : input_strings{readFile("Inputs/day_07.txt")} {
     const auto start = std::chrono::high_resolution_clock::now();
     for (const auto& line : input_strings) {
@@ -7,14 +12,11 @@ day_07::day_07() : input_strings{readFile("Inputs/day_07.txt")} {
         const std::string_view colour = {&line.front(), &(words[1].back()) + 1};
         rules[colour] = {};
         for (auto i = words.begin() + 4; i < words.end(); i += 4) {
-            auto& pair = rules[colour].emplace_back();
-            pair.colour = {&i[1].front(), &(i[2].back()) + 1};
-            pair.number = fast_atol(i[0].data(), 1);
-            fmt::print("");
+            rules[colour].emplace_back(std::string_view(&i[1].front(), &(i[2].back()) + 1), fast_atol(i[0].data(), 1));
         }
         bags.emplace_back(colour);
     }
-    std::ranges::sort(bags);
+    ranges::sort(bags);
     bags.erase(std::unique(bags.begin(), bags.end()), bags.end());
 
     const auto end = std::chrono::high_resolution_clock::now();

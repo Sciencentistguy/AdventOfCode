@@ -1,5 +1,8 @@
 #include "day_12.h"
 
+day_12::instruction_t::instruction_t(char opcode, ulong operand) : opcode{opcode}, operand{operand} {
+}
+
 day_12::day_12() :
     input{[] {
         const auto input_strings = readFile("Inputs/day_12.txt");
@@ -7,7 +10,7 @@ day_12::day_12() :
         std::vector<instruction_t> input;
         input.reserve(input_strings.size());
         for (const auto& line : input_strings) {
-            input.emplace_back(*line.data(), fast_atol(line.data() + 1));
+            input.emplace_back(*line.data(), static_cast<int>(fast_atol(line.data() + 1)));
         }
         const auto end = std::chrono::high_resolution_clock::now();
         fmt::print("Parsing input for day twelve took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());

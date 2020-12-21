@@ -5,7 +5,9 @@
 struct day_12 {
     struct instruction_t {
         char opcode;
-        int operand;
+        ulong operand;
+
+        instruction_t(char opcode, ulong operand);
     };
     const std::vector<instruction_t> input;
 

@@ -3,6 +3,10 @@
 #include <algorithm>
 
 #include <ctre.hpp>
+#include <range/v3/all.hpp>
+
+day_02::line_t::line_t(int firstNum, int secondNum, char c, const std::string_view& str) : first_num{firstNum}, second_num{secondNum}, c{c}, str{str} {
+}
 
 day_02::day_02() : input_strings{readFile("Inputs/day_02.txt")} {
     const auto start = std::chrono::high_resolution_clock::now();
@@ -23,7 +27,7 @@ void day_02::part_one() const {
     const auto start = std::chrono::high_resolution_clock::now();
     int valid_passwords{0};
     for (const auto& line : input) {
-        auto count = std::ranges::count_if(line.str, [&](char c) { return c == line.c; });
+        auto count = ranges::count_if(line.str, [&](char c) { return c == line.c; });
         valid_passwords += (count >= line.first_num and count <= line.second_num);
     }
     const auto end = std::chrono::high_resolution_clock::now();

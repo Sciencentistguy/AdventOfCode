@@ -6,6 +6,7 @@ struct day_05 {
     struct boarding_pass_t {
         const int row;
         const int col;
+        boarding_pass_t(int row, int col);
 
         [[nodiscard]] inline int getSeatID() const;
     };

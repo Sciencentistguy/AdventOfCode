@@ -28,8 +28,8 @@ struct day_14 {
         bool nextInstruction();
         void reset();
     };
-    computer_t computer;
     const std::vector<computer_t::instruction_t> input;
+    computer_t computer;
     day_14();
     void part_one();
     void part_two() const;

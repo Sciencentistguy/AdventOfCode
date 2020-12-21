@@ -37,7 +37,7 @@ void day_13::part_one() const {
 
 void day_13::part_two() const {
     const auto start = std::chrono::high_resolution_clock::now();
-    std::vector<std::pair<int, int>> wait_times;
+    std::vector<std::pair<uint64_t, uint64_t>> wait_times;
     int minute{-1};
     uint64_t multiplier{0};
     for (const auto& bus : all_bus_routes) {

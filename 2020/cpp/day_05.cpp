@@ -2,16 +2,21 @@
 
 #include <algorithm>
 
+#include <range/v3/all.hpp>
+
 int day_05::boarding_pass_t::getSeatID() const {
     return (row * 8) + col;
+}
+
+day_05::boarding_pass_t::boarding_pass_t(int row, int col) : row{row}, col{col} {
 }
 
 day_05::day_05() : input_strings{readFile("Inputs/day_05.txt")} {
     const auto start = std::chrono::high_resolution_clock::now();
     for (auto& str : input_strings) {
-        std::ranges::replace_if(
+        ranges::replace_if(
             str, [](char c) { return c == 'F' || c == 'L'; }, '0');
-        std::ranges::replace_if(
+        ranges::replace_if(
             str, [](char c) { return c == 'B' || c == 'R'; }, '1');
 
         auto firstSeven = std::string_view(std::begin(str), std::begin(str) + 7);
@@ -37,17 +42,16 @@ void day_05::part_one() const {
 
 void day_05::part_two() const {
     const auto start = std::chrono::high_resolution_clock::now();
-    auto rng = std::ranges::views::transform(input, [](const boarding_pass_t& boarding_pass) { return boarding_pass.getSeatID(); });
-    std::vector<int> ids{rng.begin(), rng.end()};
+    auto ids = ranges::views::transform(input, [](const boarding_pass_t& boarding_pass) { return boarding_pass.getSeatID(); }) | ranges::to_vector;
 
-    std::ranges::sort(ids);
+    ranges::sort(ids);
 
     const auto lowest = ids.front();
     const auto highest = ids.back();
 
     for (int i = lowest; i <= highest; ++i) {
-        if (!std::ranges::binary_search(ids, i))
-            if (std::ranges::binary_search(ids, i - 1) && std::ranges::binary_search(ids, i + 1)) {
+        if (!ranges::binary_search(ids, i))
+            if (ranges::binary_search(ids, i - 1) && ranges::binary_search(ids, i + 1)) {
                 const auto end = std::chrono::high_resolution_clock::now();
                 fmt::print("The answer for day five part two is {}\n", i);
                 fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());

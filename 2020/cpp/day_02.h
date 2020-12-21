@@ -8,6 +8,7 @@ struct day_02 {
         const int second_num;
         const char c;
         const std::string_view str;
+        line_t(int firstNum, int secondNum, char c, const std::string_view& str);
     };
 
     std::vector<std::string> input_strings;

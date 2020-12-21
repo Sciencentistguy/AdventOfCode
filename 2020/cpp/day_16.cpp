@@ -5,7 +5,7 @@
 #include <ctre.hpp>
 #include <range/v3/all.hpp>
 
-bool day_16::range_t::contains(int i) const {
+bool day_16::range_t::contains(uint64_t i) const {
     const auto in1 = (i >= low1 && i <= high1);
     const auto in2 = (i >= low2 && i <= high2);
 
@@ -26,7 +26,7 @@ day_16::day_16() : input_strings{readFile("Inputs/day_16.txt")} {
         your_ticket.push_back(fast_atol(num.data()));
     }
 
-    for (int i = 1; i < sections[2].size(); ++i) {
+    for (size_t i = 1; i < sections[2].size(); ++i) {
         auto& ticket = nearby_tickets.emplace_back();
         for (const auto num : split(sections[2][i], ',')) {
             ticket.push_back(fast_atol(num.data()));
@@ -38,11 +38,11 @@ day_16::day_16() : input_strings{readFile("Inputs/day_16.txt")} {
 
 bool day_16::isTicketValid(const std::vector<int>& ticket) const {
     auto rng = ranges::views::filter(ticket, [this](auto field) { return isValueValidAnywhere(field); });
-    return std::distance(std::begin(rng), std::end(rng)) == ticket.size();
+    return static_cast<uint64_t>(std::distance(std::begin(rng), std::end(rng))) == ticket.size();
 }
 
 bool day_16::isValueValidAnywhere(int field) const {
-    int failed{0};
+    size_t failed{0};
     for (const auto [field_name, field_range] : fields) {
         if (!field_range.contains(field)) {
             ++failed;
@@ -73,7 +73,7 @@ void day_16::part_two() const {
     std::vector<std::pair<std::vector<int>, std::string_view>> candidates;
     for (const auto [field_name, field_range] : fields) {
         std::vector<int> possible;
-        for (int i = 0; i < your_ticket.size(); ++i) {
+        for (size_t i = 0; i < your_ticket.size(); ++i) {
             bool passes = true;
             for (const auto& ticket : valid_tickets) {
                 if (!field_range.contains(ticket[i])) {
@@ -88,7 +88,7 @@ void day_16::part_two() const {
         candidates.emplace_back(possible, field_name);
     }
 
-    std::ranges::sort(candidates, [](auto a, auto b) { return a.first.size() < b.first.size(); });
+    ranges::sort(candidates, [](auto a, auto b) { return a.first.size() < b.first.size(); });
 
     robin_hood::unordered_map<std::string_view, int> field_and_index;
     std::vector<bool> taken(your_ticket.size(), false);
