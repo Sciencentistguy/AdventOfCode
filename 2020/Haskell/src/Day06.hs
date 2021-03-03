@@ -3,14 +3,15 @@ module Day06
     )
 where
 
+import           Common
+import           Data.List
 import qualified Data.Text                     as Text
 import qualified Data.Text.IO                  as Text
-import           Data.List
-import           Common
 
 day06 :: IO ()
 day06 = do
-    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_06.txt"
+    input_Text <- Text.lines
+        <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_06.txt"
     let input_strs = map Text.unpack input_Text
     let grouped    = groupEntries input_strs
     -- part 1

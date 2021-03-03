@@ -3,9 +3,9 @@ module Day02
     )
 where
 
+import           Common
 import qualified Data.Text                     as Text
 import qualified Data.Text.IO                  as Text
-import           Common
 
 type Line = (Int, Int, Char, String)
 
@@ -17,7 +17,8 @@ parse :: [String] -> Line
 parse (a : b : c : d : _) = (read a, read b, head c, d)
 
 partOne :: Line -> Bool
-partOne (firstNum, secondNum, char, string) = (count >= firstNum) && (count <= secondNum)
+partOne (firstNum, secondNum, char, string) =
+    (count >= firstNum) && (count <= secondNum)
     where count = countCharString string char
 
 partTwo :: Line -> Bool
@@ -28,7 +29,8 @@ partTwo (firstNum, secondNum, char, string) = (pos1 == char) /= (pos2 == char)
 
 day02 :: IO ()
 day02 = do
-    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_02.txt"
+    input_Text <- Text.lines
+        <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_02.txt"
     let input_strs     = map Text.unpack input_Text
     let removedHyphens = map (map replaceHyphen) input_strs
     let filteredColon  = map (filter (/= ':')) removedHyphens

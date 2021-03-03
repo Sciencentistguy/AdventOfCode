@@ -3,10 +3,10 @@ module Day05
     )
 where
 
+import           Data.Char                      ( digitToInt )
+import qualified Data.List                     as List
 import qualified Data.Text                     as Text
 import qualified Data.Text.IO                  as Text
-import qualified Data.List                     as List
-import           Data.Char                      ( digitToInt )
 
 type BoardingPass = (Int, Int)
 
@@ -25,7 +25,8 @@ getId (row, col) = col + (row * 8)
 
 day05 :: IO ()
 day05 = do
-    input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_05.txt"
+    input_Text <- Text.lines
+        <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_05.txt"
     let input_strs        = map Text.unpack input_Text
     let input_strs_binary = map (map repl) input_strs
     let rows_strs         = map (take 7) input_strs_binary
@@ -40,5 +41,7 @@ day05 = do
     print $ maximum ids
     -- part 2
     putStr "The answer for day five part two is "
-    print $ head $ filter (\x -> (x - 1) `elem` ids && (x + 1) `elem` ids) $ filter (`notElem` ids)
-                                                                                    [minimum ids .. maximum ids]
+    print
+        $ head
+        $ filter (\x -> (x - 1) `elem` ids && (x + 1) `elem` ids)
+        $ filter (`notElem` ids) [minimum ids .. maximum ids]
