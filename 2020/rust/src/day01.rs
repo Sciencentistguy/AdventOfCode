@@ -4,11 +4,13 @@ const TARGET: u64 = 2020;
 
 #[aoc_generator(day01)]
 pub fn input_generator(input: &str) -> Vec<u64> {
-    input
+    let mut v = input
         .lines()
         .map(str::parse::<u64>)
         .collect::<Result<Vec<_>, _>>()
-        .expect("Input contains invalid line")
+        .expect("Input contains invalid line");
+    v.sort_unstable();
+    v
 }
 
 #[aoc(day01, part1, bruteforce)]
