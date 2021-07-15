@@ -9,9 +9,8 @@ import qualified Data.Text.IO as Text
 
 day01 :: IO ()
 day01 = do
-  input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_01.txt"
-  let input_strs = Text.unpack <$> input_Text
-      input_ints = read <$> input_strs :: [Int]
+  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_01.txt"
+  let input_ints = read <$> input_strs :: [Int]
   -- part 1
   putStr "The answer for day one part one is "
   print $ head do

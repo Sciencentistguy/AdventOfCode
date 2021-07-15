@@ -45,8 +45,7 @@ isValidPartTwo PasswordSpec {..} =
 
 day02 :: IO ()
 day02 = do
-  input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_02.txt"
-  let input_strs = Text.unpack <$> input_Text
+  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_02.txt"
   let parsed = case traverse (parse pPassword "input") input_strs of
         Right x -> x
         Left e -> error $ errorBundlePretty e
