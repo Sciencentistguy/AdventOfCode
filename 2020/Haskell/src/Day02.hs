@@ -1,45 +1,58 @@
+{-# LANGUAGE RecordWildCards #-}
+
 module Day02
   ( day02,
   )
 where
 
 import Common
+import Data.Char
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
+import Text.Megaparsec
+import Text.Megaparsec.Char
+import qualified Text.Megaparsec.Char.Lexer as L
 
---type Line = (Int, Int, Char, String)
-data Line = Line Int Int Char String deriving (Show)
+data PasswordSpec = PasswordSpec
+  { psFirstNum :: Int,
+    psSecondNum :: Int,
+    psChar :: Char,
+    psString :: String
+  }
 
-replaceHyphen :: Char -> Char
-replaceHyphen '-' = ' '
-replaceHyphen c = c
+pPassword :: Parser PasswordSpec
+pPassword = do
+  psFirstNum <- L.decimal
+  _ <- char '-'
+  psSecondNum <- L.decimal
+  _ <- char ' '
+  psChar <- letterChar
+  _ <- char ':'
+  _ <- char ' '
+  psString <- some letterChar
+  return PasswordSpec {..}
 
-parse :: [String] -> Line
-parse (a : b : c : d : _) = Line (read a) (read b) (head c) d
-parse _ = error "unreachable"
+isValidPartOne :: PasswordSpec -> Bool
+isValidPartOne PasswordSpec {..} =
+  let count = countCharString psString psChar
+   in count >= psFirstNum && count <= psSecondNum
 
-partOne :: Line -> Bool
-partOne (Line firstNum secondNum char string) = (count >= firstNum) && (count <= secondNum)
-  where
-    count = countCharString string char
-
-partTwo :: Line -> Bool
-partTwo (Line firstNum secondNum char string) = (pos1 == char) /= (pos2 == char)
-  where
-    pos1 = string !! (firstNum - 1)
-    pos2 = string !! (secondNum - 1)
+isValidPartTwo :: PasswordSpec -> Bool
+isValidPartTwo PasswordSpec {..} =
+  let pos1 = psString !! (psFirstNum - 1)
+      pos2 = psString !! (psSecondNum - 1)
+   in (pos1 == psChar) /= (pos2 == psChar)
 
 day02 :: IO ()
 day02 = do
   input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_02.txt"
-  let input_strs = map Text.unpack input_Text
-  let removedHyphens = map (map replaceHyphen) input_strs
-  let filteredColon = map (filter (/= ':')) removedHyphens
-  let split = map words filteredColon
-  let parsedInput = map parse split
+  let input_strs = Text.unpack <$> input_Text
+  let parsed = case traverse (parse pPassword "input") input_strs of
+        Right x -> x
+        Left e -> error $ errorBundlePretty e
   -- part 1
   putStr "The answer for day two part one is "
-  print $ length $ filter partOne parsedInput
+  print $ length $ filter isValidPartOne parsed
   -- part 2
   putStr "The answer for day two part two is "
-  print $ length $ filter partTwo parsedInput
+  print $ length $ filter isValidPartTwo parsed

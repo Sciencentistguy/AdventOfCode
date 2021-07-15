@@ -23,6 +23,10 @@ dependencies:
 - base >= 4.7 && < 5
 - text
 - unix
+- megaparsec
+
+default-extensions:
+  BlockArguments
 
 library:
   source-dirs: src

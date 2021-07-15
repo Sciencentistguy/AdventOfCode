@@ -1,22 +1,36 @@
-module Common
-  ( split,
-    countCharString,
-    groupEntries,
-  )
-where
+module Common where
+
+import Data.Maybe
+import Data.Void (Void)
+import Text.Megaparsec
 
 split :: Eq a => a -> [a] -> [[a]]
 split _ [] = []
-split onChar toSplit = x : split onChar (drop 1 y)
+split onChar toSplit = before : split onChar (drop 1 after)
   where
-    (x, y) = span (/= onChar) toSplit
+    (before, after) = span (/= onChar) toSplit
 
 countCharString :: String -> Char -> Int
-countCharString str c = length $ filter (== c) str
+countCharString str c = countTrue (== c) str
+
+countTrue :: (a -> Bool) -> [a] -> Int
+countTrue p = length . filter p
 
 groupEntries :: [String] -> [String]
-groupEntries strings
-  | null strings = []
-  | otherwise = unwords pass : groupEntries (drop (length pass + 1) strings)
+groupEntries [] = []
+groupEntries strings = unwords group : groupEntries (drop (length group + 1) strings)
   where
-    pass = takeWhile (not . null) strings
+    group = takeWhile (not . null) strings
+
+filterMap :: (a -> Maybe b) -> [a] -> [b]
+filterMap = mapMaybe
+
+unreachable :: String -> a
+unreachable msg =
+  error $
+    "ERROR: Entered unreachable code."
+      ++ if not $ null msg
+        then ' ' : msg
+        else ""
+
+type Parser = Parsec Void String
