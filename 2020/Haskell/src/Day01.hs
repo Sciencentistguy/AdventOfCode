@@ -3,24 +3,27 @@ module Day01
   )
 where
 
+import Control.Monad
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 
 day01 :: IO ()
 day01 = do
   input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_01.txt"
-  let input_strs = map Text.unpack input_Text
-  let input_ints = map read input_strs
+  let input_strs = Text.unpack <$> input_Text
+      input_ints = read <$> input_strs :: [Int]
   -- part 1
   putStr "The answer for day one part one is "
-  print $ head [x * y | x <- input_ints, y <- input_ints, x + y == 2020]
+  print $ head do
+    x <- input_ints
+    y <- input_ints
+    guard $ x + y == 2020
+    return $ x * y
   -- part 2
   putStr "The answer for day one part two is "
-  print $
-    head
-      [ x * y * z
-        | x <- input_ints,
-          y <- input_ints,
-          z <- input_ints,
-          x + y + z == 2020
-      ]
+  print $ head do
+    x <- input_ints
+    y <- input_ints
+    z <- input_ints
+    guard $ x + y + z == 2020
+    return $ x * y * z
