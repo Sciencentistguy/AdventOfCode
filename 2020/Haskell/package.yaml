@@ -24,6 +24,8 @@ dependencies:
 - text
 - unix
 - megaparsec
+- algebraic-graphs
+- containers
 
 default-extensions:
   BlockArguments

@@ -3,6 +3,8 @@ module Common where
 import Data.Maybe
 import Data.Void (Void)
 import Text.Megaparsec
+import Text.Megaparsec.Char (space1)
+import qualified Text.Megaparsec.Char.Lexer as L
 
 split :: Eq a => a -> [a] -> [[a]]
 split _ [] = []
@@ -34,3 +36,13 @@ unreachable msg =
         else ""
 
 type Parser = Parsec Void String
+
+spaces :: Parser ()
+spaces =
+  L.space
+    space1
+    (return ())
+    (return ())
+
+symbol :: String -> Parser String
+symbol = L.symbol spaces
