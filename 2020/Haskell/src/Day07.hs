@@ -1,6 +1,3 @@
-{-# LANGUAGE GADTs #-}
-{-# LANGUAGE RecordWildCards #-}
-
 module Day07 (day07) where
 
 import Algebra.Graph.HigherKinded.Class (Graph)

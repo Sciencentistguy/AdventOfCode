@@ -24,11 +24,18 @@ dependencies:
 - text
 - unix
 - megaparsec
+- split
 - algebraic-graphs
 - containers
+- vector
+- primitive
+- lens
+- comonad
+- safe
 
 default-extensions:
   BlockArguments
+  GADTs
 
 library:
   source-dirs: src
