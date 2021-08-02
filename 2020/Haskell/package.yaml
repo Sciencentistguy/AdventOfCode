@@ -32,10 +32,12 @@ dependencies:
 - lens
 - comonad
 - safe
+- extra
 
 default-extensions:
   BlockArguments
   GADTs
+  FlexibleContexts
 
 library:
   source-dirs: src

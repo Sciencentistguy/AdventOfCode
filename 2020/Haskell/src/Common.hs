@@ -1,5 +1,6 @@
 module Common where
 
+import Data.List (tails, transpose)
 import Data.Maybe
 import Data.Void (Void)
 import Text.Megaparsec
@@ -46,3 +47,6 @@ spaces =
 
 symbol :: String -> Parser String
 symbol = L.symbol spaces
+
+windows :: Int -> [a] -> [[a]]
+windows n xs = transpose $ take n $ tails xs
