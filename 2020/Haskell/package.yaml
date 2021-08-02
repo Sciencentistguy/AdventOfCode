@@ -33,6 +33,8 @@ dependencies:
 - comonad
 - safe
 - extra
+- unordered-containers
+- hashable
 
 default-extensions:
   BlockArguments

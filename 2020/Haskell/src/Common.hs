@@ -1,5 +1,6 @@
 module Common where
 
+import Data.Foldable (Foldable (toList))
 import Data.List (tails, transpose)
 import Data.Maybe
 import Data.Void (Void)
@@ -16,8 +17,8 @@ split onChar toSplit = before : split onChar (drop 1 after)
 countCharString :: String -> Char -> Int
 countCharString str c = countTrue (== c) str
 
-countTrue :: (a -> Bool) -> [a] -> Int
-countTrue p = length . filter p
+countTrue :: Foldable t => (a -> Bool) -> t a -> Int
+countTrue p = length . filter p . toList
 
 groupEntries :: [String] -> [String]
 groupEntries [] = []
