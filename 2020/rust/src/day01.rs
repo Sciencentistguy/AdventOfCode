@@ -1,9 +1,6 @@
-use aoc_runner_derive::*;
-
 const TARGET: u64 = 2020;
 
-#[aoc_generator(day01)]
-pub fn input_generator(input: &str) -> Vec<u64> {
+pub fn parse_input(input: &str) -> Vec<u64> {
     let mut v = input
         .lines()
         .map(str::parse::<u64>)
@@ -13,7 +10,6 @@ pub fn input_generator(input: &str) -> Vec<u64> {
     v
 }
 
-#[aoc(day01, part1, bruteforce)]
 pub fn solve_part1_bruteforce(input: &[u64]) -> u64 {
     for (c, i) in input.iter().enumerate() {
         for j in input[..c].iter() {
@@ -25,7 +21,6 @@ pub fn solve_part1_bruteforce(input: &[u64]) -> u64 {
     unreachable!()
 }
 
-#[aoc(day01, part2, bruteforce)]
 pub fn solve_part2_bruteforce(input: &[u64]) -> u64 {
     for i in input {
         for j in input {
@@ -39,24 +34,30 @@ pub fn solve_part2_bruteforce(input: &[u64]) -> u64 {
     unreachable!()
 }
 
+pub fn run(input: String) {
+    let parsed_input = parse_input(&input);
+    println!("Day 01, part 1: {}", solve_part1_bruteforce(&parsed_input));
+    println!("Day 01, part 2: {}", solve_part2_bruteforce(&parsed_input));
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn day01_part1_example() {
-        let input = "1721
+    const INPUT: &str = "1721
 979
 366
 299
 675
-1456
-";
-        println!("{}", input);
-        let parsed = input_generator(input);
-        println!("{:?}", parsed);
-        let p1 = solve_part1_bruteforce(&parsed);
-        println!("{:?}", p1);
-        assert_eq!(p1, 514579);
+1456";
+
+    #[test]
+    fn day01_part1() {
+        let parsed = parse_input(INPUT);
+        assert_eq!(solve_part1_bruteforce(&parsed), 514579);
+    }
+    #[test]
+    fn day01_part2() {
+        let parsed = parse_input(INPUT);
+        assert_eq!(solve_part2_bruteforce(&parsed), 241861950);
     }
 }

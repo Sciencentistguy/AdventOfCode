@@ -1,4 +1,3 @@
-use aoc_runner_derive::*;
 use nom::{
     bytes::complete::take_while,
     character::{
@@ -9,14 +8,14 @@ use nom::{
     IResult,
 };
 
-pub struct PasswordWithSpec {
+pub struct Password<'a> {
     begin: u64,
     end: u64,
     letter: u8,
-    string: String,
+    string: &'a str,
 }
 
-impl PasswordWithSpec {
+impl Password<'_> {
     fn valid_part1(&self) -> bool {
         let count = self.string.bytes().filter(|c| self.letter == *c).count() as u64;
         count >= self.begin && count <= self.end
@@ -28,7 +27,7 @@ impl PasswordWithSpec {
     }
 }
 
-fn p(input: &str) -> IResult<&str, PasswordWithSpec> {
+fn p(input: &str) -> IResult<&str, Password> {
     let mut parse_num = map_res(take_while(|c| is_digit(c as u8)), &str::parse::<u64>);
     let (input, num1) = parse_num(input)?;
     let (input, _) = char('-')(input)?;
@@ -40,43 +39,50 @@ fn p(input: &str) -> IResult<&str, PasswordWithSpec> {
 
     nom::IResult::Ok((
         "",
-        PasswordWithSpec {
+        Password {
             begin: num1,
             end: num2,
             letter: letter as u8,
-            string: input.to_owned(), // cargo-aoc is bad and doesn't support lifetimes in function
-                                      // signatures
+            string: input,
         },
     ))
 }
 
-#[aoc_generator(day02)]
-pub fn parse_input(input: &str) -> Vec<PasswordWithSpec> {
+fn parse_input(input: &str) -> Vec<Password> {
     input.lines().map(p).map(|x| x.unwrap().1).collect()
 }
 
-#[aoc(day02, part1)]
-pub fn solve_part1(input: &[PasswordWithSpec]) -> usize {
+fn solve_part1(input: &[Password<'_>]) -> usize {
     input.iter().filter(|x| x.valid_part1()).count()
 }
 
-#[aoc(day02, part2)]
-pub fn solve_part2(input: &[PasswordWithSpec]) -> usize {
+fn solve_part2(input: &[Password<'_>]) -> usize {
     input.iter().filter(|x| x.valid_part2()).count()
+}
+
+pub fn run(input: String) {
+    let parsed_input: Vec<_> = parse_input(&input);
+    println!("Day 02, part 1: {}", solve_part1(&parsed_input));
+    println!("Day 02, part 2: {}", solve_part2(&parsed_input));
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
-
-    #[test]
-    fn day02_part1_example() {
-        let input = "1-3 a: abcde
+    const INPUT: &str = "1-3 a: abcde
 1-3 b: cdefg
 2-9 c: ccccccccc
 ";
-        let parsed = parse_input(input);
-        let p1 = solve_part1(&parsed);
-        assert_eq!(p1, 2);
+
+    #[test]
+    fn day02_part1() {
+        let parsed = parse_input(INPUT);
+        assert_eq!(solve_part1(&parsed), 2);
+    }
+
+    #[test]
+    fn day02_part2() {
+        let parsed = parse_input(INPUT);
+        assert_eq!(solve_part2(&parsed), 1);
     }
 }
