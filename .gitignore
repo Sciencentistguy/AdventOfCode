@@ -13,3 +13,4 @@ build/
 *.cabal
 
 target/
+template.txt
