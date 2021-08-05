@@ -5,6 +5,7 @@ mod day04;
 mod day05;
 mod day06;
 mod day07;
+mod day08;
 
 fn open_input(day: u8) -> std::io::Result<String> {
     let mut path = std::env::current_dir()?;
@@ -23,5 +24,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     day05::run(open_input(5)?);
     day06::run(open_input(6)?);
     day07::run(open_input(7)?);
+    day08::run(open_input(8)?);
     Ok(())
 }
