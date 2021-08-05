@@ -74,12 +74,12 @@ mod tests {
 .#..#...#.#";
 
     #[test]
-    fn day01_part1_example() {
+    fn day03_part1() {
         let parsed = parse_input(INPUT).0;
         assert_eq!(solve_part1(&parsed).0, 7);
     }
     #[test]
-    fn day01_part2_example() {
+    fn day03_part2() {
         let parsed = parse_input(INPUT).0;
         assert_eq!(solve_part2(&parsed).0, 336);
     }
