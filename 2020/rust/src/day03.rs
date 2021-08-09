@@ -18,7 +18,7 @@ fn get_trees_slope(input: &[&str], x_step: usize, y_step: usize) -> usize {
     let mut count = 0;
     let y_limit = input.len();
     while y < y_limit {
-        if is_tree(&input, x, y) {
+        if is_tree(input, x, y) {
             count += 1;
         }
         x += x_step;

@@ -39,7 +39,7 @@ fn solve_part1(input: &[HashMap<&str, &str>]) -> (usize, Duration) {
     let start = Instant::now();
     let res = input
         .iter()
-        .filter(|passport| is_complete_passport(&passport))
+        .filter(|passport| is_complete_passport(passport))
         .count();
     let end = Instant::now();
     (res, end - start)
@@ -49,7 +49,7 @@ fn solve_part2(input: &[HashMap<&str, &str>]) -> (usize, Duration) {
     let start = Instant::now();
     let complete_passports = input
         .iter()
-        .filter(|passport| is_complete_passport(&passport));
+        .filter(|passport| is_complete_passport(passport));
     let mut count = 0;
     for passport in complete_passports {
         let mut valid = true;

@@ -1,7 +1,4 @@
-use std::{
-    ops::Add,
-    time::{Duration, Instant},
-};
+use std::time::{Duration, Instant};
 
 fn parse_input(input: &str) -> (Vec<usize>, Duration) {
     let start = Instant::now();
