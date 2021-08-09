@@ -86,7 +86,7 @@ pub fn run(input: String) {
     let (p1, time) = solve_part1(&parsed_input);
     println!("Day 10, part 1: {}. Took {}ns", p1, time.as_nanos());
     let (p2, time) = solve_part2(&parsed_input);
-    println!("Day 01, part 2: {}. Took {}ns", p2, time.as_nanos());
+    println!("Day 10, part 2: {}. Took {}ns", p2, time.as_nanos());
 }
 
 #[cfg(test)]

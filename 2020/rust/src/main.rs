@@ -1,3 +1,6 @@
+#![allow(dead_code)]
+#![allow(unused_variables)]
+
 mod day01;
 mod day02;
 mod day03;
@@ -8,6 +11,7 @@ mod day07;
 mod day08;
 mod day09;
 mod day10;
+mod day11;
 
 fn open_input(day: u8) -> std::io::Result<String> {
     let mut path = std::env::current_dir()?;
@@ -29,5 +33,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     day08::run(open_input(8)?);
     day09::run(open_input(9)?);
     day10::run(open_input(10)?);
+    day11::run(open_input(11)?);
     Ok(())
 }
