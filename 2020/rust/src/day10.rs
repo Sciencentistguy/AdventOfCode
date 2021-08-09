@@ -25,7 +25,8 @@ fn solve_part1(input: &[usize]) -> (usize, Duration) {
     let diffs: Vec<_> = (0..input.len() - 1)
         .map(|i| input[i + 1] - input[i])
         .collect();
-    let out = diffs.iter().filter(|&&d| d == 1).count() * diffs.iter().filter(|&&d| d == 3).count();
+    let out =
+        diffs.iter().filter(|&&d| d == 1).count() * diffs.iter().filter(|&&d| d == 3).count() + 1;
     let end = Instant::now();
     (out, end - start)
 }
