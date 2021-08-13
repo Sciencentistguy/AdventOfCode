@@ -20,6 +20,7 @@ bool day_14::computer_t::nextInstruction() {
     }
     return true;
 }
+
 void day_14::computer_t::reset() {
     instruction_pointer = input.begin();
     memory.clear();
@@ -62,7 +63,7 @@ day_14::day_14() :
             }
         }
         const auto end = std::chrono::high_resolution_clock::now();
-      fmt::print("Parsing input for day fourteen took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        fmt::print("Parsing input for day fourteen took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
         return input;
     }()},
     computer{input} {

@@ -1,4 +1,5 @@
 #include "day_01.h"
+
 #include <range/v3/all.hpp>
 
 day_01::day_01() {

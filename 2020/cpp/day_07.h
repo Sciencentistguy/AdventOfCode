@@ -3,7 +3,6 @@
 #include <chrono>
 #include <list>
 #include <numeric>
-#include <ranges>
 #include <set>
 #include <span>
 #include <stdexcept>
@@ -15,6 +14,7 @@
 
 #include <ctre.hpp>
 #include <fmt/core.h>
+#include <range/v3/all.hpp>
 #include <robin_hood.h>
 
 #include "common.h"
