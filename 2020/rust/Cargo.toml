@@ -9,7 +9,8 @@ edition = "2018"
 [dependencies]
 itertools = "0.10.1"
 nohash-hasher = "0.2.0"
-nom = "6.2.1"
+nom = "7.0.0-alpha2"
+regex = "1.5.4"
 
 [profile.release]
 debug = true
