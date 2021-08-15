@@ -15,36 +15,37 @@ fn parse_input(input: &str) -> (Vec<Vec<&str>>, Duration) {
 
 fn solve_part1(input: &[Vec<&str>]) -> (usize, Duration) {
     let start = Instant::now();
-    let mut count = 0;
-    for group in input {
-        let mut is_there: [bool; 26] = Default::default();
-        for person in group {
-            for response in person.as_bytes() {
-                is_there[(response - b'a') as usize] = true;
+    let count = input
+        .iter()
+        .map(|group| {
+            let mut is_there: [bool; 26] = Default::default();
+
+            for person in group {
+                for response in person.as_bytes() {
+                    *is_there.get_mut((response - b'a') as usize).unwrap() = true;
+                }
             }
-        }
-        count += is_there.iter().filter(|&&x| x).count();
-    }
+            is_there.iter().filter(|x| **x).count()
+        })
+        .sum();
     let end = Instant::now();
     (count, end - start)
 }
 
 fn solve_part2(input: &[Vec<&str>]) -> (usize, Duration) {
     let start = Instant::now();
-    let mut count = 0;
-    for group in input {
-        let mut responses: [usize; 26] = Default::default();
-        for member in group {
-            for response in member.as_bytes() {
-                responses[(response - b'a') as usize] += 1;
+    let count = input
+        .iter()
+        .map(|group| {
+            let mut responses: [usize; 26] = Default::default();
+            for member in group {
+                for response in member.as_bytes() {
+                    responses[(response - b'a') as usize] += 1;
+                }
             }
-        }
-        for i in responses {
-            if i == group.len() {
-                count += 1;
-            }
-        }
-    }
+            responses.iter().filter(|i| **i == group.len()).count()
+        })
+        .sum();
     let end = Instant::now();
     (count, end - start)
 }

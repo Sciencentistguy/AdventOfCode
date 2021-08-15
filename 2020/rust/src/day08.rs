@@ -22,22 +22,24 @@ impl Opcode {
 
 fn parse_input(input: &str) -> (Vec<Opcode>, Duration) {
     let start = Instant::now();
-    let mut instructions = Vec::new();
-    for line in input.lines() {
-        let instr = &line[..3];
-        let sign = line.as_bytes()[4] as char;
-        let num: i64 = line[5..].parse().unwrap();
-        let num = match sign {
-            '-' => -num,
-            _ => num,
-        };
-        instructions.push(match instr {
-            "acc" => Opcode::Acc(num),
-            "jmp" => Opcode::Jmp(num),
-            "nop" => Opcode::Nop(num),
-            _ => unreachable!("invalid input"),
+    let instructions = input
+        .lines()
+        .map(|line| {
+            let instr = &line[..3];
+            let sign = line.as_bytes()[4] as char;
+            let num: i64 = line[5..].parse().unwrap();
+            let num = match sign {
+                '-' => -num,
+                _ => num,
+            };
+            match instr {
+                "acc" => Opcode::Acc(num),
+                "jmp" => Opcode::Jmp(num),
+                "nop" => Opcode::Nop(num),
+                _ => unreachable!("invalid input"),
+            }
         })
-    }
+        .collect();
     let end = Instant::now();
     (instructions, end - start)
 }

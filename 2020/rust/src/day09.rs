@@ -1,3 +1,4 @@
+use std::cmp::Ordering;
 use std::time::{Duration, Instant};
 
 fn parse_input(input: &str) -> (Vec<usize>, Duration) {
@@ -11,15 +12,12 @@ fn parse_input(input: &str) -> (Vec<usize>, Duration) {
 }
 
 fn slice_contains_pair_that_sum_to(slice: &[usize], target: usize) -> bool {
-    for x in slice {
-        for y in slice {
+    slice.iter().any(|x| {
+        slice.iter().any(|y| {
             let sum = x + y;
-            if x != y && sum == target {
-                return true;
-            }
-        }
-    }
-    false
+            x != y && sum == target
+        })
+    })
 }
 
 fn solve_part1(input: &[usize]) -> (usize, Duration) {
@@ -42,14 +40,14 @@ fn find_bounds(sums: &[usize], target: usize) -> (usize, usize) {
         let x = sums[i];
         let y = sums[j];
         match (y - x).cmp(&target) {
-            std::cmp::Ordering::Greater => {
+            Ordering::Greater => {
                 i += 1;
                 continue;
             }
-            std::cmp::Ordering::Equal => {
+            Ordering::Equal => {
                 return (i + 1, j + 1);
             }
-            std::cmp::Ordering::Less => {
+            Ordering::Less => {
                 j += 1;
                 continue;
             }

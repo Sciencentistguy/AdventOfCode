@@ -31,7 +31,7 @@ fn solve_part1(input: &[(u8, u8)]) -> (usize, Duration) {
     let start = Instant::now();
     let res = input
         .iter()
-        .map(|(row, col)| (*row as usize * 8) + *col as usize)
+        .map(|&(row, col)| (row as usize * 8) + col as usize)
         .max()
         .unwrap();
     let end = Instant::now();

@@ -2,14 +2,14 @@ use std::time::{Duration, Instant};
 
 struct Timetable {
     depart_time: i64,
-    buses: Vec<Option<i64>>,
+    bus_ids: Vec<Option<i64>>,
 }
 
 fn parse_input(input: &str) -> (Timetable, Duration) {
     let start = Instant::now();
     let mut lines = input.lines();
     let depart_time = lines.next().and_then(|x| x.parse().ok()).unwrap();
-    let valid_buses = lines
+    let bus_ids = lines
         .next()
         .unwrap()
         .split(',')
@@ -17,7 +17,7 @@ fn parse_input(input: &str) -> (Timetable, Duration) {
         .collect();
     let out = Timetable {
         depart_time,
-        buses: valid_buses,
+        bus_ids,
     };
     let end = Instant::now();
     (out, end - start)
@@ -30,7 +30,7 @@ fn solve_part1(input: &Timetable) -> (i64, Duration) {
     let mut actual_time = 0;
 
     'outer: for time in input.depart_time.. {
-        for bus_id in input.buses.iter().flatten() {
+        for bus_id in input.bus_ids.iter().flatten() {
             if time % bus_id == 0 {
                 bus = *bus_id;
                 actual_time = time;
@@ -47,11 +47,11 @@ fn solve_part1(input: &Timetable) -> (i64, Duration) {
 
 fn solve_part2(input: &Timetable) -> (i64, Duration) {
     let start = Instant::now();
-    let mut wait_times = Vec::with_capacity(input.buses.len());
+    let mut wait_times = Vec::with_capacity(input.bus_ids.len());
     let mut minute: i64 = -1;
     let mut multiplier = 0;
 
-    for bus in input.buses.iter() {
+    for bus in input.bus_ids.iter() {
         minute += 1;
         if let Some(bus) = bus {
             if minute == 0 {

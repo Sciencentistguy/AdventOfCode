@@ -24,46 +24,52 @@ struct Parsed<'a> {
 
 impl Range {
     fn contains(&self, i: usize) -> bool {
-        let in1 = i >= self.low_1 && i <= self.high_1;
-        let in2 = i >= self.low_2 && i <= self.high_2;
-        in1 || in2
+        (i >= self.low_1 && i <= self.high_1) || (i >= self.low_2 && i <= self.high_2)
     }
 }
 
 fn parse_input(input: &str) -> (Parsed, Duration) {
     let start = Instant::now();
+
+    let group_0_regex = Regex::new(r"^([\w ]+): (\d+)-(\d+) or (\d+)-(\d+)").unwrap();
     let lines = input.lines().collect::<Vec<_>>();
     let groups = lines.split(|x| x.is_empty()).collect::<Vec<_>>();
-    let group_0_regex = Regex::new(r"^([\w ]+): (\d+)-(\d+) or (\d+)-(\d+)").unwrap();
-    let mut fields = HashMap::new();
 
-    for &line in groups[0] {
-        let capts = group_0_regex.captures(line).unwrap();
-        let name = capts.get(1).unwrap().as_str();
-        let rng = Range {
-            low_1: capts[2].parse().unwrap(),
-            high_1: capts[3].parse().unwrap(),
-            low_2: capts[4].parse().unwrap(),
-            high_2: capts[5].parse().unwrap(),
-        };
-
-        fields.insert(name, rng);
-    }
+    let fields = groups[0]
+        .iter()
+        .map(|&line| {
+            let capts = group_0_regex.captures(line).unwrap();
+            let name = capts.get(1).unwrap().as_str();
+            let rng = Range {
+                low_1: capts[2].parse().unwrap(),
+                high_1: capts[3].parse().unwrap(),
+                low_2: capts[4].parse().unwrap(),
+                high_2: capts[5].parse().unwrap(),
+            };
+            (name, rng)
+        })
+        .collect();
 
     let your_ticket = groups[1][1]
         .split(',')
         .map(|x| x.parse().unwrap())
         .collect();
 
-    let mut nearby_tickets = Vec::new();
+    let nearby_tickets = groups[2]
+        .iter()
+        .skip(1)
+        .map(|ticket| ticket.split(',').map(|num| num.parse().unwrap()).collect())
+        .collect();
+    //let mut nearby_tickets = Vec::new();
 
-    for i in 1..groups[2].len() {
-        let mut ticket = Vec::new();
-        for num in groups[2][i].split(',') {
-            ticket.push(num.parse().unwrap());
-        }
-        nearby_tickets.push(ticket);
-    }
+    //for i in 1..groups[2].len() {
+    //nearby_tickets.push(
+    //groups[2][i]
+    //.split(',')
+    //.map(|num| num.parse().unwrap())
+    //.collect(),
+    //);
+    //}
 
     let out = Parsed {
         fields,

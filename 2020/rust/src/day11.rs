@@ -13,7 +13,7 @@ enum Seat {
 fn parse_input(input: &str) -> (Vec<usize>, Duration) {
     let start = Instant::now();
     unsafe {
-        COL = input.lines().next().unwrap().len() as isize;
+        COL = input.find('\n').unwrap() as isize;
         ROW = input.lines().count() as isize;
     }
     let seat_indices = input
@@ -55,13 +55,13 @@ fn solve_part1(seat_indices: &[usize]) -> (usize, Duration) {
                 .iter()
                 .filter(|i| prev[**i] == Seat::Occupied)
                 .count();
-            let (cur_seat, prev_seat) = (&mut cur[*i], prev[*i]);
-            match prev_seat {
+            let cur_seat = &mut cur[*i];
+            match prev[*i] {
                 Seat::Occupied if occup >= 4 => *cur_seat = Seat::Empty,
                 Seat::Empty if occup == 0 => {
                     *cur_seat = Seat::Occupied;
                 }
-                _ => *cur_seat = prev_seat,
+                prev_seat => *cur_seat = prev_seat,
             };
         }
 
