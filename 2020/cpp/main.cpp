@@ -17,87 +17,87 @@
 #include "day_17.h"
 
 int main(int, char**) {
-    day_01 dayOne{};
+    day_01 dayOne {};
     dayOne.part_one();
     dayOne.part_two();
     fmt::print("\n");
 
-    day_02 dayTwo{};
+    day_02 dayTwo {};
     dayTwo.part_one();
     dayTwo.part_two();
     fmt::print("\n");
 
-    day_03 dayThree{};
+    day_03 dayThree {};
     dayThree.part_one();
     dayThree.part_two();
     fmt::print("\n");
 
-    day_04 dayFour{};
+    day_04 dayFour {};
     dayFour.part_one();
     dayFour.part_two();
     fmt::print("\n");
 
-    day_05 dayFive{};
+    day_05 dayFive {};
     dayFive.part_one();
     dayFive.part_two();
     fmt::print("\n");
 
-    day_06 daySix{};
+    day_06 daySix {};
     daySix.part_one();
     daySix.part_two();
     fmt::print("\n");
 
-    day_07 daySeven{};
+    day_07 daySeven {};
     daySeven.part_one();
     daySeven.part_two();
     fmt::print("\n");
 
-    day_08 dayEight{};
+    day_08 dayEight {};
     dayEight.part_one();
     dayEight.part_two();
     fmt::print("\n");
 
-    day_09 dayNine{};
+    day_09 dayNine {};
     dayNine.part_one();
     dayNine.part_two();
     fmt::print("\n");
 
-    day_10 dayTen{};
+    day_10 dayTen {};
     dayTen.part_one();
     dayTen.part_two();
     fmt::print("\n");
 
-    day_11 dayEleven{};
+    day_11 dayEleven {};
     dayEleven.part_one();
     dayEleven.part_two();
     fmt::print("\n");
 
-    day_12 dayTwelve{};
+    day_12 dayTwelve {};
     dayTwelve.part_one();
     dayTwelve.part_two();
     fmt::print("\n");
 
-    day_13 dayThirteen{};
+    day_13 dayThirteen {};
     dayThirteen.part_one();
     dayThirteen.part_two();
     fmt::print("\n");
 
-    day_14 dayFourteen{};
+    day_14 dayFourteen {};
     dayFourteen.part_one();
     dayFourteen.part_two();  // a lie
     fmt::print("\n");
 
-    day_15 dayFifteen{};
+    day_15 dayFifteen {};
     dayFifteen.part_one();
     dayFifteen.part_two();
     fmt::print("\n");
 
-    day_16 daySixteen{};
+    day_16 daySixteen {};
     daySixteen.part_one();
     daySixteen.part_two();
     fmt::print("\n");
 
-    day_17 daySeventeen{};
+    day_17 daySeventeen {};
     daySeventeen.part_one();
     daySeventeen.part_two();
     fmt::print("\n");

@@ -14,12 +14,12 @@ struct day_08 {
 
     class computer_t {
         std::vector<instruction_t> code;
-        int accumulator{0};
+        int accumulator {0};
         std::vector<instruction_t>::iterator instruction_pointer;
-        bool halted{false};
+        bool halted {false};
         std::vector<bool> seen;
 
-     public:
+      public:
         computer_t() = default;
         explicit computer_t(const std::vector<std::string>& input);
 

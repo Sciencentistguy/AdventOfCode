@@ -3,9 +3,9 @@
 #include <range/v3/all.hpp>
 
 day_17::day_17() {
-    auto input_strings{readFile("Inputs/day_17.txt")};
+    auto input_strings {readFile("Inputs/day_17.txt")};
     const auto start = std::chrono::high_resolution_clock::now();
-    glm::ivec3 max_xy3{};
+    glm::ivec3 max_xy3 {};
     for (const auto& line : input_strings) {
         max_xy3.x = 0;
         for (char c : line) {
@@ -16,7 +16,7 @@ day_17::day_17() {
     }
     expand_grid(grid3, max_xy3);
 
-    glm::ivec4 max_xy4{};
+    glm::ivec4 max_xy4 {};
     for (const auto& line : input_strings) {
         max_xy4.x = 0;
         for (char c : line) {
@@ -28,7 +28,10 @@ day_17::day_17() {
     expand_grid(grid4, max_xy4);
 
     const auto end = std::chrono::high_resolution_clock::now();
-    fmt::print("Parsing input for day seventeen took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Parsing input for day seventeen took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 template<typename T>
@@ -63,13 +66,13 @@ int day_17::get_active_adjacents(grid_t<T>& grid, T centre) {
             for (int x = centre.x - 1; x <= centre.x + 1; ++x) {
                 if constexpr (centre.length() == 4) {
                     for (int w = centre.w - 1; w <= centre.w + 1; ++w) {
-                        if (centre != glm::ivec4{x, y, z, w}) {
-                            count += grid[glm::ivec4{x, y, z, w}];
+                        if (centre != glm::ivec4 {x, y, z, w}) {
+                            count += grid[glm::ivec4 {x, y, z, w}];
                         }
                     }
                 } else {
-                    if (centre != glm::ivec3{x, y, z}) {
-                        count += grid[glm::ivec3{x, y, z}];
+                    if (centre != glm::ivec3 {x, y, z}) {
+                        count += grid[glm::ivec3 {x, y, z}];
                     }
                 }
             }
@@ -100,7 +103,10 @@ void day_17::part_one() {
     const auto result = ranges::count(grid3 | ranges::views::values, true);
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day seventeen part one is {}\n", result);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_17::part_two() {
@@ -111,5 +117,8 @@ void day_17::part_two() {
     const auto result = ranges::count(grid4 | ranges::views::values, true);
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day seventeen part two is {}\n", result);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }

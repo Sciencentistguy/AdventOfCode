@@ -14,15 +14,15 @@ struct day_14 {
         struct instruction_t {
             enum type_t { Mem, Mask };
             type_t type;
-            uint64_t value{0};
-            uint64_t address{0};
-            mask_t mask{};
+            uint64_t value {0};
+            uint64_t address {0};
+            mask_t mask {};
         };
 
-        robin_hood::unordered_map<uint64_t, uint64_t> memory{};
+        robin_hood::unordered_map<uint64_t, uint64_t> memory {};
         const std::vector<instruction_t>& input;
         std::vector<instruction_t>::const_iterator instruction_pointer;
-        mask_t mask{};
+        mask_t mask {};
 
         computer_t(const std::vector<instruction_t>& input);
         bool nextInstruction();

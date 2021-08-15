@@ -4,14 +4,14 @@
 
 struct day_04 {
     struct passport_t {
-        int birth_year{};
-        int issue_year{};
-        int expiration_year{};
-        std::string_view height_unit{};
-        int height{};
-        std::string_view hair_colour{};
-        std::string_view eye_colour{};
-        std::string_view passport_id{};
+        int birth_year {};
+        int issue_year {};
+        int expiration_year {};
+        std::string_view height_unit {};
+        int height {};
+        std::string_view hair_colour {};
+        std::string_view eye_colour {};
+        std::string_view passport_id {};
 
         [[nodiscard]] bool hasAllFields() const;
     };

@@ -1,6 +1,5 @@
 #include "day_08.h"
 
-
 bool day_08::instruction_t::operator==(const instruction_t& rhs) const {
     return instruction == rhs.instruction && operand == rhs.operand;
 }
@@ -84,11 +83,14 @@ bool day_08::computer_t::isHalted() const {
     return halted;
 }
 
-day_08::day_08() : input_strings{readFile("Inputs/day_08.txt")} {
+day_08::day_08() : input_strings {readFile("Inputs/day_08.txt")} {
     const auto start = std::chrono::high_resolution_clock::now();
     computer = computer_t(input_strings);
     const auto end = std::chrono::high_resolution_clock::now();
-    fmt::print("Parsing input for day eight took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Parsing input for day eight took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_08::part_one() {
@@ -97,8 +99,14 @@ void day_08::part_one() {
         computer.nextInstruction();
         if (computer.seenNextInstruction()) {
             const auto end = std::chrono::high_resolution_clock::now();
-            fmt::print("The answer for day eight part one is {}\n", computer.getValueInAccumulator());
-            fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+            fmt::print(
+                "The answer for day eight part one is {}\n",
+                computer.getValueInAccumulator());
+            fmt::print(
+                "Took {}ns\n",
+                std::chrono::duration_cast<std::chrono::nanoseconds>(
+                    end - start)
+                    .count());
             return;
         }
     }
@@ -106,7 +114,7 @@ void day_08::part_one() {
 
 void day_08::part_two() {
     const auto start = std::chrono::high_resolution_clock::now();
-    size_t i{0};
+    size_t i {0};
     while (true) {
         computer.reset();
 
@@ -125,8 +133,14 @@ void day_08::part_two() {
             computer.nextInstruction();
             if (computer.isHalted()) {
                 const auto end = std::chrono::high_resolution_clock::now();
-                fmt::print("The answer for day eight part one is {}\n", computer.getValueInAccumulator());
-                fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+                fmt::print(
+                    "The answer for day eight part one is {}\n",
+                    computer.getValueInAccumulator());
+                fmt::print(
+                    "Took {}ns\n",
+                    std::chrono::duration_cast<std::chrono::nanoseconds>(
+                        end - start)
+                        .count());
                 return;
             }
             if (computer.seenNextInstruction()) {

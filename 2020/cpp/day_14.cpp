@@ -1,7 +1,8 @@
 #include "day_14.h"
 
-day_14::computer_t::computer_t(const std::vector<instruction_t>& input) : input{input}, instruction_pointer{input.begin()} {
-}
+day_14::computer_t::computer_t(const std::vector<instruction_t>& input) :
+    input {input},
+    instruction_pointer {input.begin()} {}
 
 bool day_14::computer_t::nextInstruction() {
     switch (instruction_pointer->type) {
@@ -27,7 +28,7 @@ void day_14::computer_t::reset() {
 }
 
 day_14::day_14() :
-    input{[] {
+    input {[] {
         const auto input_strings = readFile("Inputs/day_14.txt");
         const auto start = std::chrono::high_resolution_clock::now();
         std::vector<computer_t::instruction_t> input;
@@ -63,25 +64,29 @@ day_14::day_14() :
             }
         }
         const auto end = std::chrono::high_resolution_clock::now();
-        fmt::print("Parsing input for day fourteen took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        fmt::print(
+            "Parsing input for day fourteen took {}ns\n",
+            std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+                .count());
         return input;
     }()},
-    computer{input} {
-}
+    computer {input} {}
 
 void day_14::part_one() {
     const auto start = std::chrono::high_resolution_clock::now();
     computer.reset();
     while (computer.nextInstruction()) {
     }
-    uint64_t count{0};
+    uint64_t count {0};
     for (auto [addr, val] : computer.memory) {
         count += val;
     }
     auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day fourteen part one is {}\n", count);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
-void day_14::part_two() const {
-}
+void day_14::part_two() const {}

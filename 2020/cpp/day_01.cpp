@@ -5,10 +5,16 @@
 day_01::day_01() {
     auto input_strings = readFile("Inputs/day_01.txt");
     auto start = std::chrono::high_resolution_clock::now();
-    auto range = input_strings | ranges::views::transform([](const std::string& string) { return static_cast<int>(fast_atol(string.c_str())); });
+    auto range =
+        input_strings | ranges::views::transform([](const std::string& string) {
+            return static_cast<int>(fast_atol(string.c_str()));
+        });
     input = std::vector(range.begin(), range.end());
     auto end = std::chrono::high_resolution_clock::now();
-    fmt::print("Parsing input for day one took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Parsing input for day one took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_01::part_one() const {
@@ -19,7 +25,11 @@ void day_01::part_one() const {
                 const auto result = input[i] * input[j];
                 const auto end = std::chrono::high_resolution_clock::now();
                 fmt::print("The answer for day one part one is {}\n", result);
-                fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+                fmt::print(
+                    "Took {}ns\n",
+                    std::chrono::duration_cast<std::chrono::nanoseconds>(
+                        end - start)
+                        .count());
                 return;
             }
         }
@@ -34,8 +44,14 @@ void day_01::part_two() const {
                 if (input[i] + input[j] + input[k] == target) {
                     const auto result = input[i] * input[j] * input[k];
                     const auto end = std::chrono::high_resolution_clock::now();
-                    fmt::print("The answer for day one part two is {}\n", result);
-                    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+                    fmt::print(
+                        "The answer for day one part two is {}\n",
+                        result);
+                    fmt::print(
+                        "Took {}ns\n",
+                        std::chrono::duration_cast<std::chrono::nanoseconds>(
+                            end - start)
+                            .count());
                     return;
                 }
             }

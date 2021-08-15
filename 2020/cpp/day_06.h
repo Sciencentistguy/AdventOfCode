@@ -4,7 +4,7 @@
 
 struct day_06 {
     struct group_t {
-        int number_of_responses{};
+        int number_of_responses {};
         std::string responses;
 
         [[nodiscard]] int anyYes() const;

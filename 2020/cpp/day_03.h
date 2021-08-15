@@ -9,7 +9,8 @@ struct day_03 {
 
     inline bool isTree(unsigned int x, unsigned int y) const;
 
-    inline unsigned int getTreesSlope(unsigned int x_step, unsigned int y_step) const;
+    inline unsigned int
+    getTreesSlope(unsigned int x_step, unsigned int y_step) const;
 
     void part_one() const;
 

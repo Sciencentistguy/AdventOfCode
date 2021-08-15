@@ -12,14 +12,17 @@ bool day_16::range_t::contains(uint64_t i) const {
     return in1 || in2;
 }
 
-day_16::day_16() : input_strings{readFile("Inputs/day_16.txt")} {
+day_16::day_16() : input_strings {readFile("Inputs/day_16.txt")} {
     const auto start = std::chrono::high_resolution_clock::now();
     auto sections = split(input_strings, std::string(""));
 
     for (const auto& line : sections[0]) {
         auto m = ctre::match<R"(^([\w ]+): (\d+)-(\d+) or (\d+)-(\d+))">(line);
-        fields[m.get<1>().to_view()] = {fast_atol(m.get<2>().to_view().data()), fast_atol(m.get<3>().to_view().data()),
-                                        fast_atol(m.get<4>().to_view().data()), fast_atol(m.get<5>().to_view().data())};
+        fields[m.get<1>().to_view()] = {
+            fast_atol(m.get<2>().to_view().data()),
+            fast_atol(m.get<3>().to_view().data()),
+            fast_atol(m.get<4>().to_view().data()),
+            fast_atol(m.get<5>().to_view().data())};
     }
 
     for (const auto num : split(sections[1][1], ',')) {
@@ -33,16 +36,22 @@ day_16::day_16() : input_strings{readFile("Inputs/day_16.txt")} {
         }
     }
     const auto end = std::chrono::high_resolution_clock::now();
-    fmt::print("Parsing input for day sixteen took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Parsing input for day sixteen took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 bool day_16::isTicketValid(const std::vector<int>& ticket) const {
-    auto rng = ranges::views::filter(ticket, [this](auto field) { return isValueValidAnywhere(field); });
-    return static_cast<uint64_t>(std::distance(std::begin(rng), std::end(rng))) == ticket.size();
+    auto rng = ranges::views::filter(ticket, [this](auto field) {
+        return isValueValidAnywhere(field);
+    });
+    return static_cast<uint64_t>(std::distance(std::begin(rng), std::end(rng)))
+        == ticket.size();
 }
 
 bool day_16::isValueValidAnywhere(int field) const {
-    size_t failed{0};
+    size_t failed {0};
     for (const auto [field_name, field_range] : fields) {
         if (!field_range.contains(field)) {
             ++failed;
@@ -53,7 +62,7 @@ bool day_16::isValueValidAnywhere(int field) const {
 
 void day_16::part_one() const {
     const auto start = std::chrono::high_resolution_clock::now();
-    auto count{0};
+    auto count {0};
     for (const auto& ticket : nearby_tickets) {
         for (auto field : ticket) {
             if (!isValueValidAnywhere(field)) {
@@ -63,13 +72,20 @@ void day_16::part_one() const {
     }
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day sixteen part one is {}\n", count);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_16::part_two() const {
     const auto start = std::chrono::high_resolution_clock::now();
-    const auto valid_tickets =
-        ranges::views::filter(nearby_tickets, [this](const std::vector<int>& ticket) { return isTicketValid(ticket); }) | ranges::to_vector;
+    const auto valid_tickets = ranges::views::filter(
+                                   nearby_tickets,
+                                   [this](const std::vector<int>& ticket) {
+                                       return isTicketValid(ticket);
+                                   })
+        | ranges::to_vector;
     std::vector<std::pair<std::vector<int>, std::string_view>> candidates;
     for (const auto [field_name, field_range] : fields) {
         std::vector<int> possible;
@@ -88,7 +104,9 @@ void day_16::part_two() const {
         candidates.emplace_back(possible, field_name);
     }
 
-    ranges::sort(candidates, [](auto a, auto b) { return a.first.size() < b.first.size(); });
+    ranges::sort(candidates, [](auto a, auto b) {
+        return a.first.size() < b.first.size();
+    });
 
     robin_hood::unordered_map<std::string_view, int> field_and_index;
     std::vector<bool> taken(your_ticket.size(), false);
@@ -100,7 +118,7 @@ void day_16::part_two() const {
             }
         }
     }
-    int64_t result{1};
+    int64_t result {1};
     for (const auto [field, index] : field_and_index) {
         if (field.find("departure") != std::string_view::npos) {
             result *= your_ticket[index];
@@ -109,5 +127,8 @@ void day_16::part_two() const {
 
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day sixteen part two is {}\n", result);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }

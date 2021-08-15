@@ -2,17 +2,20 @@
 
 #include <range/v3/all.hpp>
 
-day_07::rule_t::rule_t(std::string_view colour, int number) : colour{colour}, number{number} {
-}
+day_07::rule_t::rule_t(std::string_view colour, int number) :
+    colour {colour},
+    number {number} {}
 
-day_07::day_07() : input_strings{readFile("Inputs/day_07.txt")} {
+day_07::day_07() : input_strings {readFile("Inputs/day_07.txt")} {
     const auto start = std::chrono::high_resolution_clock::now();
     for (const auto& line : input_strings) {
         auto words = split(line, ' ');
         const std::string_view colour = {&line.front(), &(words[1].back()) + 1};
         rules[colour] = {};
         for (auto i = words.begin() + 4; i < words.end(); i += 4) {
-            rules[colour].emplace_back(std::string_view(&i[1].front(), &(i[2].back()) + 1), fast_atol(i[0].data(), 1));
+            rules[colour].emplace_back(
+                std::string_view(&i[1].front(), &(i[2].back()) + 1),
+                fast_atol(i[0].data(), 1));
         }
         bags.emplace_back(colour);
     }
@@ -20,12 +23,15 @@ day_07::day_07() : input_strings{readFile("Inputs/day_07.txt")} {
     bags.erase(std::unique(bags.begin(), bags.end()), bags.end());
 
     const auto end = std::chrono::high_resolution_clock::now();
-    fmt::print("Parsing input for day six took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Parsing input for day six took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_07::part_one() {
     const auto start = std::chrono::high_resolution_clock::now();
-    int count{0};
+    int count {0};
     for (auto colour : bags) {
         if (colour == "shiny gold")
             continue;
@@ -46,12 +52,15 @@ void day_07::part_one() {
     }
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day seven part one is {}\n", count);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_07::part_two() {
     const auto start = std::chrono::high_resolution_clock::now();
-    int count{0};
+    int count {0};
     std::vector<rule_t> candidates;
     candidates.push_back({"shiny gold", 1});
     while (!candidates.empty()) {
@@ -66,5 +75,8 @@ void day_07::part_two() {
     --count;  // we need to remove the original shiny gold bag
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day seven part two is {}\n", count);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }

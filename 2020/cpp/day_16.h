@@ -23,7 +23,6 @@ struct day_16 {
     [[nodiscard]] bool isTicketValid(const std::vector<int>& ticket) const;
     [[nodiscard]] bool isValueValidAnywhere(int field) const;
 
-
     void part_one() const;
     void part_two() const;
 };

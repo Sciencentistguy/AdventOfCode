@@ -1,28 +1,33 @@
 #include "day_12.h"
 
-day_12::instruction_t::instruction_t(char opcode, ulong operand) : opcode{opcode}, operand{operand} {
-}
+day_12::instruction_t::instruction_t(char opcode, ulong operand) :
+    opcode {opcode},
+    operand {operand} {}
 
 day_12::day_12() :
-    input{[] {
+    input {[] {
         const auto input_strings = readFile("Inputs/day_12.txt");
         const auto start = std::chrono::high_resolution_clock::now();
         std::vector<instruction_t> input;
         input.reserve(input_strings.size());
         for (const auto& line : input_strings) {
-            input.emplace_back(*line.data(), static_cast<int>(fast_atol(line.data() + 1)));
+            input.emplace_back(
+                *line.data(),
+                static_cast<int>(fast_atol(line.data() + 1)));
         }
         const auto end = std::chrono::high_resolution_clock::now();
-        fmt::print("Parsing input for day twelve took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        fmt::print(
+            "Parsing input for day twelve took {}ns\n",
+            std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+                .count());
         return input;
-    }()} {
-}
+    }()} {}
 
 void day_12::part_one() const {
     const auto start = std::chrono::high_resolution_clock::now();
-    int x{0};
-    int y{0};
-    int direction{1};
+    int x {0};
+    int y {0};
+    int direction {1};
     for (auto [opcode, operand] : input) {
         switch (opcode) {
             case 'R':
@@ -65,15 +70,18 @@ void day_12::part_one() const {
     auto end = std::chrono::high_resolution_clock::now();
 
     fmt::print("The answer for day twelve part one is {}\n", distance);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_12::part_two() const {
     const auto start = std::chrono::high_resolution_clock::now();
-    int x{0};
-    int y{0};
-    int waypoint_x{10};
-    int waypoint_y{1};
+    int x {0};
+    int y {0};
+    int waypoint_x {10};
+    int waypoint_y {1};
     for (auto [opcode, operand] : input) {
         switch (opcode) {
             case 'N':
@@ -113,5 +121,8 @@ void day_12::part_two() const {
 
     auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day twelve part two is {}\n", distance);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }

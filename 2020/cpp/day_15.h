@@ -9,5 +9,4 @@ struct day_15 {
 
     void part_one() const;
     void part_two() const;
-
 };

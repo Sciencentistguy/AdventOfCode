@@ -8,41 +8,58 @@ int day_05::boarding_pass_t::getSeatID() const {
     return (row * 8) + col;
 }
 
-day_05::boarding_pass_t::boarding_pass_t(int row, int col) : row{row}, col{col} {
-}
+day_05::boarding_pass_t::boarding_pass_t(int row, int col) :
+    row {row},
+    col {col} {}
 
-day_05::day_05() : input_strings{readFile("Inputs/day_05.txt")} {
+day_05::day_05() : input_strings {readFile("Inputs/day_05.txt")} {
     const auto start = std::chrono::high_resolution_clock::now();
     for (auto& str : input_strings) {
         ranges::replace_if(
-            str, [](char c) { return c == 'F' || c == 'L'; }, '0');
+            str,
+            [](char c) { return c == 'F' || c == 'L'; },
+            '0');
         ranges::replace_if(
-            str, [](char c) { return c == 'B' || c == 'R'; }, '1');
+            str,
+            [](char c) { return c == 'B' || c == 'R'; },
+            '1');
 
-        auto firstSeven = std::string_view(std::begin(str), std::begin(str) + 7);
+        auto firstSeven =
+            std::string_view(std::begin(str), std::begin(str) + 7);
         auto lastThree = std::string_view(std::end(str) - 3, std::end(str));
         const auto row = fast_atol(firstSeven.data(), 7, 2);
         const auto col = fast_atol(lastThree.data(), 3, 2);
         input.emplace_back(row, col);
     }
     const auto end = std::chrono::high_resolution_clock::now();
-    fmt::print("Parsing input for day five took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Parsing input for day five took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_05::part_one() const {
     const auto start = std::chrono::high_resolution_clock::now();
-    int max{0};
+    int max {0};
     for (const auto& boarding_pass : input) {
         max = std::max(max, boarding_pass.getSeatID());
     }
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day five part one is {}\n", max);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_05::part_two() const {
     const auto start = std::chrono::high_resolution_clock::now();
-    auto ids = ranges::views::transform(input, [](const boarding_pass_t& boarding_pass) { return boarding_pass.getSeatID(); }) | ranges::to_vector;
+    auto ids = ranges::views::transform(
+                   input,
+                   [](const boarding_pass_t& boarding_pass) {
+                       return boarding_pass.getSeatID();
+                   })
+        | ranges::to_vector;
 
     ranges::sort(ids);
 
@@ -51,10 +68,15 @@ void day_05::part_two() const {
 
     for (int i = lowest; i <= highest; ++i) {
         if (!ranges::binary_search(ids, i))
-            if (ranges::binary_search(ids, i - 1) && ranges::binary_search(ids, i + 1)) {
+            if (ranges::binary_search(ids, i - 1)
+                && ranges::binary_search(ids, i + 1)) {
                 const auto end = std::chrono::high_resolution_clock::now();
                 fmt::print("The answer for day five part two is {}\n", i);
-                fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+                fmt::print(
+                    "Took {}ns\n",
+                    std::chrono::duration_cast<std::chrono::nanoseconds>(
+                        end - start)
+                        .count());
                 return;
             }
     }

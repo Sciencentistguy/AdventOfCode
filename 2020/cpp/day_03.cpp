@@ -2,7 +2,7 @@
 
 #include <ctre.hpp>
 
-day_03::day_03() : input{readFile("Inputs/day_03.txt")} {
+day_03::day_03() : input {readFile("Inputs/day_03.txt")} {
     fmt::print("Parsing input for day three took 0ns\n");
 }
 
@@ -11,10 +11,11 @@ bool day_03::isTree(unsigned int x, unsigned int y) const {
     return input[y][x % width] == '#';
 }
 
-unsigned int day_03::getTreesSlope(unsigned int x_step, unsigned int y_step) const {
-    unsigned int x{0};
-    unsigned int y{0};
-    unsigned int count{0};
+unsigned int
+day_03::getTreesSlope(unsigned int x_step, unsigned int y_step) const {
+    unsigned int x {0};
+    unsigned int y {0};
+    unsigned int count {0};
     const auto y_limit = input.size();
     while (y < y_limit) {
         count += isTree(x, y);
@@ -29,7 +30,10 @@ void day_03::part_one() const {
     const auto count = getTreesSlope(3u, 1u);
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day three part one is {}\n", count);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_03::part_two() const {
@@ -41,5 +45,8 @@ void day_03::part_two() const {
     count *= getTreesSlope(1u, 2u);
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day three part two is {}\n", count);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }

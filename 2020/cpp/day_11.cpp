@@ -3,7 +3,7 @@
 #include <fmt/color.h>
 
 day_11::day_11() {
-    auto input_strings{readFile("Inputs/day_11.txt")};
+    auto input_strings {readFile("Inputs/day_11.txt")};
     const auto start = std::chrono::high_resolution_clock::now();
     y_max = input_strings.size();
     x_max = input_strings[0].size();
@@ -23,10 +23,14 @@ day_11::day_11() {
         }
     }
     const auto end = std::chrono::high_resolution_clock::now();
-    fmt::print("Parsing input for day eleven took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Parsing input for day eleven took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
-void day_11::printMap(const day_11::Seats& seats, int x_target, int y_target) const {  // prints the map, with the coordinates specified highlighted in red
+void day_11::printMap(const day_11::Seats& seats, int x_target, int y_target)
+    const {  // prints the map, with the coordinates specified highlighted in red
     fmt::print("Map:\n");
     for (int y = 0; y < y_max; ++y) {
         for (int x = 0; x < x_max; ++x) {
@@ -90,7 +94,10 @@ int day_11::getAdjacents(const day_11::Seats& seats, int x, int y) const {
     return ret;
 }
 
-int day_11::firstAdjacentSeats(const day_11::Seats& seats, const int x, const int y) const {
+int day_11::firstAdjacentSeats(
+    const day_11::Seats& seats,
+    const int x,
+    const int y) const {
 #define CURRENT_SEAT seats[i * x_max + j]
     int count = 0;
     //        int i = y;
@@ -187,7 +194,7 @@ int day_11::firstAdjacentSeats(const day_11::Seats& seats, const int x, const in
 
 void day_11::part_one() const {
     const auto start = std::chrono::high_resolution_clock::now();
-    bool change{true};
+    bool change {true};
     auto seats = input;
     std::vector<int> adjacents(input.size(), 0);
 
@@ -215,20 +222,23 @@ void day_11::part_one() const {
             }
         }
     }
-    int count{0};
+    int count {0};
     for (const auto& seat : seats) {
         count += seat == State::Occupied;
     }
 
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day eleven part one is {}\n", count);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_11::part_two() const {
     const auto start = std::chrono::high_resolution_clock::now();
 
-    bool change{true};
+    bool change {true};
     auto seats = input;
     std::vector<int> adjacents(input.size(), 0);
 
@@ -259,12 +269,15 @@ void day_11::part_two() const {
             }
         }
     }
-    int count{0};
+    int count {0};
     for (const auto& seat : seats) {
         count += seat == State::Occupied;
     }
 
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day eleven part two is {}\n", count);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }

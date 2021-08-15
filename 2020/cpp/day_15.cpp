@@ -3,8 +3,8 @@
 #include <robin_hood.h>
 
 day_15::day_15() :
-    input{[] {
-        auto input_strings{readFile("Inputs/day_15.txt")};
+    input {[] {
+        auto input_strings {readFile("Inputs/day_15.txt")};
         const auto start = std::chrono::high_resolution_clock::now();
         std::vector<int> input;
         input.reserve(input_strings.size());
@@ -14,17 +14,22 @@ day_15::day_15() :
             }
         }
         const auto end = std::chrono::high_resolution_clock::now();
-        fmt::print("Parsing input for day fifteen took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+        fmt::print(
+            "Parsing input for day fifteen took {}ns\n",
+            std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+                .count());
         return input;
-    }()} {
-}
+    }()} {}
 
 void day_15::part_one() const {
     const auto start = std::chrono::high_resolution_clock::now();
     const auto result = do_task(2020);
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day fifteen part one is {}\n", result);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_15::part_two() const {
@@ -32,12 +37,15 @@ void day_15::part_two() const {
     const auto result = do_task(30000000);
     const auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day fifteen part two is {}\n", result);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 int day_15::do_task(int limit) const {
     auto vec = input;
-    robin_hood::unordered_map<int, int> previous_occurence{};
+    robin_hood::unordered_map<int, int> previous_occurence {};
     for (size_t i = 0; i < vec.size(); ++i) {
         previous_occurence[vec[i]] = i;
     }

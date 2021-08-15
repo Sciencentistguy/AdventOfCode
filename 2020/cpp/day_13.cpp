@@ -15,7 +15,10 @@ day_13::day_13() {
         all_bus_routes.push_back(val);
     }
     const auto end = std::chrono::high_resolution_clock::now();
-    fmt::print("Parsing input for day thirteen took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Parsing input for day thirteen took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }
 
 void day_13::part_one() const {
@@ -26,8 +29,14 @@ void day_13::part_one() const {
             if (i % route == 0) {
                 const auto wait_time = i - starting_time;
                 auto end = std::chrono::high_resolution_clock::now();
-                fmt::print("The answer for day thirteen part one is {}\n", route * wait_time);
-                fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+                fmt::print(
+                    "The answer for day thirteen part one is {}\n",
+                    route * wait_time);
+                fmt::print(
+                    "Took {}ns\n",
+                    std::chrono::duration_cast<std::chrono::nanoseconds>(
+                        end - start)
+                        .count());
                 return;
             }
         }
@@ -38,8 +47,8 @@ void day_13::part_one() const {
 void day_13::part_two() const {
     const auto start = std::chrono::high_resolution_clock::now();
     std::vector<std::pair<uint64_t, uint64_t>> wait_times;
-    int minute{-1};
-    uint64_t multiplier{0};
+    int minute {-1};
+    uint64_t multiplier {0};
     for (const auto& bus : all_bus_routes) {
         ++minute;
         if (bus == -1) {
@@ -61,5 +70,8 @@ void day_13::part_two() const {
     }
     auto end = std::chrono::high_resolution_clock::now();
     fmt::print("The answer for day thirteen part one is {}\n", timestamp);
-    fmt::print("Took {}ns\n", std::chrono::duration_cast<std::chrono::nanoseconds>(end - start).count());
+    fmt::print(
+        "Took {}ns\n",
+        std::chrono::duration_cast<std::chrono::nanoseconds>(end - start)
+            .count());
 }

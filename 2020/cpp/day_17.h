@@ -10,7 +10,9 @@
 
 struct day_17 {
     template<typename T>
-    requires(requires { std::hash<T>(); }) using grid_t = std::unordered_map<T, bool>;  // for some reason robin_hood::unordered_map doesn't have a merge()
+    requires(requires { std::hash<T>(); }) using grid_t = std::unordered_map<
+        T,
+        bool>;  // for some reason robin_hood::unordered_map doesn't have a merge()
 
     grid_t<glm::ivec3> grid3;
     grid_t<glm::ivec4> grid4;
