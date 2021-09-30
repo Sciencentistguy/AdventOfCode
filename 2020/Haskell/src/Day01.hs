@@ -3,7 +3,7 @@ module Day01
   )
 where
 
-import Control.Monad
+import Control.Monad (guard)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 

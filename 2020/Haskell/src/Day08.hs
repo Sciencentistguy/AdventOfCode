@@ -90,11 +90,12 @@ day08 = do
   case traverse (parse pInstr "input") input_strs of
     Left e -> putStrLn $ errorBundlePretty e
     Right instructions' -> do
-      let instructions = V.fromList instructions'
-          trackedInstructions = V.zip instructions (V.replicate (V.length instructions) False)
-      -- part 1
-      putStr "The answer for day eight part one is "
-      print =<< part1 =<< V.thaw trackedInstructions
-      -- part 2
-      putStr "The answer for day eight part two is "
-      print =<< part2 trackedInstructions
+      do
+        let instructions = V.fromList instructions'
+            trackedInstructions = V.zip instructions (V.replicate (V.length instructions) False)
+        -- part 1
+        putStr "The answer for day eight part one is "
+        print =<< part1 =<< V.thaw trackedInstructions
+        -- part 2
+        putStr "The answer for day eight part two is "
+        print =<< part2 trackedInstructions

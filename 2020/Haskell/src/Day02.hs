@@ -34,7 +34,7 @@ pPassword = do
 
 isValidPartOne :: PasswordSpec -> Bool
 isValidPartOne PasswordSpec {..} =
-  let count = countCharString psString psChar
+  let count = countOccurences psString psChar
    in count >= psFirstNum && count <= psSecondNum
 
 isValidPartTwo :: PasswordSpec -> Bool

@@ -10,8 +10,7 @@ import qualified Data.Text.IO as Text
 
 day06 :: IO ()
 day06 = do
-  input_Text <- Text.lines <$> Text.readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_06.txt"
-  let input_strs = map Text.unpack input_Text
+  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_06.txt"
   let grouped_entries = groupEntries input_strs
   -- part 1
   putStr "The answer for day six part one is "

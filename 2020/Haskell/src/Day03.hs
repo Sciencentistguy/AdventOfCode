@@ -33,6 +33,6 @@ day03 = do
   print $ getTreesSlope input_strs 3 1
   -- part 2
   putStr "The answer for day three part two is "
-  print $ product do
-    (x, y) <- [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
-    return $ getTreesSlope input_strs x y
+  print $
+    product $
+      uncurry (getTreesSlope input_strs) <$> [(1, 1), (3, 1), (5, 1), (7, 1), (1, 2)]
