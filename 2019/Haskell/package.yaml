@@ -6,7 +6,6 @@ author:              "Jamie Quigley"
 maintainer:          "jamie@quigley.xyz"
 copyright:           "2021 Jamie Quigley"
 
-extra-source-files:
 
 # Metadata used when publishing your package
 # synopsis:            Short description of your package
@@ -24,7 +23,7 @@ library:
   source-dirs: src
 
 executables:
-  aoc-exe:
+  AdventOfCode-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -33,10 +32,10 @@ executables:
     - -with-rtsopts=-N
     - -Wall
     dependencies:
-    - aoc
+    - AdventOfCode
 
 tests:
-  aoc-test:
+  AdventOfCode-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -45,4 +44,4 @@ tests:
     - -with-rtsopts=-N
     - -Wall
     dependencies:
-    - aoc
+    - AdventOfCode

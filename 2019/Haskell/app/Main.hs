@@ -1,4 +1,7 @@
 module Main where
 
+import Day01
+
 main :: IO ()
-main = print "hello world"
+main = do
+  day01
