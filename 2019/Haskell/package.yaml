@@ -18,6 +18,16 @@ description:         Please see the README on GitHub at <https://github.com/Scie
 
 dependencies:
 - base >= 4.7 && < 5
+- vector
+- primitive
+- transformers
+- mtl
+- safe
+
+default-extensions:
+- BlockArguments
+- LambdaCase
+- RecordWildCards
 
 library:
   source-dirs: src
