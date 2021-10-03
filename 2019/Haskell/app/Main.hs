@@ -1,5 +1,6 @@
 module Main where
 
+import Common (unwrap)
 import Day01
 import Day02
 

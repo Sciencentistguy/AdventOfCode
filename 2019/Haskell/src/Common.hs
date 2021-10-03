@@ -1,4 +1,8 @@
-module Common where
+module Common
+  ( module Common,
+    module Control.Monad.Except,
+  )
+where
 
 import Control.Monad.Except
 
@@ -15,3 +19,7 @@ unwrap res =
   runExceptT res >>= \case
     Right a -> return a
     Left err -> error $ show err
+
+liftMaybe :: MonadError e m => e -> Maybe a -> m a
+liftMaybe _ (Just a) = return a
+liftMaybe err Nothing = throwError err
