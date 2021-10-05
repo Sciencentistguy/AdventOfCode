@@ -1,7 +1,7 @@
 name:                AdventOfCode
 version:             0.1.0.0
 github:              "Sciencentistguy/AdventOfCode"
-license:             MPL2
+license:             MPL-2
 author:              "Jamie Quigley"
 maintainer:          "jamie@quigley.xyz"
 copyright:           "2021 Jamie Quigley"
@@ -23,6 +23,10 @@ dependencies:
 - transformers
 - mtl
 - safe
+- megaparsec
+- parser-combinators
+- containers
+- bifunctors
 
 default-extensions:
 - BlockArguments

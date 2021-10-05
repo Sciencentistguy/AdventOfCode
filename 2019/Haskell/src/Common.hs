@@ -5,8 +5,14 @@ module Common
 where
 
 import Control.Monad.Except
+import Data.Void (Void)
+import Text.Megaparsec
+import Text.Megaparsec.Char
+import qualified Text.Megaparsec.Char.Lexer as L
 
 type IOResult e = ExceptT e IO
+
+type Parser = Parsec Void String
 
 split :: Eq a => a -> [a] -> [[a]]
 split _ [] = []
@@ -23,3 +29,23 @@ unwrap res =
 liftMaybe :: MonadError e m => e -> Maybe a -> m a
 liftMaybe _ (Just a) = return a
 liftMaybe err Nothing = throwError err
+
+spaces :: Parser ()
+spaces =
+  L.space
+    space1
+    (return ())
+    (return ())
+
+symbol :: String -> Parser String
+symbol = L.symbol spaces
+
+parseUnwrap ::
+  (VisualStream s, TraversableStream s, ShowErrorComponent e) =>
+  Either (ParseErrorBundle s e) p ->
+  p
+parseUnwrap (Right a) = a
+parseUnwrap (Left peb) = error $ errorBundlePretty peb
+
+count :: (a -> Bool) -> [a] -> Int
+count p xs = length $ filter p xs
