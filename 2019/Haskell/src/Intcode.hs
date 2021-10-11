@@ -5,8 +5,6 @@ import Control.Monad.Primitive
 import Data.IORef
 import qualified Data.Vector.Unboxed as V
 import qualified Data.Vector.Unboxed.Mutable as VM
-import Debug.Trace (trace)
-import Safe (headMay)
 
 type Memory = V.MVector (PrimState IO) Int
 
