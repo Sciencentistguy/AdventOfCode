@@ -1,12 +1,12 @@
 module Day02 where
 
 import Common
-import Control.Monad
 import Data.List
 import Data.Maybe
 import qualified Data.Vector.Unboxed as V
 import Intcode
 
+substituteInput :: (a, a) -> [a] -> [a]
 substituteInput (a, b) (c : _ : _ : xs) = c : a : b : xs
 substituteInput _ _ = undefined
 
@@ -17,7 +17,7 @@ day02 = do
   -- part 1
   let part1_input = substituteInput (12, 2) input_instrs
   computer <- initIntcode part1_input
-  finalMem <- unwrap $ runIntcode computer
+  FinishedComputer finalMem _ <- unwrap $ runIntcode computer
   putStr "The solution to day 02 part 01 is "
   print $ finalMem V.! 0
 
@@ -33,8 +33,8 @@ day02 = do
       (initIntcode >=> (unwrap . runIntcode))
       part2_inputs
 
-  let firsts = V.head <$> memories
-      x = fromJust $ elemIndex 19690720 firsts
+  let firsts = V.head . memory' <$> memories
+  let x = fromJust $ elemIndex 19690720 firsts
       (noun, verb) = nouns_verbs !! x
 
   putStr "The solution to day 02 part 02 is "

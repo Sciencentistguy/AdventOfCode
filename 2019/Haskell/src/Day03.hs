@@ -1,10 +1,8 @@
 module Day03 where
 
 import Common
-import Data.Bifunctor
 import Data.Foldable
-import Data.IntMap.Lazy (intersection)
-import Data.List (foldl1', intersect)
+import Data.List
 import qualified Data.Map as M
 import Text.Megaparsec
 import Text.Megaparsec.Char
@@ -46,6 +44,7 @@ generatePath =
   let f (Instruction d n) = replicate n $ toUnitVector d
    in scanl1 addCoord . concatMap f
 
+manhattan :: Num a => (a, a) -> a
 manhattan (a, b) = abs a + abs b
 
 addCoord :: Coord -> Coord -> Coord
@@ -59,7 +58,7 @@ toUnitVector Day03.Right = (1, 0)
 
 day03 :: IO ()
 day03 = do
-  wires@[wire1, wire2] <- do
+  wires <- do
     rawInput <- readFile "/home/jamie/Git/AdventOfCode/2019/Inputs/day_03.txt"
     let f = parse pInstruction "input"
     return $ parseUnwrap . traverse f . split ',' <$> lines rawInput
