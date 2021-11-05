@@ -12,3 +12,5 @@ add_executable(AdventOfCode2020 main.cpp day_01.cpp day_02.cpp day_03.cpp day_04
 
 target_link_libraries(AdventOfCode2020 fmt::fmt)
 target_link_libraries(AdventOfCode2020 ctre::ctre)
+
+install(TARGETS AdventOfCode2020 DESTINATION bin)
