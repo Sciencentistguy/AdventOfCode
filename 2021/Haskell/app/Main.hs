@@ -4,6 +4,7 @@ module Main where
 
 import AOC
 import qualified Data.Text as Text
+import Day01
 import System.Environment (lookupEnv)
 
 main :: IO ()
@@ -14,4 +15,4 @@ main = do
               Nothing -> error "`TOKEN` environment variable must be set"
               Just a -> return a
           )
-  putStrLn "Do some challenges!"
+  runAoC token day01
