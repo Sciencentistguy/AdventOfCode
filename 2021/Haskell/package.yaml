@@ -23,6 +23,7 @@ dependencies:
 - text
 - req
 - unix
+- directory
 - megaparsec
 - split
 - algebraic-graphs
