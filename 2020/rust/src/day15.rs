@@ -25,11 +25,10 @@ fn solve_common(input: &[usize], limit: usize) -> usize {
         if let Some(x) = previous_occurence.get(&num) {
             let new_num = index - x - 1;
             input.push(new_num);
-            previous_occurence.insert(num, index - 1);
         } else {
             input.push(0);
-            previous_occurence.insert(num, index - 1);
         }
+        previous_occurence.insert(num, index - 1);
         index += 1;
     }
     input[limit - 1]

@@ -18,29 +18,32 @@ struct Mask_ {
 
 fn parse_input(input: &str) -> (Vec<Instruction>, Duration) {
     let start = Instant::now();
-    let out = input.lines().map(|line| {
-        if line.starts_with("mask =") {
-            let mut ones = 0;
-            let mut zeros = 0;
-            let mut xs = Vec::new();
-            let s = line[7..].as_bytes();
-            for (i, c) in s.iter().rev().enumerate() {
-                match c {
-                    b'0' => zeros |= 1 << i,
-                    b'1' => ones |= 1 << i,
-                    b'X' => xs.push(i),
-                    _ => unreachable!("invalid input"),
+    let out = input
+        .lines()
+        .map(|line| {
+            if line.starts_with("mask =") {
+                let mut ones = 0;
+                let mut zeros = 0;
+                let mut xs = Vec::new();
+                let s = line[7..].as_bytes();
+                for (i, c) in s.iter().rev().enumerate() {
+                    match c {
+                        b'0' => zeros |= 1 << i,
+                        b'1' => ones |= 1 << i,
+                        b'X' => xs.push(i),
+                        _ => unreachable!("invalid input"),
+                    }
                 }
+                Instruction::Mask(Mask_ { ones, zeros, xs })
+            } else if line.starts_with("mem[") {
+                let location = line[4..line.find(']').unwrap()].parse().unwrap();
+                let value = line[line.find('=').unwrap() + 2..].parse().unwrap();
+                Instruction::Mem { location, value }
+            } else {
+                unreachable!("invalid input");
             }
-            Instruction::Mask(Mask_ { ones, zeros, xs })
-        } else if line.starts_with("mem[") {
-            let location = line[4..line.find(']').unwrap()].parse().unwrap();
-            let value = line[line.find('=').unwrap() + 2..].parse().unwrap();
-            Instruction::Mem { location, value }
-        } else {
-            unreachable!("invalid input");
-        }
-    }).collect();
+        })
+        .collect();
     /*
      *let mut out = Vec::with_capacity(input.lines().count());
      *for line in input.lines() {

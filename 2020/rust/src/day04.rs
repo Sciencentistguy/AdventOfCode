@@ -2,8 +2,6 @@ use std::collections::HashMap;
 use std::time::Duration;
 use std::time::Instant;
 
-use itertools::Itertools;
-
 fn parse_input(input: &str) -> (Vec<HashMap<&str, &str>>, Duration) {
     let start = Instant::now();
     let grouped_entries = input
