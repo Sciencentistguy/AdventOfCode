@@ -8,3 +8,10 @@ edition = "2021"
 [dependencies]
 emergence = "0.3.0"
 eyre = "0.6.5"
+
+[features]
+
+[profile.release]
+codegen-units = 1
+lto = true
+panic = "abort"
