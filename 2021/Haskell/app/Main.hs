@@ -5,6 +5,7 @@ module Main where
 import AOC
 import qualified Data.Text as Text
 import Day01
+import Day02
 import System.Environment (lookupEnv)
 
 main :: IO ()
@@ -16,3 +17,4 @@ main = do
               Just a -> return a
           )
   runAoC token day01
+  runAoC token day02
