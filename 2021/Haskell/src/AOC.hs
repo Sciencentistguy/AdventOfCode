@@ -18,26 +18,26 @@ import Text.Printf (printf)
 
 newtype Token = Token Text
 
-data Runner a = Runner
+data Runner a out = Runner
   { day :: Int,
     year :: Int,
     parser :: Text -> Maybe a,
-    part1 :: a -> Maybe Integer,
-    part2 :: a -> Maybe Integer
+    part1 :: a -> Maybe out,
+    part2 :: a -> Maybe out
   }
 
-runAoC :: Token -> Runner a -> IO ()
+runAoC :: Show out => Token -> Runner a out -> IO ()
 runAoC (Token token) runner@Runner {..} = do
   cacheInit year
   input <- fetchCached runner token
   let parsed = fromJust $ parser input
   let part1Solution = fromJust $ part1 parsed
-  putStrLn $ printf "The solution to %d day %02d (part 1) is: %d" year day part1Solution
+  putStrLn $ printf "The solution to %d day %02d (part 1) is: %s" year day (show part1Solution)
   let part2Solution = fromJust $ part2 parsed
-  putStrLn $ printf "The solution to %d day %02d (part 2) is: %d" year day part2Solution
+  putStrLn $ printf "The solution to %d day %02d (part 2) is: %s" year day (show part2Solution)
   putStrLn ""
 
-fetchCached :: Runner a -> Text -> IO Text
+fetchCached :: Runner a out -> Text -> IO Text
 fetchCached runner@Runner {day, year} token = do
   cacheEntry <- cacheRead year day
   case cacheEntry of
@@ -47,7 +47,7 @@ fetchCached runner@Runner {day, year} token = do
       cacheWrite year day fetched
       return fetched
 
-fetchRaw :: Runner a -> Text -> IO Text
+fetchRaw :: Runner a out -> Text -> IO Text
 fetchRaw Runner {day, year} token = do
   let cookie = printf "session=%s" token :: String
   let url =

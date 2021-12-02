@@ -17,14 +17,14 @@ greaters [] = []
 greaters [_] = []
 greaters (a : cs@(b : _)) = greaters cs ++ [if a < b then Increase else Decrease]
 
-day01 :: Runner Parsed
+day01 :: Runner Parsed Int
 day01 =
   let year = 2021
       day = 1
       parser :: Text -> Maybe Parsed
       parser input = traverse (readMay . Text.unpack) (Text.lines input)
-      part1 = return . toInteger . length . filter (== Increase) . greaters
+      part1 = return . length . filter (== Increase) . greaters
       part2 input =
         let sum3s = sum <$> windows 3 input
-         in return $ toInteger $ length $ filter (== Increase) $ greaters sum3s
+         in return $ length $ filter (== Increase) $ greaters sum3s
    in Runner {..}
