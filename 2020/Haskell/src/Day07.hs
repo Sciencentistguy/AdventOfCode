@@ -1,5 +1,8 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Day07 (day07) where
 
+import AOC
 import Algebra.Graph.HigherKinded.Class (Graph)
 import qualified Algebra.Graph.Labelled as GL
 import qualified Algebra.Graph.ToGraph as G
@@ -9,9 +12,14 @@ import Data.Function ((&))
 import Data.List (dropWhileEnd)
 import Data.Monoid (Sum (Sum))
 import qualified Data.Set as S
+import Data.Text (Text)
+import qualified Data.Text as Text
+import qualified Data.Text.IO as Text
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
+
+type Parsed = GL.Graph (Sum Int) Bag
 
 type Bag = String
 
@@ -70,16 +78,12 @@ mustContain bag graph = go bag - 1
              in label * go v
        in 1 + foldr (\v acc -> acc + contrib v) 0 next
 
-day07 :: IO ()
-day07 = do
-  input <- readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_07.txt"
-  rules <- case parse pRules "input" input of
-    Left e -> putStrLn (errorBundlePretty e) >> error "parsing failed"
-    Right x -> return x
-  let graph = buildGraph rules
-  -- part 1
-  putStr "The answer for day seven part one is "
-  print $ S.size $ canContain "shiny gold" graph
-  -- part 2
-  putStr "The answer for day seven part two is "
-  print $ mustContain "shiny gold" graph
+day07 =
+  let year = 2020
+      day = 7
+      parser input = case parse pRules "input" input of
+        Left e -> error $ errorBundlePretty e
+        Right x -> return $ buildGraph x
+      part1 = return . S.size . canContain "shiny gold"
+      part2 = return . mustContain "shiny gold"
+   in Runner {..}

@@ -3,26 +3,28 @@ module Day01
   )
 where
 
+import AOC
 import Control.Monad (guard)
+import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
+import Safe (readMay)
 
-day01 :: IO ()
-day01 = do
-  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_01.txt"
-  let input_ints = read <$> input_strs :: [Int]
-  -- part 1
-  putStr "The answer for day one part one is "
-  print $ head do
-    x <- input_ints
-    y <- input_ints
-    guard $ x + y == 2020
-    return $ x * y
-  -- part 2
-  putStr "The answer for day one part two is "
-  print $ head do
-    x <- input_ints
-    y <- input_ints
-    z <- input_ints
-    guard $ x + y + z == 2020
-    return $ x * y * z
+type Parsed = [Int]
+
+day01 =
+  let day = 01
+      year = 2020
+      parser = traverse (readMay . Text.unpack) . Text.lines
+      part1 input = return $ head do
+        x <- input
+        y <- input
+        guard $ x + y == 2020
+        return $ x * y
+      part2 input = return $ head do
+        x <- input
+        y <- input
+        z <- input
+        guard $ x + y + z == 2020
+        return $ x * y * z
+   in Runner {..}

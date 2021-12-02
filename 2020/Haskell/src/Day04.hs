@@ -3,12 +3,16 @@ module Day04
   )
 where
 
+import AOC
 import Common
 import Data.Char
 import Data.List
+import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 import Text.Read (readMaybe)
+
+type Parsed = [String]
 
 requiredFields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
 
@@ -41,15 +45,15 @@ isValidPassport (key : value : _) = case key of
     valueAsInt = read value
 isValidPassport _ = unreachable ""
 
-day04 :: IO ()
-day04 = do
-  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_04.txt"
-  -- part 1
-  let grouped_entries = groupEntries input_strs
-      valid_passports = filter (\x -> all (`isInfixOf` x) requiredFields) grouped_entries
-  putStr "The answer for day four part one is "
-  print $ length valid_passports
-  -- part 2
-  let splitted = fmap (split ':') . split ' ' <$> valid_passports
-  putStr "The answer for day four part two is "
-  print $ length $ filter (all isValidPassport) splitted
+day04 =
+  let day = 4
+      year = 2020
+      parser s =
+        let input_strs = lines $ Text.unpack s
+            grouped_entries = groupEntries input_strs
+         in return $ filter (\x -> all (`isInfixOf` x) requiredFields) grouped_entries
+      part1 = return . length
+      part2 p =
+        let splitted = fmap (split ':') . split ' ' <$> p
+         in return $ length $ filter (all isValidPassport) splitted
+   in Runner {..}

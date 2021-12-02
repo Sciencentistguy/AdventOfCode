@@ -3,6 +3,7 @@ module Common where
 import Data.Foldable (Foldable (toList))
 import Data.List (tails, transpose)
 import Data.Maybe
+import Data.Text (Text)
 import Data.Void (Void)
 import Text.Megaparsec
 import Text.Megaparsec.Char (space1)
@@ -34,7 +35,7 @@ unreachable msg =
         then ' ' : msg
         else ""
 
-type Parser = Parsec Void String
+type Parser = Parsec Void Text
 
 spaces :: Parser ()
 spaces =
@@ -43,7 +44,7 @@ spaces =
     (return ())
     (return ())
 
-symbol :: String -> Parser String
+--symbol :: String -> Parser Text
 symbol = L.symbol spaces
 
 windows :: Int -> [a] -> [[a]]

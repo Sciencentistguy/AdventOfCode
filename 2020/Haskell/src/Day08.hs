@@ -1,16 +1,22 @@
+{-# LANGUAGE OverloadedStrings #-}
+
 module Day08
   ( day08,
   )
 where
 
+import AOC
 import Common
 import Control.Comonad.Store (ComonadStore (peeks))
 import Control.Lens (holesOf)
 import Control.Lens.Tuple (_1)
 import Control.Monad.Primitive (PrimMonad (PrimState), RealWorld)
-import Control.Monad.ST (RealWorld)
+import Control.Monad.ST
 import Data.Functor (($>))
 import Data.Maybe (catMaybes)
+import Data.Text (Text)
+import qualified Data.Text as Text
+import qualified Data.Text.IO as Text
 import qualified Data.Vector as V
 import qualified Data.Vector.Mutable as MV
 import Text.Megaparsec
@@ -40,7 +46,7 @@ runInstr pc acc instr = case instr of
   Acc op -> (pc + 1, acc + op)
   Jmp op -> (pc + op, acc)
 
-part1 :: MV.MVector RealWorld (Instruction, Bool) -> IO Int
+part1 :: PrimMonad m => MV.MVector (PrimState m) (Instruction, Bool) -> m Int
 part1 trackedInstructions = go 0 0
   where
     go pc acc = do
@@ -52,7 +58,7 @@ part1 trackedInstructions = go 0 0
           let (pc', acc') = runInstr pc acc instr
           go pc' acc'
 
-part2 :: V.Vector (Instruction, Bool) -> IO Int
+part2 :: PrimMonad m => V.Vector (Instruction, Bool) -> m Int
 part2 instructions = do
   let programs = peeks flipInstr <$> holesOf (traverse . _1) instructions
   programs <- traverse V.thaw programs
@@ -84,18 +90,16 @@ flipInstr instr = case instr of
   Acc a -> Acc a
   Jmp a -> Nop a
 
-day08 :: IO ()
-day08 = do
-  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_08.txt"
-  case traverse (parse pInstr "input") input_strs of
-    Left e -> putStrLn $ errorBundlePretty e
-    Right instructions' -> do
-      do
-        let instructions = V.fromList instructions'
-            trackedInstructions = V.zip instructions (V.replicate (V.length instructions) False)
-        -- part 1
-        putStr "The answer for day eight part one is "
-        print =<< part1 =<< V.thaw trackedInstructions
-        -- part 2
-        putStr "The answer for day eight part two is "
-        print =<< part2 trackedInstructions
+type Parsed = V.Vector (Instruction, Bool)
+
+day08 =
+  let year = 2020
+      day = 8
+      parser input =
+        let instructions = V.fromList case traverse (parse pInstr "input") $ Text.lines input of
+              Right instructions -> instructions
+              Left e -> error $ errorBundlePretty e
+         in return $ V.zip instructions (V.replicate (V.length instructions) False)
+      part1 x = return $ runST $ V.thaw x >>= Day08.part1
+      part2 x = return $ runST $ Day08.part2 x
+   in Runner {..}

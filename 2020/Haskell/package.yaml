@@ -22,6 +22,7 @@ description:         Please see the README on GitHub at <https://github.com/Scie
 dependencies:
 - base >= 4.7 && < 5
 - text
+- req
 - unix
 - megaparsec
 - split
@@ -35,11 +36,14 @@ dependencies:
 - extra
 - unordered-containers
 - hashable
+- directory
 
 default-extensions:
   BlockArguments
   GADTs
   FlexibleContexts
+  RecordWildCards
+  NamedFieldPuns
 
 library:
   source-dirs: src

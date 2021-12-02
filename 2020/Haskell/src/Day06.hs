@@ -3,18 +3,19 @@ module Day06
   )
 where
 
+import AOC
 import Common
 import Data.List
+import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
 
-day06 :: IO ()
-day06 = do
-  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_06.txt"
-  let grouped_entries = groupEntries input_strs
-  -- part 1
-  putStr "The answer for day six part one is "
-  print $ sum $ map (length . nub . filter (/= ' ')) grouped_entries
-  -- part 2
-  putStr "The answer for day six part two is "
-  print $ sum $ map (length . foldl' intersect ['a' .. 'z'] . split ' ') grouped_entries
+type Parsed = [String]
+
+day06 =
+  let year = 2020
+      day = 6
+      parser = return . groupEntries . lines . Text.unpack
+      part1 = return . sum . map (length . nub . filter (/= ' '))
+      part2 = return . sum . map (length . foldl' intersect ['a' .. 'z'] . split ' ')
+   in Runner {..}

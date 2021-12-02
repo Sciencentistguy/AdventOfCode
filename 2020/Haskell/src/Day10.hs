@@ -2,6 +2,7 @@
 
 module Day10 (day10) where
 
+import AOC
 import Data.Foldable (Foldable (fold), find, toList)
 import qualified Data.HashMap.Lazy as HM
 import Data.Hashable
@@ -9,6 +10,10 @@ import qualified Data.IntMap.Lazy as IM
 import qualified Data.IntSet as IS
 import Data.List
 import Data.Maybe (fromJust)
+import Data.Text (Text)
+import qualified Data.Text as Text
+import qualified Data.Text.IO as Text
+import Safe (readMay)
 
 freqs :: (Ord a, Hashable a) => [a] -> HM.HashMap a Int
 freqs = HM.fromListWith (+) . fmap (,1) . toList
@@ -44,15 +49,33 @@ toChain xs = xsset `IS.union` IS.fromList [0, top + 3]
 
 findOrZero = IM.findWithDefault 0
 
-day10 :: IO ()
-day10 = do
-  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_10.txt"
-  let input_ints = read <$> input_strs :: [Int]
-  -- part 1
-  putStr "The answer for day ten part one is "
-  print $ fromJust $ part1 input_ints
-  -- part 2
-  putStr "The answer for day ten part two is "
-  let chain = toChain input_ints
-  let paths = pathsToGoal chain
-  print $ fromJust $ paths IM.!? 0
+type Parsed = [Int]
+
+day10 =
+  let year = 2020
+      day = 10
+      parser :: Text -> Maybe Parsed
+      parser = traverse readMay . lines . Text.unpack
+      --part1 :: Parsed -> Maybe Integer
+      part1 = fmap toInteger . Day10.part1
+      --part2 :: Parsed -> Maybe Integer
+      part2 x =
+        let chain = toChain x
+            paths = pathsToGoal chain
+         in paths IM.!? 0
+   in Runner {..}
+
+{-
+ -day10 :: IO ()
+ -day10 = do
+ -  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_10.txt"
+ -  let input_ints = read <$> input_strs :: [Int]
+ -  -- part 1
+ -  putStr "The answer for day ten part one is "
+ -  print $ fromJust $ part1 input_ints
+ -  -- part 2
+ -  putStr "The answer for day ten part two is "
+ -  let chain = toChain input_ints
+ -  let paths = pathsToGoal chain
+ -  print $ fromJust $ paths IM.!? 0
+ -}

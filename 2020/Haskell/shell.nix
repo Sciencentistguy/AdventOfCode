@@ -9,13 +9,19 @@ let
 in
 { pkgs ? import (fetchTarball nixpkgs_url) { }
 , zdotdir ? import (builtins.fetchurl { url = zdotdir_url; }) { inherit pkgs; }
-}: pkgs.mkShell {
+}: pkgs.mkShell rec {
+
   name = "aoc-2020-hs";
+
   nativeBuildInputs = [
     pkgs.stack
     pkgs.ormolu
     pkgs.haskell-language-server
     pkgs.hlint
+  ];
+
+  buildInputs = [
+    pkgs.zlib
   ];
 
   shellHooks = shell_hooks;
@@ -24,4 +30,8 @@ in
   shellHook = zdotdir {
     zshenv = shell_hooks;
   };
+
+  # Needed for stack to find zlib
+  LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
+  TOKEN = (builtins.readFile ./tokenfile);
 }

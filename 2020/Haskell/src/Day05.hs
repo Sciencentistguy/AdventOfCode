@@ -3,13 +3,17 @@ module Day05
   )
 where
 
+import AOC
 import Common
 import Control.Monad
 import Data.Bifunctor
 import Data.Char (digitToInt)
 import qualified Data.List as List
+import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
+
+type Parsed = [Int]
 
 data BoardingPass = BoardingPass
   { row :: Int,
@@ -31,25 +35,29 @@ neighboursInList ls x = elem (x -1) ls && elem (x + 1) ls
 getId :: BoardingPass -> Int
 getId (BoardingPass row col) = col + (row * 8)
 
-day05 :: IO ()
-day05 = do
-  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_05.txt"
-  let ids =
-        getId
-          <$> unzipWith
-            BoardingPass
-            (bimap readBspToInt readBspToInt . splitAt 7 <$> input_strs)
-  -- part 1
-  putStr "The answer for day five part one is "
-  print $ maximum ids
-  -- part 2
-  putStr "The answer for day five part two is "
-  print $
-    head $
-      filter
-        ( liftM2
-            (&&)
-            (neighboursInList ids)
-            (`notElem` ids)
-        )
-        [minimum ids .. maximum ids]
+day05 =
+  let year = 2020
+      day = 5
+      parser input =
+        return $
+          getId
+            <$> unzipWith
+              BoardingPass
+              ( bimap
+                  readBspToInt
+                  readBspToInt
+                  . splitAt 7
+                  <$> lines (Text.unpack input)
+              )
+      part1 = return . maximum
+      part2 ids =
+        return $
+          head $
+            filter
+              ( liftM2
+                  (&&)
+                  (neighboursInList ids)
+                  (`notElem` ids)
+              )
+              [minimum ids .. maximum ids]
+   in Runner {..}

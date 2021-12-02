@@ -2,13 +2,18 @@
 
 module Day09 (day09) where
 
+import AOC
 import Common (windows)
 import Control.Monad (guard)
 import Control.Monad.Extra (anyM)
 import Data.List (scanl')
 import Data.Maybe (fromJust)
+import Data.Text (Text)
+import qualified Data.Text as Text
+import qualified Data.Text.IO as Text
 import qualified Data.Vector as V
 import Data.Vector.Fusion.Bundle (inplace)
+import Safe (readMay)
 
 isSumOfTwo :: (Eq a, Num a) => a -> [a] -> Bool
 isSumOfTwo v xs =
@@ -40,14 +45,15 @@ part2 input target = do
             EQ -> pure (i, j)
             GT -> go (i + 1) j
 
-day09 :: IO ()
-day09 = do
-  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_09.txt"
-  let input_ints = read <$> input_strs :: [Int]
-  -- part 1
-  putStr "The answer for day nine part one is "
-  let p1 = part1 input_ints
-  print p1
-  -- part 2
-  putStr "The answer for day nine part two is "
-  print $ fromJust $ part2 input_ints p1
+type Parsed = [Int]
+
+day09 =
+  let year = 2020
+      day = 9
+      parser :: Text -> Maybe Parsed
+      parser = traverse readMay . lines . Text.unpack
+      part1 = return . Day09.part1
+      part2 x =
+        let p1 = Day09.part1 x
+         in Day09.part2 x p1
+   in Runner {..}

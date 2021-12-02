@@ -1,17 +1,20 @@
-{-# LANGUAGE RecordWildCards #-}
-
 module Day02
   ( day02,
   )
 where
 
+import AOC
 import Common
 import Data.Char
+import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.IO as Text
+import Data.Void (Void)
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
+
+type Parsed = [PasswordSpec]
 
 data PasswordSpec = PasswordSpec
   { psFirstNum :: Int,
@@ -20,7 +23,8 @@ data PasswordSpec = PasswordSpec
     psString :: String
   }
 
-pPassword :: Parser PasswordSpec
+-- TODO: common
+pPassword :: Parsec Void Text PasswordSpec
 pPassword = do
   psFirstNum <- L.decimal
   _ <- char '-'
@@ -43,15 +47,12 @@ isValidPartTwo PasswordSpec {..} =
       pos2 = psString !! (psSecondNum - 1)
    in (pos1 == psChar) /= (pos2 == psChar)
 
-day02 :: IO ()
-day02 = do
-  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_02.txt"
-  let parsed = case traverse (parse pPassword "input") input_strs of
-        Right x -> x
+day02 =
+  let day = 02
+      year = 2020
+      parser input = case traverse (parse pPassword "input") (Text.lines input) of
+        Right x -> return x
         Left e -> error $ errorBundlePretty e
-  -- part 1
-  putStr "The answer for day two part one is "
-  print $ length $ filter isValidPartOne parsed
-  -- part 2
-  putStr "The answer for day two part two is "
-  print $ length $ filter isValidPartTwo parsed
+      part1 = return . length . filter isValidPartOne
+      part2 = return . length . filter isValidPartTwo
+   in Runner {..}
