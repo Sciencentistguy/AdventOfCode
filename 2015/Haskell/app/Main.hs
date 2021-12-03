@@ -6,6 +6,7 @@ import AOC
 import qualified Data.Text as Text
 import Day01
 import Day02
+import Day03
 import System.Environment (lookupEnv)
 
 main :: IO ()
@@ -18,3 +19,4 @@ main = do
           )
   runAoC token day01
   runAoC token day02
+  runAoC token day03
