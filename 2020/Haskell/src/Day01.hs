@@ -12,6 +12,7 @@ import Safe (readMay)
 
 type Parsed = [Int]
 
+day01 :: Runner Parsed Int
 day01 =
   let day = 01
       year = 2020

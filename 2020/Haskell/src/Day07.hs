@@ -78,6 +78,7 @@ mustContain bag graph = go bag - 1
              in label * go v
        in 1 + foldr (\v acc -> acc + contrib v) 0 next
 
+day07 :: Runner Parsed Int
 day07 =
   let year = 2020
       day = 7

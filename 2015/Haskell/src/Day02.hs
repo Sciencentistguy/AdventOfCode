@@ -1,6 +1,5 @@
 module Day02
   ( day02,
-    ribbonNeeded,
   )
 where
 
@@ -24,10 +23,12 @@ pInput = do
   h <- L.decimal
   return (l, w, h)
 
+paperNeeded :: (Ord a, Num a) => (a, a, a) -> a
 paperNeeded (l, w, h) =
   let areas = sort [l * w, w * h, h * l]
    in sum $ zipWith (*) [3, 2, 2] areas
 
+ribbonNeeded :: (Num a, Ord a) => (a, a, a) -> a
 ribbonNeeded (l, w, h) =
   let perimeters = sort [2 * (l + w), 2 * (w + h), 2 * (h + l)]
       volume = l * w * h

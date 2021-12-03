@@ -13,9 +13,9 @@ type Parsed = [Int]
 
 data Direction = Increase | Decrease deriving (Show, Eq)
 
-greaters [] = []
-greaters [_] = []
+greaters :: Ord a => [a] -> [Direction]
 greaters (a : cs@(b : _)) = greaters cs ++ [if a < b then Increase else Decrease]
+greaters _ = []
 
 day01 :: Runner Parsed Int
 day01 =

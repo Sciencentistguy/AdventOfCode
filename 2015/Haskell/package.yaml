@@ -43,6 +43,11 @@ default-extensions:
 
 library:
   source-dirs: src
+  ghc-options: 
+  - -Wall
+  - -Wno-name-shadowing
+  - -Wno-type-defaults
+  - -Wno-unused-imports
 
 executables:
   AdventOfCode2015-exe:

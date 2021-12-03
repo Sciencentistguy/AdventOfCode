@@ -11,11 +11,13 @@ type Parsed = [Direction]
 
 data Direction = Up | Down deriving (Show, Eq)
 
+pDirection :: Char -> Maybe Direction
 pDirection c = case c of
   '(' -> return Up
   ')' -> return Down
   _ -> Nothing
 
+sumFloors :: Num p => [Direction] -> p
 sumFloors floors = go floors 0
   where
     go (x : xs) acc = case x of

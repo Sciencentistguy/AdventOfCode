@@ -6,7 +6,9 @@ import AOC
 import Data.Foldable (Foldable (fold), find, toList)
 import qualified Data.HashMap.Lazy as HM
 import Data.Hashable
+import Data.IntMap.Lazy (IntMap)
 import qualified Data.IntMap.Lazy as IM
+import Data.IntSet (IntSet)
 import qualified Data.IntSet as IS
 import Data.List
 import Data.Maybe (fromJust)
@@ -22,6 +24,7 @@ diffs :: Num a => [a] -> [a]
 diffs xs@(_ : ys) = zipWith (-) ys xs
 diffs [] = undefined
 
+part1 :: (Num k, Ord k, Hashable k) => [k] -> Maybe Int
 part1 xs = do
   let xs' = 0 : xs ++ [maximum xs + 3]
       stepFrequencies = freqs $ diffs $ sort xs'
@@ -29,7 +32,7 @@ part1 xs = do
   threes <- stepFrequencies HM.!? 3
   return $ ones * threes
 
-pathsToGoal :: IS.IntSet -> IM.IntMap Integer
+pathsToGoal :: IntSet -> IntMap Integer
 pathsToGoal is = res
   where
     res = flip IM.fromSet is $ \i ->
@@ -42,15 +45,18 @@ pathsToGoal is = res
             ]
     goal = IS.findMax is
 
+toChain :: [IS.Key] -> IntSet
 toChain xs = xsset `IS.union` IS.fromList [0, top + 3]
   where
     xsset = IS.fromList xs
     top = IS.findMax xsset
 
+findOrZero :: IS.Key -> IntMap Integer -> Integer
 findOrZero = IM.findWithDefault 0
 
 type Parsed = [Int]
 
+day10 :: Runner Parsed Integer
 day10 =
   let year = 2020
       day = 10
@@ -64,18 +70,3 @@ day10 =
             paths = pathsToGoal chain
          in paths IM.!? 0
    in Runner {..}
-
-{-
- -day10 :: IO ()
- -day10 = do
- -  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2020/Inputs/day_10.txt"
- -  let input_ints = read <$> input_strs :: [Int]
- -  -- part 1
- -  putStr "The answer for day ten part one is "
- -  print $ fromJust $ part1 input_ints
- -  -- part 2
- -  putStr "The answer for day ten part two is "
- -  let chain = toChain input_ints
- -  let paths = pathsToGoal chain
- -  print $ fromJust $ paths IM.!? 0
- -}

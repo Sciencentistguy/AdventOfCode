@@ -29,6 +29,7 @@ getTreesSlope worldMap xStep yStep = go worldMap xStep yStep 0 0 0
       where
         nextStep = go worldMap xStep yStep (x + xStep) (y + yStep)
 
+day03 :: Runner Parsed Int
 day03 =
   let day = 3
       year = 2020

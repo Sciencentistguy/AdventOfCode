@@ -12,6 +12,7 @@ import qualified Data.Text.IO as Text
 
 type Parsed = [String]
 
+day06 :: Runner Parsed Int
 day06 =
   let year = 2020
       day = 6

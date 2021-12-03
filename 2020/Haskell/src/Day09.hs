@@ -24,11 +24,13 @@ isSumOfTwo v xs =
     let sum = x + y
     return $ v == sum
 
+part1 :: (Eq a, Num a) => [a] -> a
 part1 input =
   let x = windows 26 input
       y = (\xs -> (last xs, isSumOfTwo (last xs) (init xs))) <$> x
    in fst $ head $ dropWhile snd y
 
+part2 :: (Num b, Ord b) => [b] -> b -> Maybe b
 part2 input target = do
   let cumulative = V.fromList $ scanl' (+) 0 input
   (i, j) <- findBounds cumulative target
@@ -47,6 +49,7 @@ part2 input target = do
 
 type Parsed = [Int]
 
+day09 :: Runner Parsed Int
 day09 =
   let year = 2020
       day = 9

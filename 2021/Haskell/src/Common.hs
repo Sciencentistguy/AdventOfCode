@@ -44,7 +44,7 @@ spaces =
     (return ())
     (return ())
 
---symbol :: String -> Parser Text
+symbol :: Text -> Parser Text
 symbol = L.symbol spaces
 
 windows :: Int -> [a] -> [[a]]
@@ -53,6 +53,10 @@ windows n xs = transpose $ take n $ tails xs
 unzipWith :: Functor f => (a -> b -> c) -> f (a, b) -> f c
 unzipWith f = fmap (uncurry f)
 
+unwrapParser ::
+  (Monad m, VisualStream s, TraversableStream s, ShowErrorComponent e) =>
+  Either (ParseErrorBundle s e) a ->
+  m a
 unwrapParser p = case p of
   Right x -> return x
   Left e -> error $ errorBundlePretty e

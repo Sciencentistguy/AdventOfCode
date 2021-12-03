@@ -14,6 +14,7 @@ import Text.Read (readMaybe)
 
 type Parsed = [String]
 
+requiredFields :: [[Char]]
 requiredFields = ["byr", "iyr", "eyr", "hgt", "hcl", "ecl", "pid"]
 
 isValidPassport :: [String] -> Bool
@@ -45,6 +46,7 @@ isValidPassport (key : value : _) = case key of
     valueAsInt = read value
 isValidPassport _ = unreachable ""
 
+day04 :: Runner Parsed Int
 day04 =
   let day = 4
       year = 2020

@@ -33,8 +33,9 @@ neighboursInList :: (Foldable t, Eq a, Num a) => t a -> a -> Bool
 neighboursInList ls x = elem (x -1) ls && elem (x + 1) ls
 
 getId :: BoardingPass -> Int
-getId (BoardingPass row col) = col + (row * 8)
+getId BoardingPass {..} = col + (row * 8)
 
+day05 :: Runner Parsed Int
 day05 =
   let year = 2020
       day = 5

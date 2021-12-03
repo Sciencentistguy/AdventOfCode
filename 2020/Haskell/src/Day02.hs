@@ -47,12 +47,11 @@ isValidPartTwo PasswordSpec {..} =
       pos2 = psString !! (psSecondNum - 1)
    in (pos1 == psChar) /= (pos2 == psChar)
 
+day02 :: Runner Parsed Int
 day02 =
   let day = 02
       year = 2020
-      parser input = case traverse (parse pPassword "input") (Text.lines input) of
-        Right x -> return x
-        Left e -> error $ errorBundlePretty e
+      parser input = unwrapParser $ traverse (parse pPassword "input") (Text.lines input)
       part1 = return . length . filter isValidPartOne
       part2 = return . length . filter isValidPartTwo
    in Runner {..}
