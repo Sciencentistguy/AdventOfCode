@@ -52,3 +52,7 @@ windows n xs = transpose $ take n $ tails xs
 
 unzipWith :: Functor f => (a -> b -> c) -> f (a, b) -> f c
 unzipWith f = fmap (uncurry f)
+
+unwrapParser p = case p of
+  Right x -> return x
+  Left e -> error $ errorBundlePretty e

@@ -60,9 +60,7 @@ day02 =
   let year = 2021
       day = 2
       parser :: Text -> Maybe Parsed
-      parser input = case traverse (parse pInstruction "input") (Text.lines input) of
-        Right x -> return x
-        Left e -> error $ errorBundlePretty e
+      parser input = unwrapParser $ traverse (parse pInstruction "input") (Text.lines input)
       part1 = return . uncurry (*) . moveAbs
       part2 = return . uncurry (*) . moveAim
    in Runner {..}
