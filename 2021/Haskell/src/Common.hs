@@ -1,6 +1,10 @@
 module Common where
 
+import Control.Arrow
+import Data.Foldable
 import Data.Foldable (Foldable (toList))
+import Data.Function
+import Data.List
 import Data.List (tails, transpose)
 import Data.Maybe
 import Data.Text (Text)
@@ -60,3 +64,8 @@ unwrapParser ::
 unwrapParser p = case p of
   Right x -> return x
   Left e -> error $ errorBundlePretty e
+
+mostCommon :: Ord a => [a] -> a
+mostCommon list = fst . maximumBy (compare `on` snd) $ elemCount
+  where
+    elemCount = map (head &&& length) . group . sort $ list
