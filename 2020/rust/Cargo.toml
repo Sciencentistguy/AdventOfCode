@@ -9,7 +9,6 @@ edition = "2018"
 [dependencies]
 emergence = "0.3.0"
 eyre = "0.6.5"
-itertools = "0.10.1"
 nohash-hasher = "0.2.0"
 nom = "7.1.0"
 regex = "1.5.4"
