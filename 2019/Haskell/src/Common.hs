@@ -5,14 +5,16 @@ module Common
 where
 
 import Control.Monad.Except
+import Control.Monad.ST
+import Data.Text (Text)
 import Data.Void (Void)
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 
-type IOResult e = ExceptT e IO
+type STResult s e = ExceptT e (ST s)
 
-type Parser = Parsec Void String
+type Parser = Parsec Void Text
 
 split :: Eq a => a -> [a] -> [[a]]
 split _ [] = []
@@ -37,7 +39,7 @@ spaces =
     (return ())
     (return ())
 
-symbol :: String -> Parser String
+symbol :: Text -> Parser Text
 symbol = L.symbol spaces
 
 parseUnwrap ::
@@ -49,3 +51,11 @@ parseUnwrap (Left peb) = error $ errorBundlePretty peb
 
 count :: (a -> Bool) -> [a] -> Int
 count p xs = length $ filter p xs
+
+unwrapParser ::
+  (Monad m, VisualStream s, TraversableStream s, ShowErrorComponent e) =>
+  Either (ParseErrorBundle s e) a ->
+  m a
+unwrapParser p = case p of
+  Right x -> return x
+  Left e -> error $ errorBundlePretty e

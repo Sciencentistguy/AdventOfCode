@@ -1,19 +1,24 @@
 module Day01 where
 
+import AOC
+import Data.Text (Text)
+import qualified Data.Text as Text
+import Safe
+
+type Parsed = [Int]
+
 fuelCost :: Int -> Int
 fuelCost m = (m `div` 3) - 2
 
 fuelCostRecursive :: Int -> Int
 fuelCostRecursive = sum . takeWhile (> 0) . tail . iterate fuelCost
 
-day01 :: IO ()
-day01 = do
-  input_strs <- lines <$> readFile "/home/jamie/Git/AdventOfCode/2019/Inputs/day_01.txt"
-  let input_ints = read <$> input_strs :: [Int]
-      part1 = sum $ fuelCost <$> input_ints
-      part2 = sum $ fuelCostRecursive <$> input_ints
-
-  putStr "The solution to day 01 part 01 is "
-  print part1
-  putStr "The solution to day 01 part 02 is "
-  print part2
+day01 :: Runner Parsed Int
+day01 =
+  let year = 2019
+      day = 1
+      parser :: Text -> Maybe Parsed
+      parser input = traverse readMay (lines $ Text.unpack input)
+      part1 = return . sum . fmap fuelCost
+      part2 = return . sum . fmap fuelCostRecursive
+   in Runner {..}

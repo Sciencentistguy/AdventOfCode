@@ -1,7 +1,13 @@
 module Day04 where
 
+import AOC
 import Common
 import Data.List
+import Data.Text (Text)
+import qualified Data.Text as Text
+import Safe (readMay)
+
+type Parsed = [[Int]]
 
 monotonicIncrease :: Ord a => [a] -> Bool
 monotonicIncrease s = sort s == s
@@ -9,12 +15,14 @@ monotonicIncrease s = sort s == s
 sameGroups :: Eq a => [a] -> [Int]
 sameGroups = map length . group
 
-day04 :: IO ()
-day04 = do
-  input <- readFile "/home/jamie/Git/AdventOfCode/2019/Inputs/day_04.txt"
-  let [begin, end] = read <$> split '-' input :: [Int]
-  let nums = fmap sameGroups <$> filter monotonicIncrease $ show <$> [begin .. end]
-  putStr "The solution to day 04 part 01 is "
-  print $ count (any (> 1)) nums
-  putStr "The solution to day 04 part 02 is "
-  print $ count (elem 2) nums
+day04 :: Runner Parsed Int
+day04 =
+  let year = 2019
+      day = 4
+      parser :: Text -> Maybe Parsed
+      parser input = do
+        [begin, end] <- traverse readMay $ split '-' $ Text.unpack input :: Maybe [Int]
+        return $ fmap sameGroups <$> filter monotonicIncrease $ show <$> [begin .. end]
+      part1 = return . count (any (> 1))
+      part2 = return . count (elem 2)
+   in Runner {..}

@@ -1,12 +1,18 @@
 module Day03 where
 
+import AOC
 import Common
 import Data.Foldable
 import Data.List
+import Data.Map (Map)
 import qualified Data.Map as M
+import Data.Text (Text)
+import qualified Data.Text as Text
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
+
+type Parsed = Map Coord Int
 
 data Direction = Up | Down | Left | Right
 
@@ -42,7 +48,7 @@ distances steps = M.fromListWith min (zip (generatePath steps) [1 ..])
 generatePath :: [Instruction] -> [Coord]
 generatePath =
   let f (Instruction d n) = replicate n $ toUnitVector d
-   in scanl1 addCoord . concatMap f
+   in scanl1 addCoord . (=<<) f
 
 manhattan :: Num a => (a, a) -> a
 manhattan (a, b) = abs a + abs b
@@ -56,18 +62,18 @@ toUnitVector Down = (0, 1)
 toUnitVector Day03.Left = (-1, 0)
 toUnitVector Day03.Right = (1, 0)
 
-day03 :: IO ()
-day03 = do
-  wires <- do
-    rawInput <- readFile "/home/jamie/Git/AdventOfCode/2019/Inputs/day_03.txt"
-    let f = parse pInstruction "input"
-    return $ parseUnwrap . traverse f . split ',' <$> lines rawInput
-
-  let intersections = pathIntersections wires
-
-  -- part 1
-  putStr "The solution to day 03 part 01 is "
-  print $ nearestDistanceToOrigin intersections
-  -- part 2
-  putStr "The solution to day 03 part 02 is "
-  print $ minimum intersections
+day03 :: Runner Parsed Int
+day03 =
+  let year = 2019
+      day = 3
+      parser :: Text -> Maybe Parsed
+      parser input =
+        return $
+          pathIntersections $
+            parseUnwrap
+              . traverse (parse pInstruction "input")
+              . Text.split (== ',')
+              <$> Text.lines input
+      part1 = return . nearestDistanceToOrigin
+      part2 = return . minimum
+   in Runner {..}

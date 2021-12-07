@@ -1,4 +1,4 @@
-name:                AdventOfCode
+name:                AdventOfCode2019
 version:             0.1.0.0
 github:              "Sciencentistguy/AdventOfCode"
 license:             MPL-2
@@ -27,6 +27,10 @@ dependencies:
 - parser-combinators
 - containers
 - bifunctors
+- text
+- req 
+- directory
+- unix
 
 default-extensions:
 - BlockArguments
@@ -39,9 +43,10 @@ library:
   - -Wall
   - -Wno-name-shadowing
   - -Wno-type-defaults
+  - -Wno-unused-imports
 
 executables:
-  AdventOfCode-exe:
+  AdventOfCode2019-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -50,10 +55,10 @@ executables:
     - -with-rtsopts=-N
     - -Wall
     dependencies:
-    - AdventOfCode
+    - AdventOfCode2019
 
 tests:
-  AdventOfCode-test:
+  AdventOfCode2019-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -62,4 +67,4 @@ tests:
     - -with-rtsopts=-N
     - -Wall
     dependencies:
-    - AdventOfCode
+    - AdventOfCode2019

@@ -1,20 +1,34 @@
 module Day05 where
 
+import AOC
 import Common
+import Control.Monad.ST
+import Data.Text (Text)
+import qualified Data.Text as Text
 import qualified Data.Vector.Unboxed as V
 import Intcode
+import Safe
 
-day05 :: IO ()
-day05 = do
-  input <- readFile "/home/jamie/Git/AdventOfCode/2019/Inputs/day_05.txt"
-  let input_instrs = read <$> split ',' input :: [Int]
+type Parsed = [Int]
 
-  pc <- initIntcode input_instrs >>= setInput [1]
+runPart1 :: [Int] -> Int
+runPart1 input = runST $ do
+  pc <- initIntcode input >>= setInput [1]
   FinishedComputer {..} <- unwrap $ runIntcode pc
-  putStr "The solution to day 05 part 01 is "
-  print $ V.last output
+  return $ V.last output
 
-  pc <- initIntcode input_instrs >>= setInput [5]
+runPart2 :: [Int] -> Int
+runPart2 input = runST $ do
+  pc <- initIntcode input >>= setInput [5]
   FinishedComputer {..} <- unwrap $ runIntcode pc
-  putStr "The solution to day 05 part 02 is "
-  print $ V.last output
+  return $ V.last output
+
+day05 :: Runner Parsed Int
+day05 =
+  let year = 2019
+      day = 5
+      parser :: Text -> Maybe Parsed
+      parser input = traverse readMay (split ',' $ Text.unpack input)
+      part1 = return . runPart1
+      part2 = return . runPart2
+   in Runner {..}
