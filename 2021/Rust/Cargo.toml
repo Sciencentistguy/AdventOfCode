@@ -14,5 +14,6 @@ ndarray = { version = "0.15.4", features = ["rayon"] }
 
 [profile.release]
 codegen-units = 1
-lto = true
+lto = "thin"
 panic = "abort"
+debug = true

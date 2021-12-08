@@ -42,11 +42,17 @@ pub fn run(input: String) -> Result<()> {
     let start = Instant::now();
     let part1 = part1(&parsed);
     let p1_time = Instant::now() - start;
-    println!("The solution to 2021 day 01 (part 1) is {}. Took {:?}", part1, p1_time);
+    println!(
+        "The solution to 2021 day 01 (part 1) is {}. Took {:?}",
+        part1, p1_time
+    );
     let start = Instant::now();
     let part2 = part2(&parsed);
     let p2_time = Instant::now() - start;
-    println!("The solution to 2021 day 01 (part 2) is {}. Took {:?}", part2, p2_time);
+    println!(
+        "The solution to 2021 day 01 (part 2) is {}. Took {:?}",
+        part2, p2_time
+    );
 
     Ok(())
 }
