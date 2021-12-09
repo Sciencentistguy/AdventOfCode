@@ -16,3 +16,7 @@ target/
 template.txt
 result
 tokenfile
+
+perf.data
+perf.data.old
+flamegraph.svg
