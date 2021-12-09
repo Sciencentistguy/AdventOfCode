@@ -1,6 +1,4 @@
-mod permutations;
-
-use std::{hint::unreachable_unchecked, time::Instant};
+use std::{collections::HashMap, time::Instant};
 
 use eyre::Result;
 
@@ -45,89 +43,82 @@ fn part1(input: &[InputLine]) -> u64 {
 }
 
 fn part2(input: &[InputLine]) -> u64 {
-    let valid_numbers: [&[u8]; 10] = [
-        &[b'a', b'b', b'c', b'e', b'f', b'g'],
-        &[b'c', b'f'],
-        &[b'a', b'c', b'd', b'e', b'g'],
-        &[b'a', b'c', b'd', b'f', b'g'],
-        &[b'b', b'c', b'd', b'f'],
-        &[b'a', b'b', b'd', b'f', b'g'],
-        &[b'a', b'b', b'd', b'e', b'f', b'g'],
-        &[b'a', b'c', b'f'],
-        &[b'a', b'b', b'c', b'd', b'e', b'f', b'g'],
-        &[b'a', b'b', b'c', b'd', b'f', b'g'],
-    ];
-
     let mut c = 0;
-    let mut cs: Vec<u8> = Vec::with_capacity(10);
     for InputLine {
         signal_patterns,
         output,
     } in input
     {
-        for p in permutations::PERMUTATIONS {
-            let mut swaps = [0; u8::MAX as usize];
-            for (k, v) in p.iter().zip(b'a'..=b'g') {
-                swaps[*k as usize] = v;
-            }
-            let is_valid = signal_patterns.iter().all(|&s| {
-                valid_numbers.contains({
-                    cs.clear();
-                    cs.extend_from_slice(s.as_bytes());
-                    cs.sort_unstable();
-                    for c in &mut cs {
-                        *c = swaps[*c as usize];
-                    }
-                    cs.sort_unstable();
-                    &cs.as_slice()
-                })
-            });
+        let mut mappings = HashMap::with_capacity(7);
+        let sets: Vec<_> = [signal_patterns, output]
+            .iter()
+            .flat_map(|x| x.iter())
+            .map(|d| d.as_bytes())
+            .collect();
+        let mut one = None;
+        let mut four = None;
+        for &set in &sets {
+            match set.len() {
+                2 => {
+                    mappings.insert(set, 1);
+                    one = Some(set);
+                }
+                4 => {
+                    mappings.insert(set, 4);
+                    four = Some(set)
+                }
+                3 => {
+                    mappings.insert(set, 7);
+                }
+                7 => {
+                    mappings.insert(set, 8);
+                }
+                _ => {}
+            };
+        }
 
-            if is_valid {
-                c += output
-                    .iter()
-                    .rev()
-                    .enumerate()
-                    .map(|(i, &s)| {
-                        10u64.pow(i as u32)
-                            * chars_to_u64({
-                                cs.clear();
-                                cs.extend_from_slice(s.as_bytes());
-                                cs.sort_unstable();
-                                for c in &mut cs {
-                                    *c = swaps[*c as usize];
-                                }
-                                cs.sort_unstable();
-                                &cs
-                            })
-                    })
-                    .sum::<u64>();
-                continue;
+        for &set in &sets {
+            let match_1 = count_same(set, one.unwrap());
+            let match_4 = count_same(set, four.unwrap());
+            match set.len() {
+                5 => {
+                    match (match_1, match_4) {
+                        (1, 2) => mappings.insert(set, 2),
+                        (2, 3) => mappings.insert(set, 3),
+                        (1, 3) => mappings.insert(set, 5),
+                        _ => {
+                            println!("5 {:?}", (match_1, match_4));
+                            None
+                        }
+                    };
+                }
+                6 => {
+                    match (match_1, match_4) {
+                        (2, 3) => mappings.insert(set, 0),
+                        (1, 3) => mappings.insert(set, 6),
+                        (2, 4) => mappings.insert(set, 9),
+                        _ => {
+                            println!("6 {:?}", (match_1, match_4));
+                            None
+                        }
+                    };
+                }
+                _ => {}
             }
+        }
+
+        for (i, &d) in output.iter().rev().enumerate() {
+            c += 10u64.pow(i as u32) * mappings.get(d.as_bytes()).unwrap();
         }
     }
     c
 }
 
-fn chars_to_u64(input: &[u8]) -> u64 {
-    match input {
-        [b'a', b'b', b'c', b'e', b'f', b'g'] => 0,
-        [b'c', b'f'] => 1,
-        [b'a', b'c', b'd', b'e', b'g'] => 2,
-        [b'a', b'c', b'd', b'f', b'g'] => 3,
-        [b'b', b'c', b'd', b'f'] => 4,
-        [b'a', b'b', b'd', b'f', b'g'] => 5,
-        [b'a', b'b', b'd', b'e', b'f', b'g'] => 6,
-        [b'a', b'c', b'f'] => 7,
-        [b'a', b'b', b'c', b'd', b'e', b'f', b'g'] => 8,
-        [b'a', b'b', b'c', b'd', b'f', b'g'] => 9,
-        _ => unsafe {
-            if cfg!(debug_assertions) {
-                unreachable!()
-            }
-            unreachable_unchecked()
-        },
-    }
+fn count_same<T>(a: &[T], b: &[T]) -> usize
+where
+    T: std::cmp::PartialEq,
+{
+    a.iter().filter(|x| b.contains(x)).count()
 }
 
 pub fn run(input: String) -> Result<()> {
