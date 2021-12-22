@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 emergence = "0.3.0"
 eyre = "0.6.5"
+multimap = "0.8.3"
 ndarray = { version = "0.15.4", features = ["rayon"] }
 nohash-hasher = "0.2.0"
 
