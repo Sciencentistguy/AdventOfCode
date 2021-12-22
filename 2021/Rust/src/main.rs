@@ -1,3 +1,5 @@
+#![feature(array_windows)]
+
 use eyre::{Context, Result};
 
 mod day01;
@@ -11,6 +13,9 @@ mod day08;
 mod day09;
 mod day10;
 mod day11;
+//mod day12;
+//mod day13;
+mod day14;
 
 fn main() -> Result<()> {
     day01::run(emergence::fetch(2021, 1).wrap_err("failed to fetch")?)?;
@@ -24,6 +29,9 @@ fn main() -> Result<()> {
     day09::run(emergence::fetch(2021, 9).wrap_err("failed to fetch")?)?;
     day10::run(emergence::fetch(2021, 10).wrap_err("failed to fetch")?)?;
     day11::run(emergence::fetch(2021, 11).wrap_err("failed to fetch")?)?;
+    //day12::run(emergence::fetch(2021, 12).wrap_err("failed to fetch")?)?;
+    //day13::run(emergence::fetch(2021, 13).wrap_err("failed to fetch")?)?;
+    day14::run(emergence::fetch(2021, 14).wrap_err("failed to fetch")?)?;
 
     Ok(())
 }
