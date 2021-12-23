@@ -1,4 +1,4 @@
-use std::{hint::unreachable_unchecked, time::Instant};
+use std::time::Instant;
 
 use eyre::Result;
 use multimap::MultiMap;

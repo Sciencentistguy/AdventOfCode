@@ -1,4 +1,4 @@
-use std::{hint::unreachable_unchecked, time::Instant};
+use std::time::Instant;
 
 use eyre::{Context, Result};
 
@@ -11,13 +11,9 @@ fn parse(input: &str) -> Result<Vec<u64>> {
 
 fn part1(input: &[u64]) -> u64 {
     let mut c = 0;
-    for w in input.windows(2) {
-        if let [a, b] = w {
-            if a < b {
-                c += 1;
-            }
-        } else {
-            unsafe { unreachable_unchecked() }
+    for [a, b] in input.array_windows() {
+        if a < b {
+            c += 1;
         }
     }
     c
@@ -25,13 +21,9 @@ fn part1(input: &[u64]) -> u64 {
 
 fn part2(input: &[u64]) -> u64 {
     let mut c = 0;
-    for w in input.windows(4) {
-        if let [a, _, _, b] = w {
-            if a < b {
-                c += 1;
-            }
-        } else {
-            unsafe { unreachable_unchecked() }
+    for [a, _, _, b] in input.array_windows() {
+        if a < b {
+            c += 1;
         }
     }
     c
