@@ -16,6 +16,7 @@ mod day11;
 mod day12;
 mod day13;
 mod day14;
+mod day15;
 
 fn main() -> Result<()> {
     day01::run(emergence::fetch(2021, 1).wrap_err("failed to fetch")?)?;
@@ -32,6 +33,7 @@ fn main() -> Result<()> {
     day12::run(emergence::fetch(2021, 12).wrap_err("failed to fetch")?)?;
     day13::run(emergence::fetch(2021, 13).wrap_err("failed to fetch")?)?;
     day14::run(emergence::fetch(2021, 14).wrap_err("failed to fetch")?)?;
+    day15::run(emergence::fetch(2021, 15).wrap_err("failed to fetch")?)?;
 
     Ok(())
 }
