@@ -1,6 +1,6 @@
 #include "day_12.h"
 
-day_12::instruction_t::instruction_t(char opcode, ulong operand) :
+day_12::instruction_t::instruction_t(char opcode, unsigned long operand) :
     opcode {opcode},
     operand {operand} {}
 
