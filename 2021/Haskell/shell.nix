@@ -1,31 +1,38 @@
-#TODO: shut up the `trace` outputs whenever haskell.nix is invoked
-
 let
-  sources = {
-    haskellNix = import (builtins.fetchTarball "https://github.com/input-output-hk/haskell.nix/archive/master.tar.gz") { };
-  };
-  haskellNix = import sources.haskellNix { };
-  # Pin nixpkgs to the haskell.nix unstable pin
-  pkgs = import haskellNix.sources.nixpkgs-unstable haskellNix.nixpkgsArgs;
-  project = import ./default.nix;
+  # Pinned on 2021-11-04 at 01:48 UTC, to nixpkgs-unstable
+  #nixpkgs_url = "https://github.com/NixOS/nixpkgs/archive/550dab224a26ec25e20e82c0c8bfc764e01b772e.tar.gz";
+  nixpkgs_url = "https://github.com/NixOS/nixpkgs/archive/e5a50e8f2995ff359a170d52cc40adbcfdd92ba4.tar.gz";
+  # aliases in shellHooks don't work with zsh-nix-shell. See https://github.com/chisui/zsh-nix-shell/issues/6
+  zdotdir_url = "https://gist.githubusercontent.com/chisui/bba90fccc930f614743dc259fbadae6d/raw/4108222addc1d646c1b0a6d12130083e2219ad28/zdotdir.nix";
+  shell_hooks = ''
+    alias stack="stack --nix"
+  '';
 in
-project.shellFor {
-  name = "aoc-2021-hs";
-  tools = {
-    cabal = "latest";
-    hlint = "latest";
-    haskell-language-server = "latest";
-    #stack = "latest";
-    ormolu = "0.3.1.0";
-  };
+{ pkgs ? import (fetchTarball nixpkgs_url) { }
+, zdotdir ? import (builtins.fetchurl { url = zdotdir_url; }) { inherit pkgs; }
+}: pkgs.mkShell rec {
 
-  withHoogle = false;
-  exactDeps = true;
+  name = "aoc-2021-hs";
 
   nativeBuildInputs = [
     pkgs.stack
-    pkgs.hpack
+    pkgs.ormolu
+    pkgs.haskell-language-server
+    pkgs.hlint
   ];
 
+  buildInputs = [
+    pkgs.zlib
+  ];
+
+  shellHooks = shell_hooks;
+
+  # For zsh
+  shellHook = zdotdir {
+    zshenv = shell_hooks;
+  };
+
+  # Needed for stack to find zlib
+  LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath buildInputs;
   TOKEN = (builtins.readFile ./tokenfile);
 }

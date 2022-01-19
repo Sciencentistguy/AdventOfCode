@@ -65,4 +65,6 @@ system-ghc: true
 # Allow a newer minor version of GHC than the snapshot specifies
 # compiler-check: newer-minor
 nix:
-  enable: false # see default.nix, shell.nix, https://input-output-hk.github.io/haskell.nix/
+  enable: true  
+  packages: [zlib.dev, zlib.out]
+  pure: false
