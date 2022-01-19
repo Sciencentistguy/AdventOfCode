@@ -56,7 +56,6 @@ fetchRaw Runner {day, year} token = do
           /: "day"
           /: fromString (show day)
           /: "input"
-
   r <-
     runReq defaultHttpConfig $
       req
@@ -82,7 +81,7 @@ cacheRead :: Int -> Int -> IO (Maybe Text)
 cacheRead year day = do
   home <- getEnv "HOME"
   let path = printf "%s/.aoc/%d/day%02d.txt" home year day
-  entryExists <- doesDirectoryExist path
+  entryExists <- doesFileExist path
   if entryExists
     then return <$> Text.readFile path
     else return Nothing
