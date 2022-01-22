@@ -12,9 +12,11 @@ import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 
-type Parsed = [(Int, Int, Int)]
+type Present = (Int, Int, Int)
 
-pInput :: Parser (Int, Int, Int)
+type Parsed = [Present]
+
+pInput :: Parser Present
 pInput = do
   l <- L.decimal
   _ <- char 'x'
@@ -23,12 +25,12 @@ pInput = do
   h <- L.decimal
   return (l, w, h)
 
-paperNeeded :: (Ord a, Num a) => (a, a, a) -> a
+paperNeeded :: Present -> Int
 paperNeeded (l, w, h) =
   let areas = sort [l * w, w * h, h * l]
    in sum $ zipWith (*) [3, 2, 2] areas
 
-ribbonNeeded :: (Num a, Ord a) => (a, a, a) -> a
+ribbonNeeded :: Present -> Int
 ribbonNeeded (l, w, h) =
   let perimeters = sort [2 * (l + w), 2 * (w + h), 2 * (h + l)]
       volume = l * w * h
