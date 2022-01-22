@@ -5,7 +5,7 @@ where
 
 import AOC
 import Common
-import Data.Functor
+import Data.Functor (($>))
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HS
 import Data.Hashable (Hashable)
@@ -21,7 +21,7 @@ type Point = (Int, Int)
 
 data Motion = North | South | East | West
 
-data Mode = Robo | Santa deriving (Eq)
+data Mode = RoboSanta | Santa deriving (Eq)
 
 pMotion :: Parser Motion
 pMotion =
@@ -34,9 +34,9 @@ pInput :: Parser Parsed
 pInput = many pMotion
 
 initialHS :: HashSet Point
-initialHS = HS.insert (0, 0) HS.empty
+initialHS = HS.fromList [(0, 0)]
 
-advanceCoords :: (Num a1, Num a2) => Motion -> (a2, a1) -> (a2, a1)
+advanceCoords :: Motion -> Point -> Point
 advanceCoords direction (x, y) = case direction of
   North -> (x, y + 1)
   South -> (x, y -1)
@@ -53,31 +53,28 @@ trackLocations directions = go directions (0, 0) initialHS
        in go as pNext inserted
     go [] _ acc = length acc
 
-getBinaryPosition :: Motion -> Point -> Point -> Mode -> (Point, Point)
-getBinaryPosition move san rob mode =
+getPositions :: Motion -> Point -> Point -> Mode -> (Point, Point)
+getPositions move san rob mode =
   let advance = advanceCoords move
    in case mode of
         Santa -> (advance san, rob)
-        Robo -> (san, advance rob)
+        RoboSanta -> (san, advance rob)
 
-updateBinaryHS :: (Eq a, Hashable a) => Mode -> a -> a -> HashSet a -> HashSet a
-updateBinaryHS mode san rob acc = case mode of
-  Santa -> HS.insert san acc
-  Robo -> HS.insert rob acc
+other :: Mode -> Mode
+other x = case x of
+  RoboSanta -> Santa
+  Santa -> RoboSanta
 
-flipMode :: Mode -> Mode
-flipMode x = case x of
-  Robo -> Santa
-  Santa -> Robo
-
-trackBinaryLocations :: [Motion] -> Int
-trackBinaryLocations directions = go directions (0, 0) (0, 0) initialHS Santa
+trackPart2Locations :: [Motion] -> Int
+trackPart2Locations directions = go directions (0, 0) (0, 0) initialHS Santa
   where
     go :: [Motion] -> Point -> Point -> HashSet Point -> Mode -> Int
-    go (a : as) (xs, ys) (xr, yr) acc mode =
-      let (s, r) = getBinaryPosition a (xs, ys) (xr, yr) mode
-          inserted = updateBinaryHS mode s r acc
-       in go as s r inserted (flipMode mode)
+    go (motion : motions) santaPos roboSantaPos acc mode =
+      let (santaPos', roboSantaPos') = getPositions motion santaPos roboSantaPos mode
+          updated = case mode of
+            Santa -> HS.insert santaPos' acc
+            RoboSanta -> HS.insert roboSantaPos' acc
+       in go motions santaPos' roboSantaPos' updated (other mode)
     go [] _ _ acc _ = length acc
 
 day03 :: Runner Parsed Int
@@ -87,5 +84,5 @@ day03 =
       parser :: Text -> Maybe Parsed
       parser = unwrapParser . parse pInput "input"
       part1 = return . trackLocations
-      part2 = return . trackBinaryLocations
+      part2 = return . trackPart2Locations
    in Runner {..}
