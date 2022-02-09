@@ -5,7 +5,7 @@ where
 
 import AOC
 import Common
-import Control.Applicative (liftA3)
+import Control.Applicative (liftA2, liftA3)
 import Data.Functor (($>))
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HS
@@ -35,6 +35,22 @@ hasNoBannedPairs s = not $ any (`isInfixOf` s) bannedPairs
   where
     bannedPairs = ["ab", "cd", "pq", "xy"]
 
+isNicer :: String -> Bool
+isNicer = liftA2 (&&) hasMatchingPair hasXyxs
+
+hasMatchingPair :: String -> Bool
+hasMatchingPair s = any ((>= 2) . length) $ group $ sort $ tiles 2 1 $ concatMap shortenThrees $ group s
+  where
+    shortenThrees [x, _, _] = [x, x]
+    shortenThrees xs = xs
+
+hasXyxs :: String -> Bool
+hasXyxs s =
+  any xyx $ tiles 3 1 s
+  where
+    xyx [c1, _, c3] = c1 == c3
+    xyx _ = error "bad tile length"
+
 day05 :: Runner Parsed Int
 day05 =
   let year = 2015
@@ -42,5 +58,5 @@ day05 =
       parser :: Text -> Maybe Parsed
       parser = return . fmap Text.unpack . Text.lines
       part1 = return . length . filter isNice
-      part2 = undefined
+      part2 = return . length . filter isNicer
    in Runner {..}

@@ -60,3 +60,14 @@ unwrapParser ::
 unwrapParser p = case p of
   Right x -> return x
   Left e -> error $ errorBundlePretty e
+
+envelop :: (b -> [a] -> (b, [a])) -> b -> [a] -> b
+envelop _ a [] = a
+envelop f a xs = uncurry (envelop f) (f a xs)
+
+tiles :: Int -> Int -> [a] -> [[a]]
+tiles size skip = envelop tile []
+  where
+    tile partial rest
+      | length rest < size = (partial, [])
+      | otherwise = (partial ++ [take size rest], drop skip rest)
