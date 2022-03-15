@@ -10,7 +10,7 @@ edition = "2018"
 emergence = "0.3.0"
 eyre = "0.6.6"
 nohash-hasher = "0.2.0"
-nom = "7.1.0"
+nom = "7.1.1"
 regex = "1.5.4"
 
 [profile.release]
