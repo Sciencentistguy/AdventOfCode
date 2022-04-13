@@ -7,7 +7,7 @@ where
 
 import AOC
 import Common
-import Data.Functor
+import Data.Functor (($>))
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Text.Megaparsec

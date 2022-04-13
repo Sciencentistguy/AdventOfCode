@@ -1,16 +1,13 @@
 module Common where
 
-import Control.Arrow
-import Data.Foldable
-import Data.Foldable (Foldable (toList))
-import Data.Function
-import Data.List
-import Data.List (tails, transpose)
-import Data.Maybe
+import Control.Arrow (Arrow ((&&&)))
+import Data.Foldable (Foldable (toList), maximumBy)
+import Data.Function (on)
+import Data.List (group, sort, tails, transpose, unfoldr)
 import Data.Text (Text)
 import Data.Void (Void)
 import Text.Megaparsec
-import Text.Megaparsec.Char (space1)
+import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
 
 split :: Eq a => a -> [a] -> [[a]]

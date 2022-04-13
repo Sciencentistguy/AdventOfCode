@@ -7,10 +7,10 @@ where
 
 import AOC
 import Common
-import Control.Monad
+import Control.Monad (join)
 import Data.IntSet (IntSet)
 import qualified Data.IntSet as IS
-import Data.List
+import Data.List (find, transpose, (\\))
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Data.Vector (Vector)
@@ -18,7 +18,6 @@ import qualified Data.Vector as Vector
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
-import Text.Megaparsec.Debug
 
 type Parsed = ([Int], [Board])
 

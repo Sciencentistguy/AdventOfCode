@@ -8,12 +8,10 @@ where
 
 import AOC
 import Common
-import Data.Foldable
-import Data.Functor
+import Data.Foldable (foldl')
 import Data.List (transpose)
 import Data.Text (Text)
 import qualified Data.Text as Text
-import System.IO.Unsafe (unsafePerformIO)
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
