@@ -33,6 +33,8 @@ dependencies:
 - extra
 - unordered-containers
 - hashable
+- cryptohash-md5
+- bytestring
 
 default-extensions:
   BlockArguments
