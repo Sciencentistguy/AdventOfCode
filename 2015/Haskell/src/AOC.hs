@@ -1,17 +1,21 @@
-{-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module AOC where
 
-import Control.Monad
+import Control.Monad (unless)
 import Data.Maybe (fromJust)
-import Data.String
+import Data.String (IsString (fromString))
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Data.Text.Encoding (decodeUtf8)
+import qualified Data.Text.Encoding as Text
 import qualified Data.Text.IO as Text
 import Network.HTTP.Req
 import System.Directory
+  ( createDirectory,
+    doesDirectoryExist,
+    doesFileExist,
+  )
 import System.Environment (getEnv)
 import System.Posix.ByteString (CMode (CMode))
 import Text.Printf (printf)
@@ -27,34 +31,33 @@ data Runner a out = Runner
   }
 
 runAoC :: Show out => Token -> Runner a out -> IO ()
-runAoC (Token token) runner@Runner {..} = do
-  cacheInit year
-  input <- fetchCached runner token
+runAoC token Runner {..} = do
+  ensureCacheExists year
+  input <- fetchInput token year day
   let parsed = fromJust $ parser input
-  let part1Solution = fromJust $ part1 parsed
+      part1Solution = fromJust $ part1 parsed
   putStrLn $ printf "The solution to %d day %02d (part 1) is: %s" year day (show part1Solution)
   let part2Solution = fromJust $ part2 parsed
   putStrLn $ printf "The solution to %d day %02d (part 2) is: %s" year day (show part2Solution)
   putStrLn ""
 
-fetchCached :: Runner a out -> Text -> IO Text
-fetchCached runner@Runner {day, year} token = do
-  cacheEntry <- cacheRead year day
-  case cacheEntry of
+fetchInput :: Token -> Int -> Int -> IO Text
+fetchInput token year day =
+  cacheRead year day >>= \case
     Just entry -> return entry
     Nothing -> do
-      fetched <- fetchRaw runner token
+      fetched <- fetchFromAPI token year day
       cacheWrite year day fetched
       return fetched
 
-fetchRaw :: Runner a out -> Text -> IO Text
-fetchRaw Runner {day, year} token = do
+fetchFromAPI :: Token -> Int -> Int -> IO Text
+fetchFromAPI (Token token) year day = do
   let cookie = printf "session=%s" token :: String
   let url =
         https "adventofcode.com"
-          /: fromString (show year)
+          /: textShow year
           /: "day"
-          /: fromString (show day)
+          /: textShow day
           /: "input"
   r <-
     runReq defaultHttpConfig $
@@ -65,10 +68,10 @@ fetchRaw Runner {day, year} token = do
         bsResponse
         (header (fromString "COOKIE") (fromString cookie))
 
-  return $ decodeUtf8 $ responseBody r
+  return $ Text.decodeUtf8 $ responseBody r
 
-cacheInit :: Int -> IO ()
-cacheInit year = do
+ensureCacheExists :: Int -> IO ()
+ensureCacheExists year = do
   home <- getEnv "HOME"
   let cache_path = printf "%s/.aoc" home
   exists <- doesDirectoryExist cache_path
@@ -91,3 +94,6 @@ cacheWrite year day text = do
   home <- getEnv "HOME"
   let path = printf "%s/.aoc/%d/day%02d.txt" home year day
   Text.writeFile path text
+
+textShow :: Show a => a -> Text
+textShow = Text.pack . show
