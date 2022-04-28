@@ -35,6 +35,7 @@ dependencies:
 - hashable
 - cryptohash-md5
 - bytestring
+- array
 
 default-extensions:
   BlockArguments
