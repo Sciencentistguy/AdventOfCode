@@ -11,6 +11,7 @@ import Day04
 import Day05
 import Day06
 import Day07
+import Day08
 import System.Environment (lookupEnv)
 
 main :: IO ()
@@ -28,3 +29,6 @@ main = do
   runAoC token day05
   runAoC token day06
   runAoC token day07
+  runAoC token day08
+
+  -- te
