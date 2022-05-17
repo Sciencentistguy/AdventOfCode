@@ -12,12 +12,13 @@ import Day05
 import Day06
 import Day07
 import Day08
+import Day09
 import System.Environment (lookupEnv)
 
 main :: IO ()
 main = do
   token <-
-    Token . Text.pack . init
+    Token . Text.strip . Text.pack
       <$> ( lookupEnv "TOKEN" >>= \case
               Nothing -> error "`TOKEN` environment variable must be set"
               Just a -> return a
@@ -30,5 +31,6 @@ main = do
   runAoC token day06
   runAoC token day07
   runAoC token day08
+  runAoC token day09
 
-  -- te
+-- te
