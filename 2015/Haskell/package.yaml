@@ -36,6 +36,8 @@ dependencies:
 - cryptohash-md5
 - bytestring
 - array
+- aeson
+- scientific
 
 default-extensions:
   BlockArguments
