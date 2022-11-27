@@ -7,11 +7,11 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-emergence = "0.3.0"
-eyre = "0.6.6"
+emergence = "1.0.0"
+eyre = "0.6.8"
 nohash-hasher = "0.2.0"
-nom = "7.1.0"
-regex = "1.5.4"
+nom = "7.1.1"
+regex = "1.7.0"
 
 [profile.release]
 debug = true

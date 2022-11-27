@@ -1,6 +1,7 @@
 #![allow(dead_code)]
 #![allow(unused_variables)]
 
+use emergence::AoC;
 use eyre::Result;
 
 mod day01;
@@ -22,22 +23,24 @@ mod day16;
 mod day17;
 
 fn main() -> Result<()> {
-    day01::run(emergence::fetch(2020, 1)?);
-    day02::run(emergence::fetch(2020, 2)?);
-    day03::run(emergence::fetch(2020, 3)?);
-    day04::run(emergence::fetch(2020, 4)?);
-    day05::run(emergence::fetch(2020, 5)?);
-    day06::run(emergence::fetch(2020, 6)?);
-    day07::run(emergence::fetch(2020, 7)?);
-    day08::run(emergence::fetch(2020, 8)?);
-    day09::run(emergence::fetch(2020, 9)?);
-    day10::run(emergence::fetch(2020, 10)?);
-    day11::run(emergence::fetch(2020, 11)?);
-    day12::run(emergence::fetch(2020, 12)?);
-    day13::run(emergence::fetch(2020, 13)?);
-    day14::run(emergence::fetch(2020, 14)?);
-    // day15::run(emergence::fetch(2020, 15)?);
-    day16::run(emergence::fetch(2020, 16)?);
-    day17::run(emergence::fetch(2020, 17)?);
+    let aoc = AoC::new(2020)?;
+
+    day01::run(aoc.read_or_fetch(1)?);
+    day02::run(aoc.read_or_fetch(2)?);
+    day03::run(aoc.read_or_fetch(3)?);
+    day04::run(aoc.read_or_fetch(4)?);
+    day05::run(aoc.read_or_fetch(5)?);
+    day06::run(aoc.read_or_fetch(6)?);
+    day07::run(aoc.read_or_fetch(7)?);
+    day08::run(aoc.read_or_fetch(8)?);
+    day09::run(aoc.read_or_fetch(9)?);
+    day10::run(aoc.read_or_fetch(10)?);
+    day11::run(aoc.read_or_fetch(11)?);
+    day12::run(aoc.read_or_fetch(12)?);
+    day13::run(aoc.read_or_fetch(13)?);
+    day14::run(aoc.read_or_fetch(14)?);
+    // day15::run(aoc.read_or_fetch(15)?);
+    day16::run(aoc.read_or_fetch(16)?);
+    day17::run(aoc.read_or_fetch(17)?);
     Ok(())
 }
