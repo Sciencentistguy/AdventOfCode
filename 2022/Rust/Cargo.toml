@@ -7,6 +7,14 @@ edition = "2021"
 
 [dependencies]
 clap = { version = "4.0.29", features = ["derive"] }
-emergence = "1.0.2"
+emergence = "1.0.3"
 indoc = "1.0.7"
 tap = "1.0.1"
+
+[dev-dependencies]
+criterion = "0.4"
+
+[[bench]]
+name = "day01"
+harness = false
+
