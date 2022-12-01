@@ -20,3 +20,35 @@ pub fn run(input: String) {
     println!("Part 1: {}", part1(&parsed));
     println!("Part 2: {}", part2(&parsed));
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use indoc::indoc;
+
+    const INPUT: &str = indoc! {
+        "1000
+         2000
+         3000
+
+         4000
+
+         5000
+         6000
+
+         7000
+         8000
+         9000
+
+         10000"
+    };
+
+    #[test]
+    fn test_part1() {
+        assert_eq!(part1(&parse(INPUT)), 24000);
+    }
+    #[test]
+    fn test_part2() {
+        assert_eq!(part2(&parse(INPUT)), 45000);
+    }
+}
