@@ -54,6 +54,7 @@
 
         nativeBuildInputs = with pkgs; [
           toolchain.toolchain
+          toolchain.rust-src
           cargo-flamegraph
         ];
       };
