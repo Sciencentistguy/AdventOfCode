@@ -1,6 +1,4 @@
-use std::{convert::Infallible, str::FromStr};
-
-use itertools::Itertools;
+use memchr::{memchr, memrchr};
 
 pub struct Range {
     start: usize,
@@ -17,27 +15,22 @@ impl Range {
     }
 }
 
-impl FromStr for Range {
-    type Err = Infallible; // Panic !
-
-    fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let (a, b) = s.split('-').collect_tuple().unwrap();
-        Ok(Range {
-            start: a.parse().unwrap(),
-            end: b.parse().unwrap(),
-        })
-    }
-}
-
 pub fn parse(input: &str) -> Vec<(Range, Range)> {
     input
         .lines()
         .map(|x| {
-            let (first, second) = x.split(',').collect_tuple().unwrap();
-
+            let first_dash = memchr(b'-', x.as_bytes()).unwrap();
+            let last_dash = memrchr(b'-', x.as_bytes()).unwrap();
+            let comma = memchr(b',', x.as_bytes()).unwrap();
             (
-                Range::from_str(first).unwrap(),
-                Range::from_str(second).unwrap(),
+                Range {
+                    start: x[..first_dash].parse().unwrap(),
+                    end: x[first_dash + 1..comma].parse().unwrap(),
+                },
+                Range {
+                    start: x[comma + 1..last_dash].parse().unwrap(),
+                    end: x[last_dash + 1..].parse().unwrap(),
+                },
             )
         })
         .collect()

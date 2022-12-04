@@ -17,6 +17,7 @@ dependencies = [
  "emergence",
  "indoc",
  "itertools",
+ "memchr",
  "tap",
 ]
 
