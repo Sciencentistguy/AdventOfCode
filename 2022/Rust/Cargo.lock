@@ -16,6 +16,7 @@ dependencies = [
  "criterion",
  "emergence",
  "indoc",
+ "itertools",
  "tap",
 ]
 
