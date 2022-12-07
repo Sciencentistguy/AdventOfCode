@@ -1,5 +1,3 @@
-use itertools::Itertools;
-
 pub fn parse(input: &str) -> &[u8] {
     input.as_bytes()
 }

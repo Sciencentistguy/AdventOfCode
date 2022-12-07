@@ -1,5 +1,5 @@
 use aoc_2022::day01;
-use criterion::{black_box, criterion_group, criterion_main, Criterion};
+use criterion::{criterion_group, criterion_main, Criterion};
 
 pub fn criterion_benchmark(c: &mut Criterion) {
     let aoc = emergence::AoC::new(2022).unwrap();
