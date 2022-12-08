@@ -16,6 +16,7 @@ fn main() -> Result<ExitCode, Box<dyn Error>> {
         5 => aoc_2022::day05::run(&aoc.read_or_fetch(args.day)?),
         6 => aoc_2022::day06::run(&aoc.read_or_fetch(args.day)?),
         7 => aoc_2022::day07::run(&aoc.read_or_fetch(args.day)?),
+        8 => aoc_2022::day08::run(&aoc.read_or_fetch(args.day)?),
 
         day => {
             eprintln!("Day {day} does not exist / is not implemented yet");
