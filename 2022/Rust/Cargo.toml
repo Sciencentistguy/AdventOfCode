@@ -13,7 +13,7 @@ debug = true
 
 [dependencies]
 clap = { version = "4.0.29", features = ["derive"] }
-emergence = "1.0.3"
+emergence = "1.0.4"
 id_tree = "1.8.0"
 indoc = "1.0.7"
 itertools = "0.10.5"
