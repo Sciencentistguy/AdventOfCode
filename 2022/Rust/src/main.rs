@@ -6,6 +6,10 @@ use emergence::AoC;
 fn main() -> Result<ExitCode, Box<dyn Error>> {
     let args = Opt::parse();
 
+    #[cfg(miri)]
+    let aoc = AoC::with_path(2022, "/home/jamie/.aoc")?;
+
+    #[cfg(not(miri))]
     let aoc = AoC::new(2022)?;
 
     match args.day {

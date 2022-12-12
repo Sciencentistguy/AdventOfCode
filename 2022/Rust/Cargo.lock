@@ -358,9 +358,9 @@ checksum = "90e5c1c8368803113bf0c9584fc495a58b86dc8a29edbf8fe877d21d9507e797"
 
 [[package]]
 name = "emergence"
-version = "1.0.4"
+version = "1.1.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "ccb5d11d403616672311ef364f0998c95ee1d736a49f402a670e917dcb9b8dc4"
+checksum = "63319b789b9a2c088ec7a6ed290be0b8b7e9bc2ccfab73f2bf43209e3a9b01be"
 dependencies = [
  "chrono",
  "dirs",
