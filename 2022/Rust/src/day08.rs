@@ -124,7 +124,6 @@ pub fn run(input: &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use indoc::indoc;
 
     const INPUT: &str = "30373
 25512

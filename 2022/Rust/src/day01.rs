@@ -24,24 +24,21 @@ pub fn run(input: &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use indoc::indoc;
 
-    const INPUT: &str = indoc! {
-        "1000
-         2000
-         3000
+    const INPUT: &str = "1000
+2000
+3000
 
-         4000
+4000
 
-         5000
-         6000
+5000
+6000
 
-         7000
-         8000
-         9000
+7000
+8000
+9000
 
-         10000"
-    };
+10000";
 
     #[test]
     fn test_part1() {

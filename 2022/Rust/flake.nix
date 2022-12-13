@@ -40,6 +40,7 @@
           []
           ++ pkgs.lib.optionals pkgs.stdenv.isDarwin [
             pkgs.libiconv
+            pkgs.darwin.apple_sdk.frameworks.Security
           ];
       };
     in {
@@ -50,11 +51,10 @@
       packages.default = aoc-2022;
 
       devShells.default = pkgs.mkShell {
-        inputsFrom = builtins.attrValues self.checks;
+        inputsFrom = [self.packages.${system}.default] ++ builtins.attrValues self.checks;
 
         nativeBuildInputs = with pkgs; [
           toolchain.toolchain
-          toolchain.rust-src
           cargo-flamegraph
         ];
       };

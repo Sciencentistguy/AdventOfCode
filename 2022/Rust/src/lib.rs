@@ -1,8 +1,6 @@
 #![feature(iter_array_chunks)]
 #![feature(array_chunks)]
 #![feature(array_windows)]
-#![feature(never_type)]
-
 
 pub mod day01;
 pub mod day02;

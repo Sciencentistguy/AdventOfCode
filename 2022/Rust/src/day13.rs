@@ -97,7 +97,6 @@ pub fn run(input: &str) {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use indoc::indoc;
 
     const INPUT: &str = "[1,1,3,1,1]
 [1,1,5,1,1]

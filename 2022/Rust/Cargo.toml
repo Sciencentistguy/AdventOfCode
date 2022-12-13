@@ -16,7 +16,6 @@ arrayvec = "0.7.2"
 clap = { version = "4.0.29", features = ["derive"] }
 emergence = "1.1.0"
 id_tree = "1.8.0"
-indoc = "1.0.7"
 itertools = "0.10.5"
 memchr = "2.5.0"
 nom = "7.1.1"
