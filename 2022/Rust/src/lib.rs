@@ -1,7 +1,7 @@
 #![feature(iter_array_chunks)]
 #![feature(array_chunks)]
 #![feature(array_windows)]
-#![feature(thread_local)]
+#![feature(never_type)]
 
 
 pub mod day01;
@@ -16,3 +16,4 @@ pub mod day09;
 pub mod day10;
 pub mod day11;
 pub mod day12;
+pub mod day13;

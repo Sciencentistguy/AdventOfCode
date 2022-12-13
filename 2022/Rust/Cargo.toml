@@ -19,6 +19,7 @@ id_tree = "1.8.0"
 indoc = "1.0.7"
 itertools = "0.10.5"
 memchr = "2.5.0"
+nom = "7.1.1"
 pathfinding = "4.0.0"
 rustc-hash = "1.1.0"
 tap = "1.0.1"
@@ -72,4 +73,8 @@ harness = false
 
 [[bench]]
 name = "day12"
+harness = false
+
+[[bench]]
+name = "day13"
 harness = false
