@@ -1,15 +1,5 @@
 use std::cmp::Ordering;
 
-use nom::{
-    self,
-    branch::alt,
-    character::complete::{char, digit1},
-    combinator::map,
-    multi::separated_list0,
-};
-
-pub type Result<'a, O> = nom::IResult<&'a str, O, nom::error::VerboseError<&'a str>>;
-
 type List = Vec<Element>;
 
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -44,28 +34,33 @@ impl PartialOrd for Element {
     }
 }
 
-fn parse_number(i: &str) -> Result<u8> {
-    digit1(i).map(|(i, o)| (i, o.parse().unwrap()))
-}
-
-fn parse_list(i: &str) -> Result<List> {
-    let (i, _) = char('[')(i)?;
-    let (i, list) = separated_list0(char(','), parse_item)(i)?;
-    let (i, _) = char(']')(i)?;
-    Ok((i, list))
-}
-
-fn parse_item(i: &str) -> Result<Element> {
-    alt((
-        map(parse_number, Element::Number),
-        map(parse_list, Element::List),
-    ))(i)
-}
-
 pub fn parse(inpt: &str) -> Vec<List> {
+    let mut stack = Vec::new();
     inpt.lines()
         .filter(|l| !l.is_empty())
-        .map(|line| parse_list(line).unwrap().1)
+        .map(|line| {
+            const STARTING_CAPACITY: usize = 8;
+            stack.clear();
+            stack.push(List::with_capacity(STARTING_CAPACITY));
+            for c in line.as_bytes() {
+                match c {
+                    b'[' => {
+                        stack.push(List::with_capacity(STARTING_CAPACITY));
+                    }
+                    b']' => {
+                        let last = stack.pop().unwrap();
+                        stack.last_mut().unwrap().push(Element::List(last));
+                    }
+                    b',' => {}
+                    c @ b'0'..=b'9' => {
+                        stack.last_mut().unwrap().push(Element::Number(c - b'0'));
+                    }
+                    _ => unreachable!(),
+                }
+            }
+            assert_eq!(stack.len(), 1);
+            stack.pop().unwrap()
+        })
         .collect()
 }
 
