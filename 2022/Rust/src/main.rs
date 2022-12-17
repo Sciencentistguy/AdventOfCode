@@ -28,7 +28,7 @@ fn main() -> Result<ExitCode, Box<dyn Error>> {
         13 => aoc_2022::day13::run(&aoc.read_or_fetch(args.day)?),
         14 => aoc_2022::day14::run(&aoc.read_or_fetch(args.day)?),
         15 => aoc_2022::day15::run(&aoc.read_or_fetch(args.day)?),
-
+        16 => aoc_2022::day16::run(&aoc.read_or_fetch(args.day)?),
         17 => aoc_2022::day17::run(&aoc.read_or_fetch(args.day)?),
 
         day => {

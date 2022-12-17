@@ -18,6 +18,7 @@ emergence = "1.1.0"
 id_tree = "1.8.0"
 itertools = "0.10.5"
 memchr = "2.5.0"
+ndarray = "0.15.6"
 pathfinding = "4.0.0"
 rustc-hash = "1.1.0"
 tap = "1.0.1"
@@ -83,6 +84,10 @@ harness = false
 
 [[bench]]
 name = "day15"
+harness = false
+
+[[bench]]
+name = "day16"
 harness = false
 
 [[bench]]
