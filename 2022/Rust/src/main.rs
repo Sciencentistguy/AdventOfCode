@@ -1,5 +1,6 @@
 use std::{error::Error, process::ExitCode};
 
+use aoc_2022::*;
 use clap::Parser;
 use emergence::AoC;
 
@@ -13,23 +14,24 @@ fn main() -> Result<ExitCode, Box<dyn Error>> {
     let aoc = AoC::new(2022)?;
 
     match args.day {
-        1 => aoc_2022::day01::run(&aoc.read_or_fetch(args.day)?),
-        2 => aoc_2022::day02::run(&aoc.read_or_fetch(args.day)?),
-        3 => aoc_2022::day03::run(&aoc.read_or_fetch(args.day)?),
-        4 => aoc_2022::day04::run(&aoc.read_or_fetch(args.day)?),
-        5 => aoc_2022::day05::run(&aoc.read_or_fetch(args.day)?),
-        6 => aoc_2022::day06::run(&aoc.read_or_fetch(args.day)?),
-        7 => aoc_2022::day07::run(&aoc.read_or_fetch(args.day)?),
-        8 => aoc_2022::day08::run(&aoc.read_or_fetch(args.day)?),
-        9 => aoc_2022::day09::run(&aoc.read_or_fetch(args.day)?),
-        10 => aoc_2022::day10::run(&aoc.read_or_fetch(args.day)?),
-        11 => aoc_2022::day11::run(&aoc.read_or_fetch(args.day)?),
-        12 => aoc_2022::day12::run(&aoc.read_or_fetch(args.day)?),
-        13 => aoc_2022::day13::run(&aoc.read_or_fetch(args.day)?),
-        14 => aoc_2022::day14::run(&aoc.read_or_fetch(args.day)?),
-        15 => aoc_2022::day15::run(&aoc.read_or_fetch(args.day)?),
-        16 => aoc_2022::day16::run(&aoc.read_or_fetch(args.day)?),
-        17 => aoc_2022::day17::run(&aoc.read_or_fetch(args.day)?),
+        1 => day01::run(&aoc.read_or_fetch(args.day)?),
+        2 => day02::run(&aoc.read_or_fetch(args.day)?),
+        3 => day03::run(&aoc.read_or_fetch(args.day)?),
+        4 => day04::run(&aoc.read_or_fetch(args.day)?),
+        5 => day05::run(&aoc.read_or_fetch(args.day)?),
+        6 => day06::run(&aoc.read_or_fetch(args.day)?),
+        7 => day07::run(&aoc.read_or_fetch(args.day)?),
+        8 => day08::run(&aoc.read_or_fetch(args.day)?),
+        9 => day09::run(&aoc.read_or_fetch(args.day)?),
+        10 => day10::run(&aoc.read_or_fetch(args.day)?),
+        11 => day11::run(&aoc.read_or_fetch(args.day)?),
+        12 => day12::run(&aoc.read_or_fetch(args.day)?),
+        13 => day13::run(&aoc.read_or_fetch(args.day)?),
+        14 => day14::run(&aoc.read_or_fetch(args.day)?),
+        15 => day15::run(&aoc.read_or_fetch(args.day)?),
+        16 => day16::run(&aoc.read_or_fetch(args.day)?),
+        17 => day17::run(&aoc.read_or_fetch(args.day)?),
+        18 => day18::run(&aoc.read_or_fetch(args.day)?),
 
         day => {
             eprintln!("Day {day} does not exist / is not implemented yet");
