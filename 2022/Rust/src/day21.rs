@@ -1,6 +1,5 @@
-use std::{collections::HashMap, ops::Deref};
-
-use itertools::Itertools;
+use rustc_hash::FxHashMap as HashMap;
+use std::ops::{Deref, Range, RangeFrom};
 
 pub struct Table<'a>(HashMap<&'a str, Operation<'a>>);
 
@@ -74,24 +73,6 @@ impl<'a> Operation<'a> {
             Self::Div(a, b) => a.resolve(table) / b.resolve(table),
         }
     }
-
-    fn operands(&self, table: &Table) -> (usize, usize) {
-        match self {
-            Self::Literal(n) => unreachable!(),
-            Self::Add(a, b) | Self::Sub(a, b) | Self::Mul(a, b) | Self::Div(a, b) => {
-                (a.resolve(table), b.resolve(table))
-            }
-        }
-    }
-
-    fn operand_names(&self, table: &Table) -> (&'a str, &'a str) {
-        match self {
-            Self::Literal(n) => unreachable!(),
-            Self::Add(a, b) | Self::Sub(a, b) | Self::Mul(a, b) | Self::Div(a, b) => {
-                (a.as_name().unwrap(), b.as_name().unwrap())
-            }
-        }
-    }
 }
 
 impl<'a> Table<'a> {
@@ -99,41 +80,41 @@ impl<'a> Table<'a> {
         self.0[name].evaluate(self)
     }
 
-    fn get_eq(&self, name: &str) -> String {
+    // slow!
+    fn equation(&self, name: &str) -> String {
+        use Operation::*;
         if name == "humn" {
             return "x".to_string();
         }
         match &self[name] {
-            Operation::Literal(i) => i.as_number().unwrap().to_string(),
-            Operation::Add(m1, m2) => format!(
-                "({} + {})",
-                self.get_eq(m1.as_name().unwrap()),
-                self.get_eq(m2.as_name().unwrap())
+            Literal(i) => i.as_number().unwrap().to_string(),
+            Add(lhs, rhs) => format!(
+                "({}+{})",
+                self.equation(lhs.as_name().unwrap()),
+                self.equation(rhs.as_name().unwrap())
             ),
-            Operation::Sub(m1, m2) => format!(
-                "({} - {})",
-                self.get_eq(m1.as_name().unwrap()),
-                self.get_eq(m2.as_name().unwrap())
+            Sub(lhs, rhs) => format!(
+                "({}-{})",
+                self.equation(lhs.as_name().unwrap()),
+                self.equation(rhs.as_name().unwrap())
             ),
-            Operation::Mul(m1, m2) => format!(
-                "({} * {})",
-                self.get_eq(m1.as_name().unwrap()),
-                self.get_eq(m2.as_name().unwrap())
+            Mul(lhs, rhs) => format!(
+                "({}*{})",
+                self.equation(lhs.as_name().unwrap()),
+                self.equation(rhs.as_name().unwrap())
             ),
-            Operation::Div(m1, m2) => format!(
-                "({} / {})",
-                self.get_eq(m1.as_name().unwrap()),
-                self.get_eq(m2.as_name().unwrap())
+            Div(lhs, rhs) => format!(
+                "({}/{})",
+                self.equation(lhs.as_name().unwrap()),
+                self.equation(rhs.as_name().unwrap())
             ),
         }
     }
 
     fn operands(&self, name: &str) -> (Identifier, Identifier) {
+        use Operation::*;
         match self[name] {
-            Operation::Add(m1, m2) => (m1, m2),
-            Operation::Sub(m1, m2) => (m1, m2),
-            Operation::Mul(m1, m2) => (m1, m2),
-            Operation::Div(m1, m2) => (m1, m2),
+            Add(lhs, rhs) | Sub(lhs, rhs) | Mul(lhs, rhs) | Div(lhs, rhs) => (lhs, rhs),
             _ => unreachable!(),
         }
     }
@@ -143,21 +124,28 @@ pub fn parse(inpt: &str) -> Table {
     Table(
         inpt.lines()
             .map(|line| {
-                let colon = 4;
-                let name = line[..colon].trim();
-                let char = line.as_bytes()[colon + 2];
-                let op = if char.is_ascii_digit() {
-                    let number = line[colon + 2..].parse().unwrap();
-                    Operation::Literal(Identifier::Number(number))
+                use Identifier::*;
+                use Operation::*;
+
+                // Thanks for making these fixed width, AoC!
+                const NAME: Range<usize> = 0..4;
+                const NUMBER: RangeFrom<usize> = 6..;
+                const FIRST_ARGUMENT: Range<usize> = 6..10;
+                const SECOND_ARGUMENT: Range<usize> = 13..17;
+                const OPERATOR: usize = 11;
+
+                let name = line[NAME].trim();
+                let op = if line.as_bytes()[NUMBER.start].is_ascii_digit() {
+                    let number = line[NUMBER].parse().unwrap();
+                    Literal(Number(number))
                 } else {
-                    let op = line.as_bytes()[11];
-                    let first = &line[6..6 + 4];
-                    let second = &line[13..];
-                    match op {
-                        b'+' => Operation::Add(Identifier::Name(first), Identifier::Name(second)),
-                        b'-' => Operation::Sub(Identifier::Name(first), Identifier::Name(second)),
-                        b'*' => Operation::Mul(Identifier::Name(first), Identifier::Name(second)),
-                        b'/' => Operation::Div(Identifier::Name(first), Identifier::Name(second)),
+                    let first = &line[FIRST_ARGUMENT];
+                    let second = &line[SECOND_ARGUMENT];
+                    match line.as_bytes()[OPERATOR] {
+                        b'+' => Add(Name(first), Name(second)),
+                        b'-' => Sub(Name(first), Name(second)),
+                        b'*' => Mul(Name(first), Name(second)),
+                        b'/' => Div(Name(first), Name(second)),
                         _ => unreachable!(),
                     }
                 };
@@ -176,8 +164,8 @@ pub fn part2(table: &Table) -> String {
     let (a, b) = table.operands("root");
 
     format!(
-        "{} - {}",
-        table.get_eq(a.as_name().unwrap()),
+        "{}-{}",
+        table.equation(a.as_name().unwrap()),
         b.resolve(table)
     )
 }
@@ -185,34 +173,39 @@ pub fn part2(table: &Table) -> String {
 pub fn run(input: &str) {
     let parsed = parse(input);
     println!("Part 1: {}", part1(&parsed));
-    println!("Part 2: Paste the following into sympy:\n{}", part2(&parsed));
+    println!(
+        "Part 2: Paste the following into sympy:\n{}",
+        part2(&parsed)
+    );
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
 
-    const INPUT: &str = "1000
-2000
-3000
-
-4000
-
-5000
-6000
-
-7000
-8000
-9000
-
-10000";
+    const INPUT: &str = "root: pppw + sjmn
+dbpl: 5
+cczh: sllz + lgvd
+zczc: 2
+ptdq: humn - dvpt
+dvpt: 3
+lfqf: 4
+humn: 5
+ljgn: 2
+sjmn: drzm * dbpl
+sllz: 4
+pppw: cczh / lfqf
+lgvd: ljgn * ptdq
+drzm: hmdt - zczc
+hmdt: 32";
 
     #[test]
     fn test_part1() {
-        assert_eq!(part1(&parse(INPUT)), 24000);
+        assert_eq!(part1(&parse(INPUT)), 152);
     }
+
     #[test]
     fn test_part2() {
-        assert_eq!(part2(&parse(INPUT)), 45000);
+        assert_eq!(part2(&parse(INPUT)), "((4+(2*(x-3)))/4)-150"); //x==301
     }
 }
