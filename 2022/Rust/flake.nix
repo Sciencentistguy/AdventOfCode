@@ -56,6 +56,7 @@
         nativeBuildInputs = with pkgs; [
           toolchain.toolchain
           cargo-flamegraph
+          (python3.withPackages (pp: with pp; [sympy]))
         ];
       };
     });
