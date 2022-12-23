@@ -1,5 +1,9 @@
+use lazy_format::lazy_format;
 use rustc_hash::FxHashMap as HashMap;
-use std::ops::{Deref, Range, RangeFrom};
+use std::{
+    fmt::Display,
+    ops::{Deref, Range, RangeFrom},
+};
 
 pub struct Table<'a>(HashMap<&'a str, Operation<'a>>);
 
@@ -33,7 +37,7 @@ impl<'a> Identifier<'a> {
         }
     }
 
-    pub fn as_name(&self) -> Option<&&'a str> {
+    pub fn as_name(&self) -> Option<&'a str> {
         if let Self::Name(v) = self {
             Some(v)
         } else {
@@ -80,35 +84,33 @@ impl<'a> Table<'a> {
         self.0[name].evaluate(self)
     }
 
-    // slow!
-    fn equation(&self, name: &str) -> String {
+    fn equation(&'a self, name: &'a str) -> impl Display + 'a {
         use Operation::*;
-        if name == "humn" {
-            return "x".to_string();
-        }
-        match &self[name] {
-            Literal(i) => i.as_number().unwrap().to_string(),
-            Add(lhs, rhs) => format!(
+
+        lazy_format!(match (self.0[name]) {
+            _ if name == "humn" => ("x"),
+            Literal(n) => ("{}", n.as_number().unwrap()),
+            Add(lhs, rhs) => (
                 "({}+{})",
                 self.equation(lhs.as_name().unwrap()),
                 self.equation(rhs.as_name().unwrap())
             ),
-            Sub(lhs, rhs) => format!(
+            Sub(lhs, rhs) => (
                 "({}-{})",
                 self.equation(lhs.as_name().unwrap()),
                 self.equation(rhs.as_name().unwrap())
             ),
-            Mul(lhs, rhs) => format!(
+            Mul(lhs, rhs) => (
                 "({}*{})",
                 self.equation(lhs.as_name().unwrap()),
                 self.equation(rhs.as_name().unwrap())
             ),
-            Div(lhs, rhs) => format!(
+            Div(lhs, rhs) => (
                 "({}/{})",
                 self.equation(lhs.as_name().unwrap()),
                 self.equation(rhs.as_name().unwrap())
             ),
-        }
+        })
     }
 
     fn operands(&self, name: &str) -> (Identifier, Identifier) {
