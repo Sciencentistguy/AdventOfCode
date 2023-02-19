@@ -1,0 +1,53 @@
+cabal-version:   3.0
+name:            aoc
+version:         0.1.0.0
+license:         MPL-2.0
+author:          Jamie Quigley
+maintainer:      jamie@quigley.xyz
+
+common warnings
+    ghc-options: -Wall -Wno-name-shadowing
+
+common extensions
+    default-extensions:
+        RecordWildCards
+
+library aoc-lib
+    import: warnings
+    import: extensions
+    hs-source-dirs: aoc
+    build-depends: 
+        , base
+        , text
+        , directory
+        , req
+    exposed-modules:
+        AoC
+    default-language: Haskell2010
+
+library src
+    import: warnings
+    import: extensions
+    hs-source-dirs: src
+    build-depends: 
+        , base
+        , aoc-lib
+        , text
+        , safe
+    exposed-modules:
+        Day01
+    other-modules:
+        Common
+    default-language: Haskell2010
+
+executable aoc-2022
+    import: warnings
+    import: extensions
+    main-is: Main.hs
+    build-depends: 
+        , base
+        , aoc-lib
+        , src
+        , safe
+    hs-source-dirs:   app
+    default-language: Haskell2010

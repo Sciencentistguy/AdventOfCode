@@ -10,7 +10,6 @@ build/
 .stack-work/
 *~
 .cache/
-*.cabal
 
 target/
 template.txt
@@ -20,3 +19,5 @@ tokenfile
 perf.data
 perf.data.old
 flamegraph.svg
+
+dist-newstyle/
