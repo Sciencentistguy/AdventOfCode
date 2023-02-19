@@ -36,6 +36,7 @@ library src
         , safe
     exposed-modules:
         Day01
+        Day02
     other-modules:
         Common
     default-language: Haskell2010
