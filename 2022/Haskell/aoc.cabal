@@ -34,9 +34,11 @@ library src
         , aoc-lib
         , text
         , safe
+        , split
     exposed-modules:
         Day01
         Day02
+        Day03
     other-modules:
         Common
     default-language: Haskell2010
