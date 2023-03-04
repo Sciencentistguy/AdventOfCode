@@ -5,6 +5,7 @@ import AoC
 import Day01
 import Day02
 import Day03
+import Day04
 import Safe
 import System.Environment (getArgs)
 
@@ -20,4 +21,5 @@ main = do
     Just 1 -> runAoC token day01
     Just 2 -> runAoC token day02
     Just 3 -> runAoC token day03
+    Just 4 -> runAoC token day04
     Just _ -> putStrLn "Day not implemented yet."
