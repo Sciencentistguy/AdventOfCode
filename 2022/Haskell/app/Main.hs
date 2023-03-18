@@ -7,6 +7,7 @@ import Day02
 import Day03
 import Day04
 import Day05
+import Day06
 import Safe
 import System.Environment (getArgs)
 
@@ -24,6 +25,7 @@ main = do
     Just 3 -> runAoC token day03
     Just 4 -> runAoC token day04
     Just 5 -> runAoC token day05
+    Just 6 -> runAoC token day06
     Just x -> do
       putStr "Day '" 
       putStr $ show x
