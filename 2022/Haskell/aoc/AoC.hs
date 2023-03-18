@@ -4,7 +4,6 @@
 module AoC where
 
 import Control.Monad (unless)
-import Data.Maybe (fromJust)
 import Data.String (IsString (fromString))
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -18,6 +17,8 @@ import System.Directory
   )
 import System.Environment (getEnv, lookupEnv)
 import Text.Printf (printf)
+import System.IO
+import System.Exit
 
 newtype Token = Token Text
 
@@ -33,23 +34,34 @@ getToken =
     Just token -> return token
     Nothing -> getTokenFromFile "tokenfile"
 
+type Solver a out = a -> Maybe out
+
 data Runner a out = Runner
   { day :: Int,
     year :: Int,
     parser :: Text -> Maybe a,
-    part1 :: a -> Maybe out,
-    part2 :: a -> Maybe out
+    part1 :: Solver a out,
+    part2 :: Solver a out
   }
+
+ePutStrLn :: String -> IO ()
+ePutStrLn = hPutStrLn stderr
 
 runAoC :: Show out => Token -> Runner a out -> IO ()
 runAoC token Runner {..} = do
   ensureCacheExists year
   input <- fetchInput token year day
-  let parsed = fromJust $ parser input
-      part1Solution = fromJust $ part1 parsed
   putStrLn $ printf "%d day %02d" year day
+  parsed <- case parser input of
+    Nothing -> ePutStrLn "Failed to parse input" >> exitFailure
+    Just x -> return x
+  part1Solution <- case part1 parsed of
+    Nothing -> ePutStrLn "Failed to solve part 1" >> exitFailure
+    Just x -> return x
   putStrLn $ printf "Part 1: %s" (show part1Solution)
-  let part2Solution = fromJust $ part2 parsed
+  part2Solution <- case part2 parsed of
+    Nothing -> ePutStrLn "Failed to solve part 2" >> exitFailure
+    Just x -> return x
   putStrLn $ printf "Part 2: %s" (show part2Solution)
 
 fetchInput :: Token -> Int -> Int -> IO Text

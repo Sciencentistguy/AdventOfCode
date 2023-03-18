@@ -9,6 +9,7 @@ import Data.Void (Void)
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import qualified Text.Megaparsec.Char.Lexer as L
+import Common
 
 type Parser = ParsecT Void Text Identity
 
@@ -46,9 +47,7 @@ day04 =
   let year = 2022
       day = 4
       parser :: Text -> Maybe Parsed
-      parser input = case traverse (parse pPair "<input>") $ Text.lines input of
-        Left _ -> Nothing
-        Right x -> Just x
+      parser input = unwrapPEB $ traverse (parse pPair "<input>") $ Text.lines input
       part1 :: Parsed -> Maybe Int
       part1 = return . length . filter (flippedEither contains)
       part2 = return . length . filter (flippedEither overlaps)
