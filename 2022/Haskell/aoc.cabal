@@ -37,6 +37,7 @@ library src
         , split
         , megaparsec
         , lens
+        , containers
     exposed-modules:
         Day01
         Day02
@@ -44,6 +45,7 @@ library src
         Day04
         Day05
         Day06
+        Day07
     other-modules:
         Common
     default-language: Haskell2010
