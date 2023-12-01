@@ -48,6 +48,7 @@
             .toolchain
             pkg-config
             openssl
+            cargo-criterion
           ]
           ++ lib.optionals (pkgs.stdenv.isDarwin) ([
               iconv
