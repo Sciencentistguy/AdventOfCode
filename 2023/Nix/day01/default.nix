@@ -5,13 +5,9 @@ with import ../common; rec {
   # lines :: [[char]] (note: char is just a 1-character string)
   lines = lib.lists.init (lib.strings.splitString "\n" input);
 
-  # isDigit :: char -> bool
-
   # solve :: [string] -> Int
   solve = splitted: let
     lines = map lib.strings.stringToCharacters splitted;
-    isDigit = x: (lib.lists.findSingle (a: a == x) "!!" "!!" ["1" "2" "3" "4" "5" "6" "7" "8" "9"]) != "!!";
-
     # first_digits :: [char]
     first_digits = map (lib.lists.findFirst isDigit "!!") lines;
     # last_digits :: [char]
