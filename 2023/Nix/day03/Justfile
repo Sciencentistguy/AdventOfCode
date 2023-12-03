@@ -1,0 +1,5 @@
+run:
+    @echo "Part 1:"
+    @nix eval -f . "part1"
+    @echo "Part 2:"
+    @nix eval -f . "part2"

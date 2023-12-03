@@ -10,8 +10,14 @@ in rec {
   inherit (pkgs) lib;
 
   # isDigit :: char -> bool
-  isDigit = x: (lib.lists.findSingle (a: a == x) "!!" "!!" ["1" "2" "3" "4" "5" "6" "7" "8" "9"]) != "!!";
+  isDigit = x: (lib.lists.findSingle (a: a == x) "!!" "!!" ["0" "1" "2" "3" "4" "5" "6" "7" "8" "9"]) != "!!";
 
   # sum :: [Int] -> Int
   sum = builtins.foldl' (a: b: a + b) 0;
+
+  # product :: [Int] -> Int
+  product = builtins.foldl' (a: b: a * b) 1;
+
+  # dropNulls :: [a?] -> [a]
+  dropNulls = builtins.filter (x: x != null);
 }
