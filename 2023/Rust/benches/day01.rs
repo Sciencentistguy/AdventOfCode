@@ -9,7 +9,9 @@ pub fn criterion_benchmark(c: &mut Criterion) {
 
     c.bench_function("day01::parse", |b| b.iter(|| day01::parse(&input)));
     c.bench_function("day01::part1", |b| b.iter(|| day01::part1(&parsed)));
-    c.bench_function("day01::part2", |b| b.iter(|| day01::part2(input.as_bytes())));
+    c.bench_function("day01::part2", |b| {
+        b.iter(|| day01::part2(input.as_bytes()))
+    });
 }
 
 criterion_group!(benches, criterion_benchmark);

@@ -1,12 +1,13 @@
 use std::process::ExitCode;
 
+use clap::Parser;
 use color_eyre::eyre::Result;
 use emergence::AoC;
-use clap::Parser;
 
 mod day01;
 mod day02;
 mod day03;
+mod day04;
 
 fn main() -> Result<ExitCode> {
     color_eyre::install()?;
@@ -19,6 +20,7 @@ fn main() -> Result<ExitCode> {
         1 => day01::run(&aoc.read_or_fetch(1)?),
         2 => day02::run(&aoc.read_or_fetch(2)?),
         3 => day03::run(&aoc.read_or_fetch(3)?),
+        4 => day04::run(&aoc.read_or_fetch(4)?),
         day => {
             eprintln!("Day {day} does not exist / is not implemented yet");
             return Ok(ExitCode::FAILURE);

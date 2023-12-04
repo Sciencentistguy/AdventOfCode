@@ -102,6 +102,7 @@ dependencies = [
  "aho-corasick",
  "bstr",
  "clap",
+ "collect_slice",
  "color-eyre",
  "criterion",
  "emergence",
@@ -293,6 +294,12 @@ name = "clap_lex"
 version = "0.6.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "702fc72eb24e5a1e48ce58027a675bc24edd52096d5397d4aea7c6dd9eca0bd1"
+
+[[package]]
+name = "collect_slice"
+version = "1.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "7fcf7ebe98d2f8eba5ecf08e7ffa74384eea74b35d2fdee7aa417cf3a9cbe658"
 
 [[package]]
 name = "color-eyre"
