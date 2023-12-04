@@ -20,4 +20,13 @@ in rec {
 
   # dropNulls :: [a?] -> [a]
   dropNulls = builtins.filter (x: x != null);
+
+  # contains :: a -> [a] -> bool
+  contains = as: a: (lib.lists.findSingle (x: x == a) null a as) != null;
+
+# pow :: int -> int -> int
+pow = n : i :
+          if i == 1 then n
+          else if i == 0 then 1
+          else n * pow n (i - 1);
 }
