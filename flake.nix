@@ -50,6 +50,7 @@
               pkg-config
               openssl
               cargo-criterion
+              cargo-flamegraph
             ]
             ++ lib.optionals (pkgs.stdenv.isDarwin) ([
                 iconv
