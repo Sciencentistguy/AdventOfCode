@@ -1,4 +1,7 @@
 #![feature(array_chunks)]
+#![feature(pattern)]
+
+mod common;
 
 pub mod day01;
 pub mod day02;

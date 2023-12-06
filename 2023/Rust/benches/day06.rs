@@ -8,8 +8,8 @@ pub fn criterion_benchmark(c: &mut Criterion) {
     let parsed = day06::parse(&input);
 
     c.bench_function("day06::parse", |b| b.iter(|| day06::parse(&input)));
-    c.bench_function("day06::part1", |b| b.iter(|| day06::part1(&parsed)));
-    c.bench_function("day06::part2", |b| b.iter(|| day06::part2(&input)));
+    c.bench_function("day06::part1", |b| b.iter(|| day06::part1(&parsed.0)));
+    c.bench_function("day06::part2", |b| b.iter(|| day06::part2(&parsed.1)));
 }
 
 criterion_group!(benches, criterion_benchmark);

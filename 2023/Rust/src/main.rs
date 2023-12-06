@@ -1,10 +1,13 @@
 #![feature(array_chunks)]
+#![feature(pattern)]
 
 use std::process::ExitCode;
 
 use clap::Parser;
 use color_eyre::eyre::Result;
 use emergence::AoC;
+
+mod common;
 
 mod day01;
 mod day02;
