@@ -41,9 +41,9 @@ fn total_wins(race: &Race) -> u32 {
     let disc = (b * b - 4.0 * c).sqrt();
 
     // We need the floor / ceil to move in the directions we want. Usually this is no problem, but
-    // if we have a value of disc that is an integer, then just dividing by 2 leaves us on the 0.5
-    // boundary, which will cause errors. A small offset is added in the correct direction to solve
-    // this.
+    // if we have a value of disc that is an integer, then just dividing by 2 leaves us on an
+    // integer boundary, which will cause errors. A small offset is added in the correct direction
+    // to solve this.
 
     let upper = ((b + disc) / 2.0 - 0.0001).floor() as u32;
     let lower = ((b - disc) / 2.0 + 0.0001).ceil() as u32;

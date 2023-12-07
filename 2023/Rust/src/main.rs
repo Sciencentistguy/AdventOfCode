@@ -1,5 +1,6 @@
 #![feature(array_chunks)]
 #![feature(pattern)]
+#![feature(inline_const)]
 
 use std::process::ExitCode;
 
@@ -15,6 +16,7 @@ mod day03;
 mod day04;
 mod day05;
 mod day06;
+mod day07;
 
 fn main() -> Result<ExitCode> {
     color_eyre::install()?;
@@ -30,6 +32,7 @@ fn main() -> Result<ExitCode> {
         4 => day04::run(&aoc.read_or_fetch(4)?),
         5 => day05::run(&aoc.read_or_fetch(5)?),
         6 => day06::run(&aoc.read_or_fetch(6)?),
+        7 => day07::run(&aoc.read_or_fetch(7)?),
         day => {
             eprintln!("Day {day} does not exist / is not implemented yet");
             return Ok(ExitCode::FAILURE);
