@@ -17,6 +17,7 @@ mod day04;
 mod day05;
 mod day06;
 mod day07;
+mod day08;
 
 fn main() -> Result<ExitCode> {
     color_eyre::install()?;
@@ -33,6 +34,7 @@ fn main() -> Result<ExitCode> {
         5 => day05::run(&aoc.read_or_fetch(5)?),
         6 => day06::run(&aoc.read_or_fetch(6)?),
         7 => day07::run(&aoc.read_or_fetch(7)?),
+        8 => day08::run(&aoc.read_or_fetch(8)?),
         day => {
             eprintln!("Day {day} does not exist / is not implemented yet");
             return Ok(ExitCode::FAILURE);
