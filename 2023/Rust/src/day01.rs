@@ -1,4 +1,4 @@
-use aho_corasick::AhoCorasick;
+use nom::AsBytes;
 
 pub fn parse(inpt: &str) -> Vec<&[u8]> {
     inpt.trim()
@@ -26,11 +26,10 @@ pub fn part2(input_: &[u8]) -> u32 {
         "one", "two", "three", "four", "five", "six", "seven", "eight", "nine",
     ];
 
-    let ac = AhoCorasick::new(PATTERNS).unwrap();
-
-    for mat in ac.find_overlapping_iter(input_) {
-        /* crimes :D */
-        input[mat.range().start + 1] = mat.pattern().as_u32() as u8 + 1 + b'0';
+    for (i, pattern) in PATTERNS.iter().enumerate() {
+        for mat in memchr::memmem::find_iter(input_.as_bytes(), pattern.as_bytes()) {
+            input[mat + 1] = i as u8 + 1 + b'0';
+        }
     }
 
     let transformed = unsafe { std::str::from_utf8_unchecked(&input) };
