@@ -1,6 +1,7 @@
 #![feature(array_chunks)]
-#![feature(pattern)]
+#![feature(array_windows)]
 #![feature(inline_const)]
+#![feature(pattern)]
 
 mod common;
 
@@ -12,3 +13,4 @@ pub mod day05;
 pub mod day06;
 pub mod day07;
 pub mod day08;
+pub mod day09;

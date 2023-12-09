@@ -99,7 +99,6 @@ dependencies = [
 name = "aoc-2023"
 version = "0.1.0"
 dependencies = [
- "aho-corasick",
  "bstr",
  "clap",
  "collect_slice",
