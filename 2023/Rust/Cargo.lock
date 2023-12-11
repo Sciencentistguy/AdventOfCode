@@ -106,6 +106,7 @@ dependencies = [
  "criterion",
  "emergence",
  "fxhash",
+ "itertools",
  "memchr",
  "ndarray",
  "nom",
