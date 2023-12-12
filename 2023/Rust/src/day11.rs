@@ -13,96 +13,76 @@ impl Point2D {
 }
 
 #[derive(Debug)]
-pub struct Starmap {
-    empty_cols: Vec<i64>,
-    empty_rows: Vec<i64>,
-    stars: Vec<Point2D>,
-}
+pub struct Starmap(Vec<Point2D>);
 
-pub fn parse(input: &str) -> Starmap {
-    let mut empty_cols = Vec::new();
-    let mut empty_rows = Vec::new();
-    let mut stars = Vec::new();
+pub fn parse_with_multiplier(input: &str, multiplier: i64) -> Starmap {
     let lines: Vec<_> = input.lines().collect();
-    for (y, line) in lines.iter().enumerate() {
-        let num_stars_before_row = stars.len();
+
+    let n_cols = lines[0].len();
+
+    let mut stars = Vec::new();
+    let mut cols_with_star = vec![false; n_cols];
+
+    let mut y = 0;
+
+    for line in &lines {
+        let mut row_has_star = false;
         for (x, c) in line.chars().enumerate() {
             if c == '#' {
-                stars.push(Point2D {
-                    x: x as i64,
-                    y: y as i64,
-                });
+                stars.push(Point2D { x: x as i64, y });
+                row_has_star = true;
+                cols_with_star[x] = true;
             }
         }
-        if stars.len() == num_stars_before_row {
-            empty_rows.push(y as i64)
-        }
-    }
-    for x in 0..lines[0].len() {
-        // for each col, if we find no '#' we save
-        let mut hash_found = false;
-        for line in &lines {
-            if line.as_bytes()[x] == b'#' {
-                hash_found = true;
-            }
-        }
-        if !hash_found {
-            empty_cols.push(x as i64);
+
+        y += 1;
+
+        if !row_has_star {
+            y += multiplier - 1;
         }
     }
 
-    Starmap {
-        empty_cols,
-        empty_rows,
-        stars,
+    for (i, has_star) in cols_with_star.iter().enumerate().rev() {
+        if !has_star {
+            for star in &mut stars {
+                if star.x > i as i64 {
+                    star.x += multiplier - 1;
+                }
+            }
+        }
     }
+
+    Starmap(stars)
 }
 
-pub fn part1(maze: &Starmap) -> usize {
-    let mut total_distance = 0;
-    dbg!(maze.stars.iter().combinations(2).count());
-    for v in maze.stars.iter().enumerate().combinations(2) {
-        let a = v[0].1;
-        let b = v[1].1;
-        let log = v[0].0 == 0 && v[1].0 == 7;
-        if log {
-            dbg!(&v);
-        }
-        let mut added_distance = 0;
-        for dx in a.x..b.x {
-            if maze.empty_cols.contains(&dx) {
-                added_distance += 1;
-            }
-        }
-        if log {
-            dbg!(added_distance);
-        }
-        for dy in a.y..b.y {
-            if maze.empty_rows.contains(&dy) {
-                added_distance += 1;
-            }
-        }
-        if log {
-            dbg!(added_distance);
-        }
-        if log {
-            dbg!(a.distance_to(b) + added_distance);
-        }
-        total_distance += a.distance_to(b) + added_distance;
-    }
-    total_distance
+pub fn parse(input: &str) -> (Starmap, Starmap) {
+    (
+        parse_with_multiplier(input, 2),
+        parse_with_multiplier(input, 1_000_000),
+    )
 }
 
-// uniquePairs = snd . foldr (\x (acc, xs) -> (x:acc, zip acc (repeat x) ++ xs)) ([], [])
+fn common(stars: &Starmap) -> usize {
+    stars
+        .0
+        .iter()
+        .combinations(2)
+        .map(|v| v[0].distance_to(v[1]))
+        .sum()
+}
 
-pub fn part2(maze: &Starmap) -> u32 {
-    todo!()
+pub fn part1(stars: &Starmap) -> usize {
+    common(stars)
+}
+
+pub fn part2(stars: &Starmap) -> usize {
+    common(stars)
 }
 
 pub fn run(input: &str) {
     let parsed = parse(input);
-    println!("Part 1: {}", part1(&parsed));
-    println!("Part 2: {}", part2(&parsed));
+    println!("Part 1: {}", part1(&parsed.0));
+    println!("Part 2: {}", part2(&parsed.1));
 }
 
 #[cfg(test)]
@@ -122,10 +102,6 @@ mod tests {
 
     #[test]
     fn test_part1() {
-        assert_eq!(part1(&dbg!(parse(INPUT))), 374);
-    }
-    #[test]
-    fn test_part2() {
-        // assert_eq!(part2(&parse(INPUT)), 2);
+        assert_eq!(part1(&dbg!(parse(INPUT).0)), 374);
     }
 }
