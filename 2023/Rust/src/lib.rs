@@ -2,6 +2,7 @@
 #![feature(array_windows)]
 #![feature(inline_const)]
 #![feature(pattern)]
+#![feature(never_type)]
 
 mod common;
 
@@ -16,3 +17,5 @@ pub mod day08;
 pub mod day09;
 pub mod day10;
 pub mod day11;
+pub mod day12;
+pub mod day13;

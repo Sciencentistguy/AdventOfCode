@@ -2,6 +2,7 @@
 #![feature(array_windows)]
 #![feature(inline_const)]
 #![feature(pattern)]
+#![feature(never_type)]
 
 use std::process::ExitCode;
 
@@ -22,6 +23,11 @@ mod day08;
 mod day09;
 mod day10;
 mod day11;
+<<<<<<< HEAD
+=======
+mod day12;
+mod day13;
+>>>>>>> 68ac38d (2023 Day 12 in Rust)
 
 fn main() -> Result<ExitCode> {
     color_eyre::install()?;
@@ -42,6 +48,8 @@ fn main() -> Result<ExitCode> {
         9 => day09::run(&aoc.read_or_fetch(9)?),
         10 => day10::run(&aoc.read_or_fetch(10)?),
         11 => day11::run(&aoc.read_or_fetch(11)?),
+        12 => day12::run(&aoc.read_or_fetch(12)?),
+        13 => day13::run(&aoc.read_or_fetch(13)?),
         day => {
             eprintln!("Day {day} does not exist / is not implemented yet");
             return Ok(ExitCode::FAILURE);
