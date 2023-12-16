@@ -23,11 +23,8 @@ mod day08;
 mod day09;
 mod day10;
 mod day11;
-<<<<<<< HEAD
-=======
 mod day12;
 mod day13;
->>>>>>> 68ac38d (2023 Day 12 in Rust)
 
 fn main() -> Result<ExitCode> {
     color_eyre::install()?;
