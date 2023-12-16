@@ -25,6 +25,7 @@ smallvec = "2.0.0-alpha.1"
 tap = "1.0.1"
 itertools = "0.10.5"
 linked-hash-map = "0.5.6"
+bitvec = "1.0.1"
 
 [[bench]]
 name = "day01"
@@ -84,4 +85,8 @@ harness = false
 
 [[bench]]
 name = "day15"
+harness = false
+
+[[bench]]
+name = "day16"
 harness = false

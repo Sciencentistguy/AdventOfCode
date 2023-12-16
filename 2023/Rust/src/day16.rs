@@ -1,9 +1,73 @@
+use bitvec::prelude::*;
+use rayon::prelude::*;
+
+#[derive(Clone, Copy)]
+pub enum Optic {
+    None,
+    HorizontalSplitter,
+    VerticalSplitter,
+    ForwardMirror,
+    BackwardMirror,
+}
+
+impl Optic {
+    fn from_char(c: char) -> Self {
+        match c {
+            '.' => Self::None,
+            '-' => Self::HorizontalSplitter,
+            '|' => Self::VerticalSplitter,
+            '/' => Self::ForwardMirror,
+            '\\' => Self::BackwardMirror,
+            _ => unreachable!(),
+        }
+    }
+
+    fn next_op(self, dir: Direction) -> Operation {
+        use Direction::*;
+        use Operation::*;
+        match self {
+            Optic::None => Operation::Follow(dir),
+            Optic::HorizontalSplitter => match dir {
+                Up | Down => Split(Left, Right),
+                Left | Right => Follow(dir),
+            },
+            Optic::VerticalSplitter => match dir {
+                Up | Down => Follow(dir),
+                Left | Right => Split(Up, Down),
+            },
+            Optic::ForwardMirror | Optic::BackwardMirror => Follow(dir.reflect_in(self)),
+        }
+    }
+}
+
 #[derive(Debug, Copy, Clone, Eq, PartialEq)]
 pub enum Direction {
     Up,
     Down,
     Left,
     Right,
+}
+
+impl Direction {
+    fn reflect_in(self, mirror: Optic) -> Self {
+        use Direction::*;
+
+        match mirror {
+            Optic::ForwardMirror => match self {
+                Up => Right,
+                Down => Left,
+                Left => Down,
+                Right => Up,
+            },
+            Optic::BackwardMirror => match self {
+                Up => Left,
+                Down => Right,
+                Left => Up,
+                Right => Down,
+            },
+            _ => panic!("Cannot reflect in an optic that is not a mirror"),
+        }
+    }
 }
 
 impl Direction {
@@ -23,62 +87,28 @@ enum Operation {
     Split(Direction, Direction),
 }
 
-pub fn parse(input: &str) -> Vec<&[u8]> {
-    input.lines().map(|x| x.as_bytes()).collect()
-}
-
 fn energise(
-    input: &[&[u8]],
+    input: &[Vec<Optic>],
     starting_row: usize,
     starting_col: usize,
     starting_direction: Direction,
 ) -> usize {
-    use Direction::*;
-    use Operation::*;
-
     let num_rows = input.len();
     let num_cols = input[0].len();
 
-    let mut seen = vec![vec![0u8; num_cols]; num_rows];
-    seen[0][0] |= 1 << (starting_direction as u32);
+    let mut seen = vec![vec![bitarr![u8, Lsb0; 0; 4]; num_cols]; num_rows];
+    seen[0][0].set(starting_direction as usize, true);
 
     // State is stored in tuples of (row, col, direction)
     let mut stack = Vec::new();
     stack.push((starting_row, starting_col, starting_direction));
 
     while let Some((row, col, dir)) = stack.pop() {
-        let next = match input[row][col] {
-            b'.' => Follow(dir),
-            b'-' => match dir {
-                Up | Down => Split(Left, Right),
-                Left | Right => Follow(dir),
-            },
-            b'|' => match dir {
-                Up | Down => Follow(dir),
-                Left | Right => Split(Up, Down),
-            },
-            b'/' => match dir {
-                Up => Follow(Right),
-                Down => Follow(Left),
-                Left => Follow(Down),
-                Right => Follow(Up),
-            },
-
-            b'\\' => match dir {
-                Up => Follow(Left),
-                Down => Follow(Right),
-                Left => Follow(Up),
-                Right => Follow(Down),
-            },
-
-            _ => unreachable!(),
-        };
-
-        match next {
-            Follow(dir) => {
+        match input[row][col].next_op(dir) {
+            Operation::Follow(dir) => {
                 follow(num_rows, num_cols, row, col, dir, &mut seen, &mut stack);
             }
-            Split(dir1, dir2) => {
+            Operation::Split(dir1, dir2) => {
                 follow(num_rows, num_cols, row, col, dir1, &mut seen, &mut stack);
                 follow(num_rows, num_cols, row, col, dir2, &mut seen, &mut stack);
             }
@@ -87,55 +117,70 @@ fn energise(
 
     seen.into_iter()
         .flat_map(|x| x.into_iter())
-        .filter(|&x| x != 0)
+        .filter(|x| x.into_inner()[0] != 0)
         .count()
 }
 
 fn follow(
-    rows: usize,
-    cols: usize,
+    num_rows: usize,
+    num_cols: usize,
     row: usize,
     col: usize,
     dir: Direction,
-    seen: &mut [Vec<u8>],
+    seen: &mut [Vec<BitArray<[u8; 1]>>],
     queue: &mut Vec<(usize, usize, Direction)>,
 ) {
     let Some((row, col)) = dir.apply(row, col) else {
         return;
     };
 
-    if row >= rows || col >= cols {
+    if row >= num_rows || col >= num_cols {
         return;
     }
 
-    if seen[row][col] & (1 << dir as u32) != 0 {
+    if seen[row][col][dir as usize] {
         return;
     }
 
-    seen[row][col] |= 1 << dir as u32;
+    seen[row][col].set(dir as usize, true);
     queue.push((row, col, dir));
 }
 
-pub fn part1(cavern: &[&[u8]]) -> usize {
+pub fn parse(input: &str) -> Vec<Vec<Optic>> {
+    input
+        .lines()
+        .map(|x| x.chars().map(Optic::from_char).collect())
+        .collect()
+}
+
+pub fn part1(cavern: &[Vec<Optic>]) -> usize {
     energise(cavern, 0, 0, Direction::Right)
 }
 
-pub fn part2(cavern: &[&[u8]]) -> usize {
-    let rows = cavern.len();
-    let cols = cavern[0].len();
+pub fn part2(cavern: &[Vec<Optic>]) -> usize {
+    let num_rows = cavern.len();
+    let num_cols = cavern[0].len();
 
-    let mut ret = 0;
-    for r in 0..rows {
-        ret = ret.max(energise(cavern, r, 0, Direction::Right));
-        ret = ret.max(energise(cavern, r, cols - 1, Direction::Left));
-    }
-
-    for c in 0..cols {
-        ret = ret.max(energise(cavern, 0, c, Direction::Down));
-        ret = ret.max(energise(cavern, rows - 1, c, Direction::Up));
-    }
-
-    ret
+    (0..num_rows)
+        .into_par_iter()
+        .map(|r| {
+            energise(cavern, r, 0, Direction::Right).max(energise(
+                cavern,
+                r,
+                num_cols - 1,
+                Direction::Left,
+            ))
+        })
+        .chain((0..num_cols).into_par_iter().map(|c| {
+            energise(cavern, 0, c, Direction::Down).max(energise(
+                cavern,
+                num_rows - 1,
+                c,
+                Direction::Up,
+            ))
+        }))
+        .max()
+        .unwrap()
 }
 
 pub fn run(input: &str) {
@@ -165,6 +210,6 @@ mod tests {
     }
     #[test]
     fn test_part2() {
-        // assert_eq!(part2(&parse(INPUT)), 2);
+        assert_eq!(part2(&parse(INPUT)), 52);
     }
 }
