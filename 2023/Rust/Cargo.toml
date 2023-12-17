@@ -26,6 +26,7 @@ tap = "1.0.1"
 itertools = "0.10.5"
 linked-hash-map = "0.5.6"
 bitvec = "1.0.1"
+pathfinding = "4.6.0"
 
 [[bench]]
 name = "day01"
@@ -89,6 +90,10 @@ harness = false
 
 [[bench]]
 name = "day16"
+harness = false
+
+[[bench]]
+name = "day17"
 harness = false
 
 [[bench]]
