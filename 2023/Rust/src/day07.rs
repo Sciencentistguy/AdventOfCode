@@ -14,7 +14,8 @@ impl Rules {
     }
 
     fn get_card_strength(&self, label: u8) -> usize {
-        self.card_strengths_map[(label - b'2') as usize].expect("the card type should be one of the expected ones")
+        self.card_strengths_map[(label - b'2') as usize]
+            .expect("the card type should be one of the expected ones")
     }
 }
 
