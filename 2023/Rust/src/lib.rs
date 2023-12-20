@@ -3,6 +3,7 @@
 #![feature(inline_const)]
 #![feature(pattern)]
 #![feature(never_type)]
+#![feature(let_chains)]
 
 mod common;
 
@@ -25,3 +26,4 @@ pub mod day16;
 pub mod day17;
 pub mod day18;
 pub mod day19;
+pub mod day20;

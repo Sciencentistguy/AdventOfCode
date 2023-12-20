@@ -3,6 +3,7 @@
 #![feature(inline_const)]
 #![feature(pattern)]
 #![feature(never_type)]
+#![feature(let_chains)]
 
 use std::process::ExitCode;
 
@@ -31,6 +32,7 @@ mod day16;
 mod day17;
 mod day18;
 mod day19;
+mod day20;
 
 fn main() -> Result<ExitCode> {
     color_eyre::install()?;
@@ -59,6 +61,7 @@ fn main() -> Result<ExitCode> {
         17 => day17::run(&aoc.read_or_fetch(17)?),
         18 => day18::run(&aoc.read_or_fetch(18)?),
         19 => day19::run(&aoc.read_or_fetch(19)?),
+        20 => day20::run(&aoc.read_or_fetch(20)?),
         day => {
             eprintln!("Day {day} does not exist / is not implemented yet");
             return Ok(ExitCode::FAILURE);
