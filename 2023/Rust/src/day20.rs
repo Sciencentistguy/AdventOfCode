@@ -254,7 +254,9 @@ pub fn solve(modules: &HashMap<&str, Module>) -> (Option<u64>, Option<u64>) {
             }
 
             for message in to_enqueue.drain(..) {
-                if let Some(ptr) = targets.get_mut(&message.to) && message.pulse.is_low() {
+                if let Some(ptr) = targets.get_mut(&message.to)
+                    && message.pulse.is_low()
+                {
                     *ptr = button_presses;
                 }
                 let possible_ret = targets.values().product();
