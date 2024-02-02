@@ -1,6 +1,6 @@
 module Day01 where
 
-import AOC
+import AoC
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Safe

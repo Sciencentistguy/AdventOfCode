@@ -5,7 +5,7 @@ module Day02
   )
 where
 
-import AOC
+import AoC
 import Common
 import Data.Functor (($>))
 import Data.Text (Text)

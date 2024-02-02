@@ -1,0 +1,66 @@
+cabal-version:   3.0
+name:            aoc2015
+version:         0.1.0.0
+license:         MPL-2.0
+author:          Jamie Quigley
+maintainer:      jamie@quigley.xyz
+
+common flags
+    ghc-options: -Wall -Wno-name-shadowing
+    default-extensions:
+        RecordWildCards
+        LambdaCase
+        BlockArguments
+        FlexibleContexts
+
+library
+    import: flags
+    hs-source-dirs: src
+    build-depends: 
+        , base
+        , aoc-haskell
+        , text
+        , safe
+        , split
+        , megaparsec
+        , lens
+        , containers
+        , mtl
+        , vector
+        , primitive
+        , scientific
+        , bytestring
+        , aeson
+        , hashable
+        , unordered-containers
+        , array
+        , extra 
+        , crypton
+        , memory
+    exposed-modules:
+        Day01
+        Day02
+        Day03
+        Day04
+        Day05
+        Day06
+        Day07
+        Day08
+        Day09
+        Day10
+        Day11
+        Day12
+    other-modules:
+        Common
+    default-language: Haskell2010
+
+executable aoc2015
+    import: flags
+    main-is: Main.hs
+    build-depends: 
+        aoc2015
+        , base
+        , aoc-haskell
+        , text
+    hs-source-dirs:   app
+    default-language: Haskell2010

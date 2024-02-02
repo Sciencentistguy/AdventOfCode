@@ -6,7 +6,7 @@ module Day05
   )
 where
 
-import AOC
+import AoC
 import Common
 import Control.Applicative (Applicative (liftA2))
 import Data.Char (digitToInt)

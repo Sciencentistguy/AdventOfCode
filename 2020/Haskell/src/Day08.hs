@@ -5,7 +5,7 @@ module Day08
   )
 where
 
-import AOC
+import AoC
 import Common
 import Control.Comonad.Store (ComonadStore (peeks))
 import Control.Lens (holesOf)

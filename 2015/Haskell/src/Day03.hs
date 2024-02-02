@@ -3,7 +3,7 @@ module Day03
   )
 where
 
-import AOC
+import AoC
 import Common
 import Data.Functor (($>))
 import Data.HashSet (HashSet)

@@ -2,7 +2,7 @@
 
 module Main where
 
-import AOC
+import AoC
 import qualified Data.Text as Text
 import Day01
 import Day02
@@ -20,12 +20,7 @@ import System.Environment (lookupEnv)
 
 main :: IO ()
 main = do
-  token <-
-    Token . Text.strip . Text.pack
-      <$> ( lookupEnv "TOKEN" >>= \case
-              Nothing -> error "`TOKEN` environment variable must be set"
-              Just a -> return a
-          )
+  token <- getToken
   runAoC token day01
   runAoC token day02
   runAoC token day03

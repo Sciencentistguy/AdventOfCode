@@ -2,7 +2,7 @@
 
 module Day10 (day10) where
 
-import AOC
+import AoC
 import Data.Foldable (Foldable (fold), find, toList)
 import qualified Data.HashMap.Lazy as HM
 import Data.Hashable

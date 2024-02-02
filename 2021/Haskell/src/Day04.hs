@@ -5,7 +5,7 @@ module Day04
   )
 where
 
-import AOC
+import AoC
 import Common
 import Control.Monad (join)
 import Data.IntSet (IntSet)

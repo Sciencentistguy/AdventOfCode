@@ -1,6 +1,6 @@
 module Day03 where
 
-import AOC
+import AoC
 import Common
 import Data.Foldable
 import Data.List

@@ -2,7 +2,7 @@
 
 module Main where
 
-import AOC
+import AoC
 import qualified Data.Text as T
 import Day01
 import Day02

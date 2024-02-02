@@ -6,7 +6,7 @@ module Day12
   )
 where
 
-import AOC
+import AoC
 import Common
 import Control.Applicative
 import Data.Aeson

@@ -5,7 +5,7 @@ module Day06
   )
 where
 
-import AOC
+import AoC
 import Common
 import Control.Monad.ST
 import Data.Array.ST

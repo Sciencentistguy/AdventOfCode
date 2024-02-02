@@ -3,7 +3,7 @@ module Day10
   )
 where
 
-import AOC
+import AoC
 import Common
 import Control.Applicative
 import Control.Monad ((<=<))

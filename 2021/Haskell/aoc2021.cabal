@@ -1,0 +1,72 @@
+cabal-version: 3.0
+name:           aoc2021
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/Sciencentistguy/AdventOfCode#readme>
+homepage:       https://github.com/Sciencentistguy/AdventOfCode#readme bug-reports:    https://github.com/Sciencentistguy/AdventOfCode/issues
+author:         Jamie Quigley
+maintainer:     jamie@quigley.xyz
+copyright:      2021 Jamie Quigley
+license:        MPL-2.0
+build-type:     Simple
+
+source-repository head
+  type: git
+  location: https://github.com/Sciencentistguy/AdventOfCode
+
+
+common flags
+  default-extensions:
+      BlockArguments
+      FlexibleContexts
+      GADTs
+      LambdaCase
+      NamedFieldPuns
+      OverloadedStrings
+      RecordWildCards
+      TupleSections
+  ghc-options: -Wall -Wno-name-shadowing -Wno-type-defaults -Wno-unused-imports
+
+library
+  import: flags
+  exposed-modules:
+      Common
+      Day01
+      Day02
+      Day03
+      Day04
+      Day05
+  hs-source-dirs:
+      src
+  build-depends:
+      algebraic-graphs
+    , base
+    , comonad
+    , containers
+    , directory
+    , extra
+    , hashable
+    , lens
+    , megaparsec
+    , parser-combinators
+    , primitive
+    , req
+    , safe
+    , split
+    , text
+    , unix
+    , unordered-containers
+    , vector
+    , aoc-haskell
+  default-language: Haskell2010
+
+executable aoc2021
+  import: flags
+  main-is: Main.hs
+  hs-source-dirs:
+      app
+  build-depends:
+      base
+    , aoc2021
+    , text
+    , aoc-haskell
+  default-language: Haskell2010

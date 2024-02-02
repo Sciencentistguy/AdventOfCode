@@ -3,7 +3,7 @@ module Day04
   )
 where
 
-import AOC
+import AoC
 import Common
 import Data.Char
 import Data.List

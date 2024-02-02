@@ -1,0 +1,8 @@
+packages:
+    ./aoc-haskell
+    ./2015/Haskell
+    ./2019/Haskell
+    ./2020/Haskell
+    ./2021/Haskell
+    ./2022/Haskell
+

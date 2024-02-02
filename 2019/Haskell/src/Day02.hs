@@ -1,6 +1,6 @@
 module Day02 where
 
-import AOC
+import AoC
 import Common
 import Control.Monad.ST
 import Data.List

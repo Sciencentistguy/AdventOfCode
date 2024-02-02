@@ -1,5 +1,5 @@
 cabal-version:   3.0
-name:            aoc
+name:            aoc2022
 version:         0.1.0.0
 license:         MPL-2.0
 author:          Jamie Quigley
@@ -12,26 +12,13 @@ common extensions
     default-extensions:
         RecordWildCards
 
-library aoc-lib
-    import: warnings
-    import: extensions
-    hs-source-dirs: aoc
-    build-depends: 
-        , base
-        , text
-        , directory
-        , req
-    exposed-modules:
-        AoC
-    default-language: Haskell2010
-
 library src
     import: warnings
     import: extensions
     hs-source-dirs: src
     build-depends: 
         , base
-        , aoc-lib
+        , aoc-haskell
         , text
         , safe
         , split
@@ -56,7 +43,7 @@ executable aoc-2022
     main-is: Main.hs
     build-depends: 
         , base
-        , aoc-lib
+        , aoc-haskell
         , src
         , safe
     hs-source-dirs:   app

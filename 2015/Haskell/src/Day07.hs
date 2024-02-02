@@ -5,7 +5,7 @@ module Day07
   )
 where
 
-import AOC (Runner (..))
+import AoC (Runner (..))
 import Common
 import Data.Bits (Bits (complement, shiftL, shiftR, (.&.), (.|.)))
 import Data.Char (isAlpha, isDigit)

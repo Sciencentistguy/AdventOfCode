@@ -1,10 +1,6 @@
-{-# LANGUAGE LambdaCase #-}
-{-# LANGUAGE OverloadedStrings #-}
-
-module AOC where
+module AoC where
 
 import Control.Monad (unless)
-import Data.Maybe (fromJust)
 import Data.String (IsString (fromString))
 import Data.Text (Text)
 import qualified Data.Text as Text
@@ -14,32 +10,72 @@ import Network.HTTP.Req
 import System.Directory
   ( createDirectory,
     doesDirectoryExist,
-    doesFileExist,
+    doesFileExist, getCurrentDirectory,
   )
-import System.Environment (getEnv)
-import System.Posix.ByteString (CMode (CMode))
+import System.Environment (getEnv, lookupEnv)
 import Text.Printf (printf)
+import System.IO
+import System.Exit
+import Debug.Trace (traceShow, trace)
+import System.FilePath ((</>), takeDirectory)
 
 newtype Token = Token Text
 
-data Runner a out = Runner
+instance Show Token where
+    show (Token token) = "Token (" ++ show token ++ ")"
+
+getTokenFromEnv :: IO (Maybe Token)
+getTokenFromEnv = fmap (Token . Text.strip . Text.pack) <$> lookupEnv "TOKEN"
+
+getTokenFromFile :: String -> IO Token
+getTokenFromFile filename = Token . Text.strip . Text.pack <$> readFile filename
+
+findTokenFile :: FilePath -> IO (Maybe FilePath)
+findTokenFile dir = do
+  let tokenPath = dir </> "tokenfile"
+  exists <- doesFileExist tokenPath
+  if exists
+    then return (Just tokenPath)
+    else do
+      let parentDir = takeDirectory dir
+      if parentDir == dir
+        then return Nothing
+        else findTokenFile parentDir
+
+getToken :: IO Token
+getToken = getTokenFromEnv >>= \case
+  Just token -> return token
+  Nothing -> getCurrentDirectory >>= findTokenFile >>= \case
+    Just path -> getTokenFromFile path
+    Nothing -> error "Could not find tokenfile, and $TOKEN not set"
+
+data Runner parsed out = Runner
   { day :: Int,
     year :: Int,
-    parser :: Text -> Maybe a,
-    part1 :: a -> Maybe out,
-    part2 :: a -> Maybe out
-  }
+    parser :: Text -> Maybe parsed,
+    part1 :: parsed -> Maybe out,
+    part2 :: parsed -> Maybe out
+    }
+
+ePutStrLn :: String -> IO ()
+ePutStrLn = hPutStrLn stderr
 
 runAoC :: Show out => Token -> Runner a out -> IO ()
 runAoC token Runner {..} = do
   ensureCacheExists year
   input <- fetchInput token year day
-  let parsed = fromJust $ parser input
-      part1Solution = fromJust $ part1 parsed
-  putStrLn $ printf "The solution to %d day %02d (part 1) is: %s" year day (show part1Solution)
-  let part2Solution = fromJust $ part2 parsed
-  putStrLn $ printf "The solution to %d day %02d (part 2) is: %s" year day (show part2Solution)
-  putStrLn ""
+  putStrLn $ printf "%d day %02d" year day
+  parsed <- case parser input of
+    Nothing -> ePutStrLn "Failed to parse input" >> exitFailure
+    Just x -> return x
+  part1Solution <- case part1 parsed of
+    Nothing -> ePutStrLn "Failed to solve part 1" >> exitFailure
+    Just x -> return x
+  putStrLn $ printf "Part 1: %s" (show part1Solution)
+  part2Solution <- case part2 parsed of
+    Nothing -> ePutStrLn "Failed to solve part 2" >> exitFailure
+    Just x -> return x
+  putStrLn $ printf "Part 2: %s" (show part2Solution)
 
 fetchInput :: Token -> Int -> Int -> IO Text
 fetchInput token year day =

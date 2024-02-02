@@ -3,7 +3,7 @@ module Day01
   )
 where
 
-import AOC
+import AoC
 import Common (windows)
 import Data.Text (Text)
 import qualified Data.Text as Text

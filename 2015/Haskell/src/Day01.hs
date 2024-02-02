@@ -3,7 +3,7 @@ module Day01
   )
 where
 
-import AOC
+import AoC
 import Control.Applicative (Applicative (liftA2))
 import Data.List (inits)
 import Data.List.Extra (elemIndex)

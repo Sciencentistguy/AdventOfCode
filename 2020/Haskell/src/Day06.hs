@@ -3,7 +3,7 @@ module Day06
   )
 where
 
-import AOC
+import AoC
 import Common
 import Data.List
 import Data.Text (Text)

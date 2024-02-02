@@ -1,6 +1,6 @@
 module Day05 where
 
-import AOC
+import AoC
 import Common
 import Control.Monad.ST
 import Data.Text (Text)

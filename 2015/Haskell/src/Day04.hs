@@ -3,22 +3,18 @@ module Day04
   )
 where
 
-import AOC
-import Common
-import qualified Crypto.Hash.MD5 as MD5
+import AoC
+import qualified Crypto.Hash as Hash
 import Data.Bits (shiftR, (.&.))
-import qualified Data.ByteString as B
 import qualified Data.ByteString.Char8 as BC
 import Data.Char (intToDigit)
 import Data.List (find)
 import Data.Maybe
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Debug.Trace
 import GHC.Word (Word8)
-import Text.Megaparsec
-import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
+import Crypto.Hash (Digest)
+import qualified Data.ByteArray as BA
 
 type Parsed = String
 
@@ -28,8 +24,9 @@ byteHex b = intToDigit <$> [fromIntegral b `shiftR` 4, fromIntegral b .&. 0xf]
 showHex :: [Word8] -> String
 showHex = (=<<) byteHex
 
+
 hashString :: String -> String
-hashString s = showHex $ B.unpack $ MD5.hash $ BC.pack s
+hashString s = showHex $ BA.unpack $ Hash.hashWith Hash.MD5 $ BC.pack s
 
 solve :: Int -> String -> Maybe Int
 solve numDigits input = find valid [1 ..]

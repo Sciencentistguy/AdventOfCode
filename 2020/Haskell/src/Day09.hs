@@ -2,7 +2,7 @@
 
 module Day09 (day09) where
 
-import AOC
+import AoC
 import Common (windows)
 import Control.Monad (guard)
 import Control.Monad.Extra (anyM)

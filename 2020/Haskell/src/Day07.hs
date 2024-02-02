@@ -2,7 +2,7 @@
 
 module Day07 (day07) where
 
-import AOC
+import AoC
 import Algebra.Graph.HigherKinded.Class (Graph)
 import qualified Algebra.Graph.Labelled as GL
 import qualified Algebra.Graph.ToGraph as G
