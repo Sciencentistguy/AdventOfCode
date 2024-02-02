@@ -1,6 +1,7 @@
 module Common where
 
 import Control.Applicative
+import Data.Char (isSpace)
 import Data.List
 import GHC.IO (unsafePerformIO)
 import Text.Megaparsec (ParseErrorBundle, ShowErrorComponent, TraversableStream, VisualStream, errorBundlePretty)
@@ -25,3 +26,8 @@ transpose' = getZipList . traverse ZipList
 
 windows :: Int -> [a] -> [[a]]
 windows m = transpose' . take m . tails
+
+trim :: String -> String
+trim = f . f
+  where
+    f = reverse . dropWhile isSpace
