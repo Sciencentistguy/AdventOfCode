@@ -1,6 +1,7 @@
 module Common where
 
 import Control.Applicative
+import Control.Monad (MonadPlus (..))
 import Data.Char (isSpace)
 import Data.List
 import GHC.IO (unsafePerformIO)
@@ -31,3 +32,7 @@ trim :: String -> String
 trim = f . f
   where
     f = reverse . dropWhile isSpace
+
+ok :: (MonadPlus m) => Either a b -> m b
+ok (Left _) = mzero
+ok (Right a) = return a
