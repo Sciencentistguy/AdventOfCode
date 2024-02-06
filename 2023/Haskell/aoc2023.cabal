@@ -20,9 +20,11 @@ library src
         , text
         , safe
         , megaparsec
+        , containers
     exposed-modules:
         Day01
         Day02
+        Day04
     other-modules:
         Common
     default-language: Haskell2010
