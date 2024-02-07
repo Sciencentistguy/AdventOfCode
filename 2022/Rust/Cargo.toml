@@ -12,7 +12,7 @@ panic = "abort"
 debug = true
 
 [dependencies]
-arrayvec = "0.7.2"
+arrayvec = "0.7.4"
 clap = { version = "4.0.29", features = ["derive"] }
 emergence = "1.1.0"
 id_tree = "1.8.0"
