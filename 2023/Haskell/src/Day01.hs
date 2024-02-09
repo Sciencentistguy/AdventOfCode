@@ -7,19 +7,14 @@ import Data.Char (digitToInt, isDigit)
 import Data.Functor ((<&>))
 import Data.Text (Text)
 import qualified Data.Text as Text
-import GHC.List (foldl')
 
 type Parsed = [Text]
 
-ops :: [(Text, Text)]
-ops = zip ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"] ["o1e", "t2o", "t3ree", "f4ur", "f5ve", "s6x", "s7ven", "e8ght", "n9ne"]
+replaceOps :: [Text -> Text]
+replaceOps = zipWith Text.replace ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine"] ["o1e", "t2o", "t3ree", "f4ur", "f5ve", "s6x", "s7ven", "e8ght", "n9ne"]
 
 replaceTextualNumbers :: Text -> Text
-replaceTextualNumbers text =
-    foldl'
-        (flip ($))
-        text
-        (uncurry Text.replace <$> ops)
+replaceTextualNumbers = flip (foldr ($)) replaceOps
 
 fixp :: (Eq a) => (a -> a) -> a -> a
 fixp f x =
