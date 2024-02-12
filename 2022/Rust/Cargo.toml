@@ -20,7 +20,7 @@ itertools = "0.10.5"
 lazy_format = "2.0.0"
 memchr = "2.5.0"
 ndarray = "0.15.6"
-pathfinding = "4.0.0"
+pathfinding = "4.9.1"
 rustc-hash = "1.1.0"
 tap = "1.0.1"
 
