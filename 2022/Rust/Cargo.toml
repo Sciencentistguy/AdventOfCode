@@ -13,7 +13,7 @@ debug = true
 
 [dependencies]
 arrayvec = "0.7.2"
-clap = { version = "4.0.29", features = ["derive"] }
+clap = { version = "4.5.4", features = ["derive"] }
 emergence = "1.1.0"
 id_tree = "1.8.0"
 itertools = "0.10.5"
