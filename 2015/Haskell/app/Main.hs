@@ -1,9 +1,8 @@
-{-# LANGUAGE LambdaCase #-}
+{-# LANGUAGE RankNTypes #-}
 
 module Main where
 
 import AoC
-import qualified Data.Text as Text
 import Day01
 import Day02
 import Day03
@@ -16,20 +15,32 @@ import Day09
 import Day10
 import Day11
 import Day12
-import System.Environment (lookupEnv)
+import Safe
+import System.Environment (getArgs)
 
 main :: IO ()
 main = do
   token <- getToken
-  runAoC token day01
-  runAoC token day02
-  runAoC token day03
-  runAoC token day04
-  runAoC token day05
-  runAoC token day06
-  runAoC token day07
-  runAoC token day08
-  runAoC token day09
-  runAoC token day10
-  runAoC token day11
-  runAoC token day12
+  let runDay :: forall out a. Show out => Runner a out -> IO ()
+      runDay = runAoC token
+
+  (arg : _) <- getArgs
+
+  let day = case readMay arg :: Maybe Int of
+        Just x -> x
+        Nothing -> error $ "Invalid (or no) day passed: " ++ arg
+
+  case day of
+    1 -> runDay day01
+    2 -> runDay day02
+    3 -> runDay day03
+    4 -> runDay day04
+    5 -> runDay day05
+    6 -> runDay day06
+    7 -> runDay day07
+    8 -> runDay day08
+    9 -> runDay day09
+    10 -> runDay day10
+    11 -> runDay day11
+    12 -> runDay day12
+    _ -> error $ "Day " ++ show day ++ " is not yet implemented."

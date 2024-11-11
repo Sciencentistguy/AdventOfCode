@@ -62,5 +62,6 @@ executable aoc2015
         , base
         , aoc-haskell
         , text
+        , safe
     hs-source-dirs:   app
     default-language: Haskell2010
