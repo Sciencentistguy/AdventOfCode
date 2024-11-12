@@ -45,8 +45,8 @@ fn total_wins(race: &Race) -> u32 {
     // integer boundary, which will cause errors. A small offset is added in the correct direction
     // to solve this.
 
-    let upper = ((b + disc) / 2.0 - 0.0001).floor() as u32;
-    let lower = ((b - disc) / 2.0 + 0.0001).ceil() as u32;
+    let upper = dbg!(((b + disc) / 2.0 - 0.0001).floor() as u32);
+    let lower = dbg!(((b - disc) / 2.0 + 0.0001).ceil() as u32);
 
     upper - lower + 1
 }

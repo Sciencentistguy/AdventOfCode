@@ -10,19 +10,19 @@ import Network.HTTP.Req
 import System.Directory
   ( createDirectory,
     doesDirectoryExist,
-    doesFileExist, getCurrentDirectory,
+    doesFileExist,
+    getCurrentDirectory,
   )
 import System.Environment (getEnv, lookupEnv)
-import Text.Printf (printf)
-import System.IO
 import System.Exit
-import Debug.Trace (traceShow, trace)
-import System.FilePath ((</>), takeDirectory)
+import System.FilePath (takeDirectory, (</>))
+import System.IO
+import Text.Printf (printf)
 
 newtype Token = Token Text
 
 instance Show Token where
-    show (Token token) = "Token (" ++ show token ++ ")"
+  show (Token token) = "Token (" ++ show token ++ ")"
 
 getTokenFromEnv :: IO (Maybe Token)
 getTokenFromEnv = fmap (Token . Text.strip . Text.pack) <$> lookupEnv "TOKEN"
@@ -43,11 +43,13 @@ findTokenFile dir = do
         else findTokenFile parentDir
 
 getToken :: IO Token
-getToken = getTokenFromEnv >>= \case
-  Just token -> return token
-  Nothing -> getCurrentDirectory >>= findTokenFile >>= \case
-    Just path -> getTokenFromFile path
-    Nothing -> error "Could not find tokenfile, and $TOKEN not set"
+getToken =
+  getTokenFromEnv >>= \case
+    Just token -> return token
+    Nothing ->
+      getCurrentDirectory >>= findTokenFile >>= \case
+        Just path -> getTokenFromFile path
+        Nothing -> error "Could not find tokenfile, and $TOKEN not set"
 
 data Runner parsed out = Runner
   { day :: Int,
@@ -55,12 +57,12 @@ data Runner parsed out = Runner
     parser :: Text -> Maybe parsed,
     part1 :: parsed -> Maybe out,
     part2 :: parsed -> Maybe out
-    }
+  }
 
 ePutStrLn :: String -> IO ()
 ePutStrLn = hPutStrLn stderr
 
-runAoC :: Show out => Token -> Runner a out -> IO ()
+runAoC :: (Show out) => Token -> Runner a out -> IO ()
 runAoC token Runner {..} = do
   ensureCacheExists year
   input <- fetchInput token year day
@@ -131,5 +133,5 @@ cacheWrite year day text = do
   let path = printf "%s/.aoc/%d/day%02d.txt" home year day
   Text.writeFile path text
 
-textShow :: Show a => a -> Text
+textShow :: (Show a) => a -> Text
 textShow = Text.pack . show

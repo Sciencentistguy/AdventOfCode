@@ -9,7 +9,7 @@ import Text.Megaparsec
 import Text.Megaparsec.Char (space1)
 import qualified Text.Megaparsec.Char.Lexer as L
 
-split :: Eq a => a -> [a] -> [[a]]
+split :: (Eq a) => a -> [a] -> [[a]]
 split _ [] = []
 split onChar toSplit = before : split onChar (drop 1 after)
   where
@@ -18,7 +18,7 @@ split onChar toSplit = before : split onChar (drop 1 after)
 countOccurences :: (Foldable t, Eq a) => t a -> a -> Int
 countOccurences str c = countTrue (== c) str
 
-countTrue :: Foldable t => (a -> Bool) -> t a -> Int
+countTrue :: (Foldable t) => (a -> Bool) -> t a -> Int
 countTrue p = length . filter p . toList
 
 groupEntries :: [String] -> [String]
@@ -50,7 +50,7 @@ symbol = L.symbol spaces
 windows :: Int -> [a] -> [[a]]
 windows n xs = transpose $ take n $ tails xs
 
-unzipWith :: Functor f => (a -> b -> c) -> f (a, b) -> f c
+unzipWith :: (Functor f) => (a -> b -> c) -> f (a, b) -> f c
 unzipWith f = fmap (uncurry f)
 
 unwrapParser ::
@@ -71,3 +71,13 @@ tiles size skip = envelop tile []
     tile partial rest
       | length rest < size = (partial, [])
       | otherwise = (partial ++ [take size rest], drop skip rest)
+
+modifyAtN :: (a -> a) -> Int -> [a] -> [a]
+modifyAtN f idx ls
+  | idx < 0 || idx >= length ls = ls
+  | otherwise = take idx ls ++ [f (ls !! idx)] ++ drop (idx + 1) ls
+
+runNTimes :: Int -> (a -> a) -> a -> a
+runNTimes n f x
+  | n <= 0 = x
+  | otherwise = runNTimes (n - 1) f (f x)

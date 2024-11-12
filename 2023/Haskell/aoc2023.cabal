@@ -28,6 +28,7 @@ library src
         Day02
         Day04
         Day05
+        Day06
     other-modules:
         Common
         Common.Range

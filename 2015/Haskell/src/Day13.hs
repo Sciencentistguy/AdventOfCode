@@ -13,10 +13,8 @@ import Data.Functor
 import Data.List
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Data.Maybe (fromJust)
 import Data.Text (Text)
 import qualified Data.Text as Text
-import Debug.Trace
 import Safe
 
 type Parsed = [Person]

@@ -9,7 +9,7 @@ import Common.Range (Range (..))
 import qualified Common.Range as Range
 import Control.Monad (MonadPlus, guard)
 import Control.Monad.ST
-import Data.Foldable (for_, foldlM)
+import Data.Foldable (foldlM, for_)
 import Data.Functor ((<&>))
 import Data.List (find)
 import Data.List.Split
