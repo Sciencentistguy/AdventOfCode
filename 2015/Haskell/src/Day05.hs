@@ -4,7 +4,7 @@ module Day05
 where
 
 import AoC
-import Common
+import AoC.Common
 import Control.Applicative (liftA2, liftA3)
 import Data.Functor (($>))
 import Data.HashSet (HashSet)

@@ -4,7 +4,7 @@ module Day09
 where
 
 import AoC
-import Common
+import AoC.Common
 import Control.Applicative
 import Control.Arrow ((&&&))
 import Data.Bifunctor (Bifunctor, bimap)

@@ -4,7 +4,7 @@ module Day03
 where
 
 import AoC
-import Common
+import AoC.Common
 import Data.Functor (($>))
 import Data.HashSet (HashSet)
 import qualified Data.HashSet as HS

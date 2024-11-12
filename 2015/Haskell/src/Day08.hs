@@ -6,7 +6,7 @@ module Day08
 where
 
 import AoC
-import Common
+import AoC.Common
 import Control.Arrow ((&&&))
 import Control.Monad.ST
 import Data.Array.ST

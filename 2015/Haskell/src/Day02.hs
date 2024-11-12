@@ -4,7 +4,7 @@ module Day02
 where
 
 import AoC
-import Common
+import AoC.Common
 import Data.List
 import Data.Text (Text)
 import qualified Data.Text as Text

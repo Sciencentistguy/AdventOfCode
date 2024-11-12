@@ -4,7 +4,7 @@ module Day10
 where
 
 import AoC
-import Common
+import AoC.Common
 import Control.Applicative
 import Control.Monad ((<=<))
 import Data.List (group)

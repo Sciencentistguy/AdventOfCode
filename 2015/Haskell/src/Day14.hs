@@ -4,7 +4,7 @@ module Day14
 where
 
 import AoC
-import Common (modifyAtN, runNTimes)
+import AoC.Common (modifyAtN, runNTimes)
 import Data.List.Extra (maximumOn)
 import Data.Text (Text)
 import qualified Data.Text as Text

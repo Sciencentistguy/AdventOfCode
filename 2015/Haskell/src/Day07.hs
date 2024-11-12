@@ -6,7 +6,7 @@ module Day07
 where
 
 import AoC (Runner (..))
-import Common
+import AoC.Common
 import Data.Bits (Bits (complement, shiftL, shiftR, (.&.), (.|.)))
 import Data.Char (isAlpha, isDigit)
 import Data.Functor (($>), (<&>))

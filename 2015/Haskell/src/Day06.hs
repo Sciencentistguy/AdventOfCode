@@ -6,7 +6,7 @@ module Day06
 where
 
 import AoC
-import Common
+import AoC.Common
 import Control.Monad.ST
 import Data.Array.ST
 import Data.Foldable

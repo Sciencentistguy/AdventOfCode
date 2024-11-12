@@ -1,8 +1,7 @@
-module Common where
+module AoC.Common where
 
 import Data.Foldable (Foldable (toList))
 import Data.List (tails, transpose)
-import Data.Maybe
 import Data.Text (Text)
 import Data.Void (Void)
 import Text.Megaparsec

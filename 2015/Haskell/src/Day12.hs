@@ -7,7 +7,7 @@ module Day12
 where
 
 import AoC
-import Common
+import AoC.Common
 import Control.Applicative
 import Data.Aeson
 import qualified Data.Aeson.KeyMap as KM
