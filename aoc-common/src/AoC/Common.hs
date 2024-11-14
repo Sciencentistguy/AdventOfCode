@@ -80,3 +80,11 @@ runNTimes :: Int -> (a -> a) -> a -> a
 runNTimes n f x
   | n <= 0 = x
   | otherwise = runNTimes (n - 1) f (f x)
+
+-- | Return all combinations of a sequence of values.
+combinations :: [a] -> [[a]]
+combinations coins = concat [combs i coins | i <- [1 .. length coins]]
+  where
+    combs 0 _ = [[]]
+    combs _ [] = []
+    combs k (x : xs) = map (x :) (combs (k - 1) xs) ++ combs k xs
