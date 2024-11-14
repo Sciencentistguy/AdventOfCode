@@ -53,6 +53,7 @@ library
         Day12
         Day13
         Day14
+        Day16
     default-language: Haskell2010
 
 executable aoc2015
