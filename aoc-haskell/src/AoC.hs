@@ -135,3 +135,5 @@ cacheWrite year day text = do
 
 textShow :: (Show a) => a -> Text
 textShow = Text.pack . show
+
+data Part = Part1 | Part2
