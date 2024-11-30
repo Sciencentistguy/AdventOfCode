@@ -17,6 +17,7 @@ import Day11
 import Day12
 import Day13
 import Day14
+import Day15
 import Day16
 import Day17
 import Day18
@@ -53,6 +54,7 @@ main = do
     12 -> runDay day12
     13 -> runDay day13
     14 -> runDay day14
+    15 -> runDay day15
     16 -> runDay day16
     17 -> runDay day17
     18 -> runDay day18
