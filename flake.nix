@@ -7,7 +7,7 @@
       url = "github:numtide/flake-utils";
     };
     fenix = {
-      url = "github:nix-community/fenix";
+      url = "github:Sciencentistguy/fenix/fix-vscode-call";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-parts = {
@@ -33,33 +33,17 @@
       }: let
         fenix = inputs.fenix.packages.${system};
       in {
-        haskellProjects.default = {
-          projectFlakeName = "aoc-haskell";
-          # basePackages = pkgs.haskellPackages;
-
-          # Packages to add on top of `basePackages`, e.g. from Hackage
-          # packages = {
-          # aeson.source = "1.5.0.0"; # Hackage version
-          # };
-
-          # # my-haskell-package development shell configuration
-          # devShell = {
-          # hlsCheck.enable = false;
-          # };
-
-          # # What should haskell-flake add to flake outputs?
-          # autoWire = ["packages" "apps" "checks"]; # Wire all but the devShell
-        };
+        haskellProjects.default = {projectFlakeName = "aoc-haskell";};
 
         devShells = {
           haskell = pkgs.mkShell {
-            name = "my-haskell-package custom development shell";
+            name = "aoc-haskell";
             inputsFrom = [
               config.haskellProjects.default.outputs.devShell
             ];
-            nativeBuildInputs = with pkgs; [
-              # other development tools.
-            ];
+            # nativeBuildInputs = with pkgs; [
+                # other development tools.
+            # ];
           };
           rust = pkgs.mkShell {
             name = "aoc-rust";
@@ -68,8 +52,8 @@
                 (
                   fenix.toolchainOf {
                     channel = "nightly";
-                    date = "2023-11-29";
-                    sha256 = "sha256-NGdi7CZp3m6s4P4KMFoVfQmeKsWhLnioYoHcF66dBzk=";
+                    date = "2024-11-28";
+                    sha256 = "sha256-lmQQppk1opfsDa+37lYNHvOwC5CXgIInS7pAnLoMSKM=";
                   }
                 )
                 .toolchain
