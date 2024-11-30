@@ -22,8 +22,9 @@ import Day17
 import Day18
 import Day20
 import Day23
+import Day24
 import Safe
-import System.Environment (getArgs)
+import System.Environment (getArgs) 
 
 main :: IO ()
 main = do
@@ -57,4 +58,5 @@ main = do
     18 -> runDay day18
     20 -> runDay day20
     23 -> runDay day23
+    24 -> runDay day24
     _ -> error $ "Day " ++ show day ++ " is not yet implemented."
