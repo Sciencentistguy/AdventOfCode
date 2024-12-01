@@ -10,6 +10,7 @@ emergence = { path = "../../emergence" }
 clap = { version = "4.5.21", features = ["derive", "env"] }
 color-eyre = "0.6.3"
 criterion = "0.5.1"
+atoi = "2.0.0"
 
 [[bench]]
 name = "day01"

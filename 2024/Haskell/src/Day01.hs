@@ -1,16 +1,17 @@
-module Day01
-  ( day01,
-  )
+module Day01 (
+  day01,
+)
 where
 
 import AoC
 import AoC.Common (Parser, parseLines, unwrapParser)
+import Data.Bifunctor (Bifunctor (..))
 import Data.List (sort)
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parsed = ([Int], [Int])
 
@@ -27,8 +28,8 @@ pLine = do
 absdiff :: Int -> Int -> Int
 absdiff a b = abs (a - b)
 
-sortBoth :: (Ord a1, Ord a2) => ([a1], [a2]) -> ([a1], [a2])
-sortBoth (a, b) = (sort a, sort b)
+sortBoth :: (Bifunctor f, Ord a, Ord b) => f [a] [b] -> f [a] [b]
+sortBoth = bimap sort sort
 
 countIn :: Int -> [Int] -> Int
 countIn x = length . filter (== x)
@@ -43,4 +44,4 @@ day01 =
       part1 = return . sum . uncurry (zipWith absdiff)
       part2 :: Parsed -> Maybe Int
       part2 (left, right) = return $ foldl (\acc x -> acc + x * countIn x right) 0 left
-   in Runner {..}
+   in Runner{..}
