@@ -1,0 +1,19 @@
+[package]
+name = "emergence"
+version = "2.0.0"
+edition = "2021"
+description = "A small library to download and cache Advent of Code inputs"
+repository = "https://github.com/Sciencentistguy/emergence"
+license = "MPL-2.0"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = "0.4.23"
+dirs = "5.0.0"
+reqwest = { version = "0.11.13", features = ["blocking", "rustls-tls"], default-features = false }
+tap = "1.0.1"
+thiserror = "1.0.37"
+
+[dev-dependencies]
+tempdir = "0.3.7"
