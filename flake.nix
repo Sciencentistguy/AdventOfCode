@@ -33,7 +33,18 @@
       }: let
         fenix = inputs.fenix.packages.${system};
       in {
-        haskellProjects.aoc = {projectFlakeName = "aoc-haskell";};
+        haskellProjects.aoc = {
+          projectFlakeName = "aoc-haskell";
+          basePackages = pkgs.haskell.packages.ghc9101;
+          packages = {
+            hlint.source = pkgs.fetchFromGitHub {
+              owner = "ndmitchell";
+              repo = "hlint";
+              rev = "ad9a1f8485eb34d40a59cc0bd1457d03fbffd50d";
+              sha256 = "sha256-IqGhE9pAaK6CtVTPrsOpWvZMkvICng8pwv6KSGVAg9I=";
+            };
+          };
+        };
 
         devShells = rec {
           default = pkgs.mkShell {
