@@ -1,3 +1,5 @@
+use std::collections::HashMap;
+
 type Parsed = (Vec<u64>, Vec<u64>);
 type Solution = u64;
 
@@ -17,8 +19,8 @@ pub fn parse(input: &str) -> Parsed {
         right.push(b);
     }
 
-    left.sort();
-    right.sort();
+    left.sort_unstable();
+    right.sort_unstable();
 
     (left, right)
 }
@@ -30,20 +32,20 @@ pub fn part1((left, right): &Parsed) -> Solution {
         .sum()
 }
 
-fn count_in(v: &[u64], n: u64) -> u64 {
-    let mut count = 0;
+fn count(v: &[u64]) -> HashMap<u64, u64> {
+    let mut counts = HashMap::with_capacity(v.len());
     for &num in v {
-        if num == n {
-            count += 1;
-        }
+        *counts.entry(num).or_insert(0) += 1;
     }
-    count
+    counts
 }
 
 pub fn part2((left, right): &Parsed) -> Solution {
+    let counts = count(right);
+
     let mut counter = 0;
     for &num in left {
-        counter += num * count_in(right, num);
+        counter += num * counts.get(&num).unwrap_or(&0);
     }
     counter
 }
