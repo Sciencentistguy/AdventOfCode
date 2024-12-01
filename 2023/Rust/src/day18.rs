@@ -3,7 +3,7 @@ use std::{
     collections::VecDeque,
 };
 
-use crate::common::ArraySplit;
+use common::ArraySplit;
 
 #[derive(Debug, Clone, Copy)]
 enum Direction {

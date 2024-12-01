@@ -1,4 +1,4 @@
-use crate::common::ArraySplit;
+use common::ArraySplit;
 
 #[derive(Default, Debug)]
 pub struct Race {

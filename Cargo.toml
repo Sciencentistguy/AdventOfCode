@@ -1,0 +1,15 @@
+[workspace]
+resolver = "3"
+members = [
+    "2020/Rust",
+    "2021/Rust",
+    "2022/Rust",
+    "2023/Rust",
+    "2024/Rust", "aoc-common-rs",
+]
+
+[profile.release]
+codegen-units = 1
+lto = "fat"
+panic = "abort"
+debug = true

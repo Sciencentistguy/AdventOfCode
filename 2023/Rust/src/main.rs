@@ -1,6 +1,5 @@
 #![feature(array_chunks)]
 #![feature(array_windows)]
-#![feature(inline_const)]
 #![feature(pattern)]
 #![feature(never_type)]
 #![feature(let_chains)]
@@ -10,8 +9,6 @@ use std::process::ExitCode;
 use clap::Parser;
 use color_eyre::eyre::Result;
 use emergence::AoC;
-
-mod common;
 
 mod day01;
 mod day02;

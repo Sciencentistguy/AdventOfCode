@@ -33,30 +33,41 @@
       }: let
         fenix = inputs.fenix.packages.${system};
       in {
-        haskellProjects.default = {projectFlakeName = "aoc-haskell";};
+        haskellProjects.aoc = {projectFlakeName = "aoc-haskell";};
 
-        devShells = {
+        devShells = rec {
+          default = pkgs.mkShell {
+            name = "aoc";
+            inputsFrom = [
+              config.haskellProjects.aoc.outputs.devShell
+            ];
+            nativeBuildInputs = with pkgs;
+              [
+                fenix.complete.toolchain
+                pkg-config
+                openssl
+                cargo-criterion
+                cargo-flamegraph
+                just
+              ]
+              ++ lib.optionals (pkgs.stdenv.isDarwin) ([
+                  iconv
+                ]
+                ++ (with pkgs.darwin.apple_sdk.frameworks; [
+                  SystemConfiguration
+                ]));
+          };
           haskell = pkgs.mkShell {
             name = "aoc-haskell";
             inputsFrom = [
               config.haskellProjects.default.outputs.devShell
             ];
-            # nativeBuildInputs = with pkgs; [
-                # other development tools.
-            # ];
           };
           rust = pkgs.mkShell {
             name = "aoc-rust";
             nativeBuildInputs = with pkgs;
               [
-                (
-                  fenix.toolchainOf {
-                    channel = "nightly";
-                    date = "2024-11-28";
-                    sha256 = "sha256-lmQQppk1opfsDa+37lYNHvOwC5CXgIInS7pAnLoMSKM=";
-                  }
-                )
-                .toolchain
+                fenix.complete.toolchain
                 pkg-config
                 openssl
                 cargo-criterion
@@ -73,6 +84,7 @@
             name = "aoc-nix";
             nativeBuildInputs = with pkgs; [just];
           };
+          both = rust // haskell;
         };
       };
     };

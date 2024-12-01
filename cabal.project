@@ -1,6 +1,6 @@
 packages:
     ./aoc-haskell
-    ./aoc-common
+    ./aoc-common-hs
     ./2015/Haskell
     ./2019/Haskell
     ./2020/Haskell
