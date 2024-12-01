@@ -71,12 +71,15 @@ mod tests {
 3   9
 3   3";
 
+    const P1_SOLUTION: Solution = 11;
+    const P2_SOLUTION: Solution = 31;
+
     #[test]
     fn test_part1() {
-        assert_eq!(part1(&parse(INPUT)), 11);
+        assert_eq!(part1(&parse(INPUT)), P1_SOLUTION);
     }
     #[test]
     fn test_part2() {
-        assert_eq!(part2(&parse(INPUT)), 31);
+        assert_eq!(part2(&parse(INPUT)), P2_SOLUTION);
     }
 }
