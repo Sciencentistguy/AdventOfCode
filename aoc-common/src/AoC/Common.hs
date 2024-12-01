@@ -7,6 +7,7 @@ import Data.Void (Void)
 import Text.Megaparsec
 import Text.Megaparsec.Char (space1)
 import qualified Text.Megaparsec.Char.Lexer as L
+import qualified Data.Text as Text
 
 split :: (Eq a) => a -> [a] -> [[a]]
 split _ [] = []
@@ -88,3 +89,7 @@ combinations coins = concat [combs i coins | i <- [1 .. length coins]]
     combs 0 _ = [[]]
     combs _ [] = []
     combs k (x : xs) = map (x :) (combs (k - 1) xs) ++ combs k xs
+
+
+parseLines :: Parsec e Text b -> Text -> Either (ParseErrorBundle Text e) [b]
+parseLines p = traverse (parse p "(input)") . Text.lines
