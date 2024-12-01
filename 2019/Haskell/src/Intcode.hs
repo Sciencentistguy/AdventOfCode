@@ -6,7 +6,9 @@ import Control.Monad.ST
 import Data.STRef
 import qualified Data.Vector.Unboxed as V
 import qualified Data.Vector.Unboxed.Mutable as VM
-import GHC.IO (unsafePerformIO)
+import Debug.Trace
+import Control.Monad
+import Control.Monad.Trans
 
 type Memory m = V.MVector (PrimState m) Int
 
@@ -136,7 +138,7 @@ runInstruction IntcodeComputer {..} = do
 
   when debug $ lift do
     x <- readSTRef pcPtr
-    return $ unsafePerformIO $ putStrLn $ "pc = " ++ show x
+    return $ trace  ("pc = " ++ show x) ()
 
   --return $ unsafePerformIO $ debugInstr instr
 

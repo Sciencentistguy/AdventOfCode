@@ -10,6 +10,7 @@ import qualified Data.Text as Text
 import qualified Data.Vector.Unboxed as V
 import Intcode
 import Safe (readMay)
+import Control.Monad ((>=>))
 
 type Parsed = [Int]
 

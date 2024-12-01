@@ -6,12 +6,12 @@ author:          Jamie Quigley
 maintainer:      jamie@quigley.xyz
 
 common flags
-    ghc-options: -Wall -Wno-name-shadowing
     default-extensions:
         RecordWildCards
         LambdaCase
         BlockArguments
         FlexibleContexts
+    default-language: GHC2024
 
 library
     import: flags
@@ -37,7 +37,6 @@ library
     other-modules:
         Common
         Intcode
-    default-language: Haskell2010
 
 executable aoc2019
     import: flags
@@ -48,4 +47,3 @@ executable aoc2019
         , aoc-haskell
         , text
     hs-source-dirs:   app
-    default-language: Haskell2010

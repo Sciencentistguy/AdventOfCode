@@ -18,9 +18,6 @@ extra-source-files:
     README.md
     ChangeLog.md
 
-source-repository head
-  type: git
-  location: https://github.com/Sciencentistguy/AdventOfCode
 
 common flags
   default-extensions:
@@ -29,7 +26,7 @@ common flags
       FlexibleContexts
       RecordWildCards
       NamedFieldPuns
-  ghc-options: -Wall -Wno-name-shadowing -Wno-type-defaults -Wno-unused-imports
+  default-language: GHC2024
 
 library
   import: flags
@@ -40,7 +37,7 @@ library
       Day04
       Day05
       Day06
-      Day07
+    --   Day07
       Day08
       Day09
       Day10
@@ -67,13 +64,10 @@ library
     , unix
     , unordered-containers
     , vector
-  default-language: Haskell2010
 
 executable aoc2020
   import: flags
   main-is: Main.hs
-  other-modules:
-      Paths_AdventOfCode2020
   hs-source-dirs:
       app
   default-extensions:
@@ -84,4 +78,3 @@ executable aoc2020
     , aoc-haskell
     , base >=4.7 && <5
     , text
-  default-language: Haskell2010

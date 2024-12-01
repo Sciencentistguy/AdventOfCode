@@ -37,6 +37,7 @@
           projectFlakeName = "aoc-haskell";
           basePackages = pkgs.haskell.packages.ghc9101;
           packages = {
+            # the lastest release of hlint does not work with ghc 9.10.1 - pinning to a commit that does
             hlint.source = pkgs.fetchFromGitHub {
               owner = "ndmitchell";
               repo = "hlint";
@@ -95,7 +96,6 @@
             name = "aoc-nix";
             nativeBuildInputs = with pkgs; [just];
           };
-          both = rust // haskell;
         };
       };
     };

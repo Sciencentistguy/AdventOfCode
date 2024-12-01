@@ -8,3 +8,6 @@ packages:
     ./2022/Haskell
     ./2023/Haskell
     ./2024/Haskell
+
+package *
+    ghc-options: -Wall -Wno-name-shadowing -Werror=missing-fields -threaded -rtsopts -with-rtsopts=-N

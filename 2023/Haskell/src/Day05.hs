@@ -19,7 +19,6 @@ import Data.Text (Text)
 import qualified Data.Text as Text
 import qualified Data.Text.Read as Text
 import qualified Data.Vector as V
-import GHC.List (foldl')
 
 type Parsed = Almanac
 
