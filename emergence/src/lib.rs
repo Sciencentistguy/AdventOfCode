@@ -112,12 +112,6 @@ impl AoC {
     /// reading the token from `$TOKEN` or `./tokenfile`
     ///
     /// [`dirs::home_dir`]: https://docs.rs/dirs/4.0.0/dirs/fn.home_dir.html
-    ///
-    /// # Panics
-    ///
-    /// Will panic if:
-    /// - `year` is more than 3000 (if this is a problem for you, please open an issue. I'm
-    /// impressed Advent of Code is still going tbh)
     #[cfg(not(miri))]
     pub fn new(year: usize) -> Result<Self, Error> {
         let Some(mut path) = dirs::home_dir() else {
