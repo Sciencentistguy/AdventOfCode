@@ -19,7 +19,7 @@ rustc-hash = "1.1.0"
 tap = "1.0.1"
 
 [dev-dependencies]
-criterion = "0.4"
+criterion = "0.5"
 
 [[bench]]
 name = "day01"
