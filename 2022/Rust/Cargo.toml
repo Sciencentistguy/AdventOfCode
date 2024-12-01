@@ -8,7 +8,7 @@ edition = "2021"
 [dependencies]
 arrayvec = "0.7.2"
 clap = { version = "4.0.29", features = ["derive"] }
-emergence = "1.1.0"
+emergence = { path = "../../emergence" }
 id_tree = "1.8.0"
 itertools = "0.10.5"
 lazy_format = "2.0.0"
