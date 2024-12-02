@@ -5,11 +5,11 @@ pub fn parse(input: &str) -> Parsed {
     todo!()
 }
 
-pub fn part1((left, right): &Parsed) -> Solution {
+pub fn part1(parsed: &Parsed) -> Solution {
     todo!()
 }
 
-pub fn part2((left, right): &Parsed) -> Solution {
+pub fn part2(parsed: &Parsed) -> Solution {
     todo!()
 }
 

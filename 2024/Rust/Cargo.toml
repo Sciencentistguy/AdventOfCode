@@ -15,3 +15,7 @@ atoi = "2.0.0"
 [[bench]]
 name = "day01"
 harness = false
+
+[[bench]]
+name = "day02"
+harness = false
