@@ -41,6 +41,7 @@ library
         , arithmoi
     exposed-modules:
         Day01
+        Day02
 
 executable aoc2024
     import: flags

@@ -4,11 +4,10 @@ module Day01 (
 where
 
 import AoC
-import AoC.Common (Parser, parseLines, unwrapParser)
+import AoC.Common (Parser, parseLines, unwrapParser, absdiff)
 import Data.Bifunctor (Bifunctor (..))
 import Data.List (sort)
 import Data.Text (Text)
-import Data.Text qualified as Text
 import Text.Megaparsec
 import Text.Megaparsec.Char
 import Text.Megaparsec.Char.Lexer qualified as L
@@ -25,9 +24,6 @@ pLine = do
   _ <- sc
   y <- L.decimal
   return (x, y)
-
-absdiff :: Int -> Int -> Int
-absdiff a b = abs (a - b)
 
 sortBoth :: (Bifunctor f, Ord a, Ord b) => f [a] [b] -> f [a] [b]
 sortBoth = bimap sort sort

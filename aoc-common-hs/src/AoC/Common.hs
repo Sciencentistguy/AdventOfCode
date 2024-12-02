@@ -93,3 +93,6 @@ combinations coins = concat [combs i coins | i <- [1 .. length coins]]
 
 parseLines :: Parsec e Text b -> Text -> Either (ParseErrorBundle Text e) [b]
 parseLines p = traverse (parse p "(input)") . Text.lines
+
+absdiff :: Int -> Int -> Int
+absdiff a b = abs (a - b)
