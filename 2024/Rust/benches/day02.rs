@@ -4,7 +4,7 @@ use criterion::{criterion_group, criterion_main, Criterion};
 pub fn criterion_benchmark(c: &mut Criterion) {
     let aoc = emergence::AoC::new(2024).unwrap();
 
-    let input = aoc.read_or_fetch(1).unwrap();
+    let input = aoc.read_or_fetch(2).unwrap();
     let parsed = day02::parse(&input);
 
     c.bench_function("day02::parse", |b| b.iter(|| day02::parse(&input)));

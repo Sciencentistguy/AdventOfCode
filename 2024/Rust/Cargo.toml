@@ -11,6 +11,8 @@ clap = { version = "4.5.21", features = ["derive", "env"] }
 color-eyre = "0.6.3"
 criterion = "0.5.1"
 atoi = "2.0.0"
+memchr = "2.7.4"
+tap = "1.0.1"
 
 [[bench]]
 name = "day01"
@@ -18,4 +20,8 @@ harness = false
 
 [[bench]]
 name = "day02"
+harness = false
+
+[[bench]]
+name = "day03"
 harness = false

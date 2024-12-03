@@ -162,6 +162,8 @@ dependencies = [
  "color-eyre",
  "criterion 0.5.1",
  "emergence",
+ "memchr",
+ "tap",
 ]
 
 [[package]]
