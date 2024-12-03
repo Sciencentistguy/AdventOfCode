@@ -39,9 +39,11 @@ library
         , crypton
         , memory
         , arithmoi
+        , regex-tdfa
     exposed-modules:
         Day01
         Day02
+        Day03
 
 executable aoc2024
     import: flags
