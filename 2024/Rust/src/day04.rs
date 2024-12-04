@@ -1,46 +1,47 @@
-use std::collections::HashMap;
+use std::collections::HashSet;
+use std::mem::MaybeUninit;
 
 use common::Vec2D;
+use ndarray::{Array2, Axis};
 
-type Parsed = HashMap<Vec2D<isize>, Letter>;
+type Parsed = Array2<u8>;
 type Solution = u64;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Letter {
-    X,
-    M,
-    A,
-    S,
-}
-
-fn m_and_s(lhs: Letter, rhs: Letter) -> bool {
-    match (lhs, rhs) {
-        (Letter::M, Letter::S) => true,
-        (Letter::S, Letter::M) => true,
-        _ => false,
-    }
+fn m_and_s(lhs: u8, rhs: u8) -> bool {
+    matches!((lhs, rhs), (b'M', b'S') | (b'S', b'M'))
 }
 
 pub fn parse(input: &str) -> Parsed {
-    input
-        .lines()
-        .enumerate()
-        .flat_map(|(y, line)| {
-            line.chars()
-                .enumerate()
-                .map(move |(x, c)| ((x as isize, y as isize).into(), c))
-        })
-        .filter_map(|(pos, c)| match c {
-            'X' => Some((pos, Letter::X)),
-            'M' => Some((pos, Letter::M)),
-            'A' => Some((pos, Letter::A)),
-            'S' => Some((pos, Letter::S)),
-            _ => None,
-        })
-        .collect()
+    let lines = input.lines().collect::<Vec<_>>();
+
+    let mut arr: Array2<MaybeUninit<u8>> = Array2::uninit((lines[0].len(), lines.len()));
+
+    #[cfg(debug_assertions)]
+    let mut indices = HashSet::new();
+
+    for (i, line) in lines.iter().enumerate() {
+        for (j, ch) in line.bytes().enumerate() {
+            #[cfg(debug_assertions)]
+            indices.insert((j, i));
+
+            unsafe { arr[(j, i)].as_mut_ptr().write(ch) };
+        }
+    }
+
+    #[cfg(debug_assertions)]
+    {
+        // check that all indices have been written
+        for x in 0..arr.len_of(Axis(0)) {
+            for y in 0..arr.len_of(Axis(1)) {
+                debug_assert!(indices.contains(&(x, y)));
+            }
+        }
+    }
+
+    unsafe { arr.assume_init() }
 }
 
-const WORD: [Letter; 4] = [Letter::X, Letter::M, Letter::A, Letter::S];
+const WORD: [u8; 4] = [b'X', b'M', b'A', b'S'];
 const DIRECTIONS: [Vec2D<isize>; 8] = [
     Vec2D { x: 1, y: 0 },   // right
     Vec2D { x: -1, y: 0 },  // left
@@ -52,13 +53,28 @@ const DIRECTIONS: [Vec2D<isize>; 8] = [
     Vec2D { x: -1, y: 1 },  // up-right
 ];
 
-fn wordsearch(map: &Parsed) -> u64 {
+fn check_word(map: &Parsed, mut current: Vec2D<usize>, direction: Vec2D<isize>) -> bool {
+    for ch in WORD {
+        if let Some(&map_ch) = map.get(current) {
+            if map_ch != ch {
+                return false;
+            }
+        } else {
+            return false;
+        }
+        current.wrapping_add_assign_signed(direction);
+    }
+    true
+}
+
+pub fn part1(map: &Parsed) -> Solution {
     let mut count = 0;
 
-    for (&coord, &letter) in map.iter() {
-        if letter == *WORD.first().unwrap() {
-            for direction in &DIRECTIONS {
-                if check_word(map, coord, *direction) {
+    for (coord, &letter) in map.indexed_iter() {
+        const FIRST: u8 = *WORD.first().unwrap();
+        if letter == FIRST {
+            for direction in DIRECTIONS {
+                if check_word(map, coord.into(), direction) {
                     count += 1;
                 }
             }
@@ -68,42 +84,34 @@ fn wordsearch(map: &Parsed) -> u64 {
     count
 }
 
-fn check_word(map: &Parsed, start: Vec2D<isize>, direction: Vec2D<isize>) -> bool {
-    let mut current_coord = start;
-    for ch in WORD {
-        if let Some(&map_ch) = map.get(&current_coord) {
-            if map_ch != ch {
-                return false;
-            }
-        } else {
-            return false;
-        }
-        current_coord += direction;
-    }
-    true
-}
-
-pub fn part1(parsed: &Parsed) -> Solution {
-    wordsearch(parsed)
-}
-
 pub fn part2(parsed: &Parsed) -> Solution {
     let mut count = 0;
 
-    for (&coord, &letter) in parsed.iter() {
-        if letter == Letter::A {
-            // if top-left of us there is a letter, bottom right needs to be the other letter
-            // if top-right of us there is a letter, bottom left needs to be the other letter
+    for (coord, &letter) in parsed.indexed_iter() {
+        let coord: Vec2D<_> = coord.into();
+        if matches!(letter, b'A') {
+            const UP_LEFT: Vec2D<isize> = Vec2D { x: -1, y: -1 };
+            const UP_RIGHT: Vec2D<isize> = Vec2D { x: 1, y: -1 };
+            const DOWN_LEFT: Vec2D<isize> = Vec2D { x: -1, y: 1 };
+            const DOWN_RIGHT: Vec2D<isize> = Vec2D { x: 1, y: 1 };
 
-            let top_left = coord + (-1, -1).into();
-            let top_right = coord + (1, -1).into();
-            let bottom_left = coord + (-1, 1).into();
-            let bottom_right = coord + (1, 1).into();
+            let Some(top_left) = coord.checked_add_signed(UP_LEFT) else {
+                continue;
+            };
+            let Some(bottom_right) = coord.checked_add_signed(DOWN_RIGHT) else {
+                continue;
+            };
+            let Some(top_right) = coord.checked_add_signed(UP_RIGHT) else {
+                continue;
+            };
+            let Some(bottom_left) = coord.checked_add_signed(DOWN_LEFT) else {
+                continue;
+            };
 
-            if let Some(&top_left_letter) = parsed.get(&top_left) {
-                if let Some(&bottom_right_letter) = parsed.get(&bottom_right) {
-                    if let Some(&top_right_letter) = parsed.get(&top_right) {
-                        if let Some(&bottom_left_letter) = parsed.get(&bottom_left) {
+            if let Some(&top_left_letter) = parsed.get(top_left) {
+                if let Some(&bottom_right_letter) = parsed.get(bottom_right) {
+                    if let Some(&top_right_letter) = parsed.get(top_right) {
+                        if let Some(&bottom_left_letter) = parsed.get(bottom_left) {
                             if m_and_s(top_left_letter, bottom_right_letter)
                                 && m_and_s(top_right_letter, bottom_left_letter)
                             {

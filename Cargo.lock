@@ -103,7 +103,7 @@ dependencies = [
  "emergence",
  "eyre",
  "multimap",
- "ndarray",
+ "ndarray 0.15.6",
  "nohash-hasher",
 ]
 
@@ -119,7 +119,7 @@ dependencies = [
  "itertools",
  "lazy_format",
  "memchr",
- "ndarray",
+ "ndarray 0.15.6",
  "pathfinding",
  "rustc-hash 1.1.0",
  "tap",
@@ -141,7 +141,7 @@ dependencies = [
  "itertools",
  "linked-hash-map",
  "memchr",
- "ndarray",
+ "ndarray 0.15.6",
  "nom",
  "nom-supreme",
  "num",
@@ -164,6 +164,7 @@ dependencies = [
  "criterion 0.5.1",
  "emergence",
  "memchr",
+ "ndarray 0.16.1",
  "tap",
 ]
 
@@ -460,6 +461,7 @@ name = "common"
 version = "0.1.0"
 dependencies = [
  "collect_slice",
+ "ndarray 0.16.1",
 ]
 
 [[package]]
@@ -1277,6 +1279,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "ndarray"
+version = "0.16.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "882ed72dce9365842bf196bdeedf5055305f11fc8c03dee7bb0194a6cad34841"
+dependencies = [
+ "matrixmultiply",
+ "num-complex",
+ "num-integer",
+ "num-traits",
+ "portable-atomic",
+ "portable-atomic-util",
+ "rawpointer",
+]
+
+[[package]]
 name = "nohash-hasher"
 version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1475,6 +1492,21 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "51bae2ac328883f7acdfea3d66a7c35751187f870bc81f94563733a154d7a670"
 dependencies = [
  "plotters-backend",
+]
+
+[[package]]
+name = "portable-atomic"
+version = "1.10.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "280dc24453071f1b63954171985a0b0d30058d287960968b9b2aca264c8d4ee6"
+
+[[package]]
+name = "portable-atomic-util"
+version = "0.2.4"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d8a2f0d8d040d7848a709caf78912debcc3f33ee4b3cac47d73d1e1069e83507"
+dependencies = [
+ "portable-atomic",
 ]
 
 [[package]]

@@ -5,3 +5,4 @@ edition = "2024"
 
 [dependencies]
 collect_slice = "1.2.0"
+ndarray = "0.16.1"
