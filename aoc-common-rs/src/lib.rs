@@ -1,6 +1,6 @@
 #![feature(pattern)]
 
-use std::str::pattern::Pattern;
+use std::{ops::{Add, AddAssign}, str::pattern::Pattern};
 
 use collect_slice::CollectSlice;
 
@@ -26,5 +26,41 @@ impl ArraySplit for str {
         let mut a = [""; N];
         self.lines().collect_slice_checked(&mut a);
         a
+    }
+}
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub struct Vec2D<T> {
+    pub x: T,
+    pub y: T,
+}
+
+impl<T> Add for Vec2D<T>
+where
+    T: Add<Output = T>,
+{
+    type Output = Self;
+
+    fn add(self, rhs: Self) -> Self {
+        Self {
+            x: self.x + rhs.x,
+            y: self.y + rhs.y,
+        }
+    }
+}
+
+impl<T> AddAssign for Vec2D<T>
+where
+    T: AddAssign,
+{
+    fn add_assign(&mut self, rhs: Self) {
+        self.x += rhs.x;
+        self.y += rhs.y;
+    }
+}
+
+impl<T> From<(T, T)> for Vec2D<T> {
+    fn from((x, y): (T, T)) -> Self {
+        Self { x, y }
     }
 }

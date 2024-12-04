@@ -7,6 +7,7 @@ edition = "2024"
 
 [dependencies]
 emergence = { path = "../../emergence" }
+common = { path = "../../aoc-common-rs" }
 clap = { version = "4.5.21", features = ["derive", "env"] }
 color-eyre = "0.6.3"
 criterion = "0.5.1"
@@ -24,4 +25,8 @@ harness = false
 
 [[bench]]
 name = "day03"
+harness = false
+
+[[bench]]
+name = "day04"
 harness = false

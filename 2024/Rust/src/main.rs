@@ -8,6 +8,7 @@ type Result<T> = color_eyre::Result<T>;
 mod day01;
 mod day02;
 mod day03;
+mod day04;
 
 fn main() -> Result<ExitCode> {
     let opt = Opt::parse();
@@ -18,6 +19,7 @@ fn main() -> Result<ExitCode> {
         1 => day01::run(&aoc.read_or_fetch(1)?),
         2 => day02::run(&aoc.read_or_fetch(2)?),
         3 => day03::run(&aoc.read_or_fetch(3)?),
+        4 => day04::run(&aoc.read_or_fetch(4)?),
         _ => {
             eprintln!();
             return Ok(ExitCode::FAILURE);
