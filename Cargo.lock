@@ -163,8 +163,11 @@ dependencies = [
  "common",
  "criterion 0.5.1",
  "emergence",
+ "fxhash",
  "memchr",
  "ndarray 0.16.1",
+ "rayon",
+ "smallvec 2.0.0-alpha.7",
  "tap",
 ]
 

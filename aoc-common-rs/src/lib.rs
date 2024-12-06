@@ -1,7 +1,7 @@
 #![feature(pattern)]
 
 use std::{
-    ops::{Add, AddAssign},
+    ops::{Add, AddAssign, Neg},
     str::pattern::Pattern,
 };
 
@@ -32,7 +32,7 @@ impl ArraySplit for str {
     }
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
 pub struct Vec2D<T> {
     pub x: T,
     pub y: T,
@@ -103,8 +103,21 @@ impl Vec2D<usize> {
         }
     }
     pub fn checked_add_signed(&self, rhs: Vec2D<isize>) -> Option<Self> {
-        self.x.checked_add_signed(rhs.x)
+        self.x
+            .checked_add_signed(rhs.x)
             .and_then(|x| self.y.checked_add_signed(rhs.y).map(|y| Self { x, y }))
+    }
+}
+impl<T> Vec2D<T> {
+    pub const fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+
+    pub fn rotate_right(&mut self)
+    where
+        T: Neg<Output = T> + Copy,
+    {
+        *self = Self::new(-self.y, self.x);
     }
 }
 
