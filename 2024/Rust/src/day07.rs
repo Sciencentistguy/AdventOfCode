@@ -1,3 +1,6 @@
+use common::generate_combs_n;
+use rayon::prelude::*;
+
 type Parsed = Vec<Equation>;
 type Solution = u64;
 
@@ -32,22 +35,6 @@ pub fn parse(input: &str) -> Parsed {
         .collect()
 }
 
-fn generate_eqns<T: Clone>(chars: &[T], n: usize) -> Vec<Vec<T>> {
-    if n == 0 {
-        return vec![vec![]];
-    }
-    let mut result = Vec::new();
-    let combs = generate_eqns(chars, n - 1);
-    for s in combs {
-        for c in chars {
-            let mut new_s = s.clone();
-            new_s.push(c.clone());
-            result.push(new_s);
-        }
-    }
-    result
-}
-
 fn concat_u64(a: u64, b: u64) -> u64 {
     let mut multiplier = 1u64;
     let mut temp_b = b;
@@ -72,9 +59,8 @@ fn evaluate(operands: &[u64], operators: &[Operator]) -> u64 {
     result
 }
 
-/// Returns true if the given equation can be used to make the given value, by applying either "+" or "*" between the operands.
 fn can_make_value(equation: &Equation, operators: &[Operator]) -> bool {
-    let operator_strings = generate_eqns(operators, equation.operands.len() - 1);
+    let operator_strings = generate_combs_n::<_, 16>(operators, equation.operands.len() - 1);
 
     for operators in operator_strings {
         if evaluate(&equation.operands, &operators) == equation.test_value {
@@ -86,7 +72,7 @@ fn can_make_value(equation: &Equation, operators: &[Operator]) -> bool {
 
 pub fn part1(parsed: &Parsed) -> Solution {
     parsed
-        .iter()
+        .par_iter()
         .filter(|equation| can_make_value(equation, &[Operator::Add, Operator::Multiply]))
         .map(|x| x.test_value)
         .sum()
@@ -94,8 +80,14 @@ pub fn part1(parsed: &Parsed) -> Solution {
 
 pub fn part2(parsed: &Parsed) -> Solution {
     parsed
-        .iter()
-        .filter(|equation| can_make_value(equation, &[Operator::Add, Operator::Multiply, Operator::Concatenate]))
+        .par_iter()
+        .filter(|equation| {
+            can_make_value(equation, &[
+                Operator::Add,
+                Operator::Multiply,
+                Operator::Concatenate,
+            ])
+        })
         .map(|x| x.test_value)
         .sum()
 }

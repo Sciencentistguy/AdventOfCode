@@ -7,6 +7,7 @@ use std::{
 
 use collect_slice::CollectSlice;
 use ndarray::{Dimension, Ix, Ix2, Ixs, NdIndex};
+use smallvec::SmallVec;
 pub trait ArraySplit {
     type Out<'a>
     where
@@ -152,4 +153,31 @@ impl<'a, T> MonadicJoin for Option<&'a Option<T>> {
     fn join(self) -> Self::Output {
         self.and_then(|x| x.as_ref())
     }
+}
+
+#[inline]
+pub fn generate_combs_n<T: Clone, const N: usize>(vals: &[T], n: usize) -> Vec<SmallVec<T, N>> {
+    #[inline]
+    fn generate_combs_recursive<T: Clone, const N: usize>(
+        vals: &[T],
+        n: usize,
+        current: &mut SmallVec<T, N>,
+        result: &mut Vec<SmallVec<T, N>>,
+    ) {
+        if n == 0 {
+            result.push(current.clone());
+            return;
+        }
+        for c in vals {
+            current.push(c.clone());
+            generate_combs_recursive(vals, n - 1, current, result);
+            current.pop();
+        }
+    }
+
+    let num_combs = vals.len().pow(n as u32);
+    let mut result = Vec::with_capacity(num_combs);
+    let mut current = SmallVec::<_, N>::with_capacity(n);
+    generate_combs_recursive(vals, n, &mut current, &mut result);
+    result
 }
