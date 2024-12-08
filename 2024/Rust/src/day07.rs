@@ -47,7 +47,7 @@ fn concat_u64(a: u64, b: u64) -> u64 {
     a * multiplier + b
 }
 
-fn evaluate(operands: &[u64], operators: &[Operator]) -> u64 {
+fn evaluate(operands: &[u64], operators: &[Operator], target: u64) -> bool {
     let mut result = operands[0];
     for i in 0..operators.len() {
         match operators[i] {
@@ -55,15 +55,18 @@ fn evaluate(operands: &[u64], operators: &[Operator]) -> u64 {
             Operator::Multiply => result *= operands[i + 1],
             Operator::Concatenate => result = concat_u64(result, operands[i + 1]),
         }
+        if result > target {
+            return false;
+        }
     }
-    result
+    result == target
 }
 
 fn can_make_value(equation: &Equation, operators: &[Operator]) -> bool {
     let operator_strings = generate_combs_n::<_, 16>(operators, equation.operands.len() - 1);
 
     for operators in operator_strings {
-        if evaluate(&equation.operands, &operators) == equation.test_value {
+        if evaluate(&equation.operands, &operators, equation.test_value) {
             return true;
         }
     }

@@ -2,6 +2,7 @@
 #![feature(thread_local)]
 #![feature(const_collections_with_hasher)]
 #![feature(build_hasher_default_const_new)]
+#![feature(let_chains)]
 
 use std::process::ExitCode;
 
@@ -17,6 +18,7 @@ mod day04;
 mod day05;
 mod day06;
 mod day07;
+mod day08;
 
 
 fn main() -> Result<ExitCode> {
@@ -32,6 +34,7 @@ fn main() -> Result<ExitCode> {
         5 => day05::run(&aoc.read_or_fetch(5)?),
         6 => day06::run(&aoc.read_or_fetch(6)?),
         7 => day07::run(&aoc.read_or_fetch(7)?),
+        8 => day08::run(&aoc.read_or_fetch(8)?),
         _ => {
             eprintln!();
             return Ok(ExitCode::FAILURE);
