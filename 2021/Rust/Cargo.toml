@@ -9,5 +9,5 @@ edition = "2021"
 emergence = { path = "../../emergence" }
 eyre = "0.6.8"
 multimap = "0.8.3"
-ndarray = { version = "0.15.6", features = ["rayon"] }
+ndarray = { version = "0.16.0", features = ["rayon"] }
 nohash-hasher = "0.2.0"
