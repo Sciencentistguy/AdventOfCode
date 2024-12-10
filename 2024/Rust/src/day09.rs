@@ -63,7 +63,6 @@ impl<T> GetMutTwice<T> for [T] {
 
 pub fn part1(parsed: &Parsed) -> Solution {
     let mut disk = parsed.clone();
-    dbg!(disk.len());
     loop {
         // find first empty 
         let first_empty_idx = disk.iter().position(|x| x.is_none()).unwrap();
