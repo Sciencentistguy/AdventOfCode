@@ -23,6 +23,7 @@ mod day09;
 mod day10;
 mod day11;
 mod day12;
+mod day13;
 
 
 fn main() -> Result<ExitCode> {
@@ -43,6 +44,7 @@ fn main() -> Result<ExitCode> {
         10 => day10::run(&aoc.read_or_fetch(10)?),
         11 => day11::run(&aoc.read_or_fetch(11)?),
         12 => day12::run(&aoc.read_or_fetch(12)?),
+        13 => day13::run(&aoc.read_or_fetch(13)?),
         _ => {
             eprintln!();
             return Ok(ExitCode::FAILURE);

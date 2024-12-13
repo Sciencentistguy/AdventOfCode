@@ -16,6 +16,7 @@ pub trait ArraySplit {
 
     fn array_split<const N: usize>(&self, pat: impl Pattern) -> [Self::Out<'_>; N];
     fn array_lines<const N: usize>(&self) -> [Self::Out<'_>; N];
+    fn array_split_ascii_whitespace<const N: usize>(&self) -> [Self::Out<'_>; N];
 }
 
 impl ArraySplit for str {
@@ -30,6 +31,12 @@ impl ArraySplit for str {
     fn array_lines<const N: usize>(&self) -> [Self::Out<'_>; N] {
         let mut a = [""; N];
         self.lines().collect_slice_checked(&mut a);
+        a
+    }
+
+    fn array_split_ascii_whitespace<const N: usize>(&self) -> [Self::Out<'_>; N] {
+        let mut a = [""; N];
+        self.split_ascii_whitespace().collect_slice_checked(&mut a);
         a
     }
 }
