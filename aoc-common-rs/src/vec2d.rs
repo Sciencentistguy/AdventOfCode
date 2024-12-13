@@ -1,12 +1,45 @@
-use std::{fmt::Display, ops::{Add, AddAssign, Div, Mul, Neg, Rem, Sub}};
+use std::{
+    fmt::Display,
+    ops::{Add, AddAssign, Div, Mul, Neg, Rem, Sub},
+};
 
 use ndarray::{Dimension, Ix, Ix2, Ixs, NdIndex};
 
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default, PartialOrd)]
 pub struct Vec2D<T> {
     pub x: T,
     pub y: T,
+}
+
+impl<T> Vec2D<T> {
+    pub const UP: Vec2D<isize> = Vec2D { x: 0, y: -1 };
+    pub const DOWN: Vec2D<isize> = Vec2D { x: 0, y: 1 };
+    pub const LEFT: Vec2D<isize> = Vec2D { x: -1, y: 0 };
+    pub const RIGHT: Vec2D<isize> = Vec2D { x: 1, y: 0 };
+
+    pub const CARDINAL_DIRECTIONS: [Vec2D<isize>; 4] = [Self::UP, Self::RIGHT, Self::DOWN, Self::LEFT];
+
+    pub const fn new(x: T, y: T) -> Self {
+        Self { x, y }
+    }
+
+    pub fn new_opt(x: Option<T>, y: Option<T>) -> Option<Self> {
+        Some(Self { x: x?, y: y? })
+    }
+
+    pub fn rotate_right(&mut self)
+    where
+        T: Neg<Output = T> + Copy,
+    {
+        *self = Self::new(-self.y, self.x);
+    }
+
+    pub fn is_divisible_by(&self, divisor: T) -> bool
+    where
+        T: Rem<Output = T> + PartialEq + From<u8> + Copy,
+    {
+        self.x % divisor == T::from(0) && self.y % divisor == T::from(0)
+    }
 }
 
 impl<T> Add for Vec2D<T>
@@ -148,6 +181,35 @@ impl Vec2D<usize> {
             y: self.y as isize,
         }
     }
+    pub fn neighbours(&self) -> impl Iterator<Item = Self> {
+        Self::CARDINAL_DIRECTIONS
+            .iter()
+            .filter_map(|&dir| self.checked_add_signed(dir))
+    }
+    pub fn signed_neighbours(&self) -> impl Iterator<Item = Vec2D<isize>> + 'static  + use<> {
+        let signed = self.signed();
+        Self::CARDINAL_DIRECTIONS
+            .iter()
+            .map(move |&dir| signed + dir)
+    }
+
+    pub fn cross(&self, rhs: &Self) -> isize {
+        self.x as isize * rhs.y as isize - self.y as isize * rhs.x as isize
+    }
+
+    pub fn up(&self) -> Option<Self> {
+        self.checked_add_signed(Self::UP)
+    }
+    pub fn down(&self) -> Option<Self> {
+        self.checked_add_signed(Self::DOWN)
+    }
+    pub fn left(&self) -> Option<Self> {
+        self.checked_add_signed(Self::LEFT)
+    }
+    pub fn right(&self) -> Option<Self> {
+        self.checked_add_signed(Self::RIGHT)
+    }
+
 }
 
 impl Vec2D<isize> {
@@ -161,34 +223,9 @@ impl Vec2D<isize> {
             })
         }
     }
-}
-
-impl<T> Vec2D<T> {
-    pub const fn new(x: T, y: T) -> Self {
-        Self { x, y }
+    pub fn cross(&self, rhs: &Self) -> isize {
+        self.x * rhs.y - self.y * rhs.x
     }
-
-    pub fn new_opt(x: Option<T>, y: Option<T>) -> Option<Self> {
-        Some(Self {
-            x: x?,
-            y: y?,
-        })
-    }
-
-    pub fn rotate_right(&mut self)
-    where
-        T: Neg<Output = T> + Copy,
-    {
-        *self = Self::new(-self.y, self.x);
-    }
-
-    pub fn is_divisible_by(&self, divisor: T) -> bool
-    where
-        T: Rem<Output = T> + PartialEq + From<u8> + Copy,
-    {
-        self.x % divisor == T::from(0) && self.y % divisor == T::from(0)
-    }
-
 }
 
 // Safety: this is identical to the impl for `(usize, usize)` in ndarray.
