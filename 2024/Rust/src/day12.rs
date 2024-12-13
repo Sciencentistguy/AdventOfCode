@@ -81,11 +81,11 @@ fn sides_from_edges(edges: &HashSet<(Vec2D<usize>, Vec2D<isize>)>) -> usize {
     let contains = |x: Option<_>, y| x.map(|x| edges.contains(&(x, y))).unwrap_or(false);
     edges
         .par_iter()
-        .filter(|(point, dir)| match dir {
-            &Vec2D::<usize>::UP if !contains(point.right(), Vec2D::<usize>::UP) => true,
-            &Vec2D::<usize>::DOWN if !contains(point.right(), Vec2D::<usize>::DOWN) => true,
-            &Vec2D::<usize>::LEFT if !contains(point.down(), Vec2D::<usize>::LEFT) => true,
-            &Vec2D::<usize>::RIGHT if !contains(point.down(), Vec2D::<usize>::RIGHT) => true,
+        .filter(|(point, dir)| match *dir {
+            Vec2D::<usize>::UP if !contains(point.right(), Vec2D::<usize>::UP) => true,
+            Vec2D::<usize>::DOWN if !contains(point.right(), Vec2D::<usize>::DOWN) => true,
+            Vec2D::<usize>::LEFT if !contains(point.down(), Vec2D::<usize>::LEFT) => true,
+            Vec2D::<usize>::RIGHT if !contains(point.down(), Vec2D::<usize>::RIGHT) => true,
             _ => false,
         })
         .count()

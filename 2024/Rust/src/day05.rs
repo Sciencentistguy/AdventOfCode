@@ -24,7 +24,7 @@ pub fn parse(input: &str) -> Parsed {
     (ordering, updates)
 }
 
-fn is_ordered(update: &Vec<u64>, ordering: &Ordering) -> bool {
+fn is_ordered(update: &[u64], ordering: &Ordering) -> bool {
     update.array_windows().all(|[a, b]| ordering[a].contains(b))
 }
 
@@ -45,7 +45,7 @@ fn reorder(buf: &mut Vec<u64>, update: &[u64], ordering: &Ordering) {
     })
 }
 
-fn find_middle(update: &Vec<u64>) -> u64 {
+fn find_middle(update: &[u64]) -> u64 {
     update[update.len() / 2]
 }
 

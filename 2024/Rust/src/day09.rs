@@ -44,8 +44,8 @@ pub fn part1(parsed: &Parsed) -> Solution {
     let mut disk = parsed.clone();
     let mut files = Vec::with_capacity(disk.iter().filter_map(|&x| x).count());
 
-    for i in 0..disk.len() {
-        if let Some(file_id) = disk[i] {
+    for (i, &file_id) in disk.iter().enumerate() {
+        if let Some(file_id) = file_id {
             files.push((file_id, i));
         }
     }

@@ -1,4 +1,7 @@
-use std::{collections::{HashSet, VecDeque}, mem::MaybeUninit};
+use std::{
+    collections::{HashSet, VecDeque},
+    mem::MaybeUninit,
+};
 
 use common::Vec2D;
 use ndarray::{Array2, Axis};
@@ -19,7 +22,11 @@ pub fn parse(input: &str) -> Parsed {
             #[cfg(debug_assertions)]
             indices.insert((j, i));
 
-            unsafe { arr[(j, i)].as_mut_ptr().write((ch as char).to_digit(10).unwrap() as usize) };
+            unsafe {
+                arr[(j, i)]
+                    .as_mut_ptr()
+                    .write((ch as char).to_digit(10).unwrap() as usize)
+            };
         }
     }
 
@@ -42,7 +49,7 @@ const DIRECTIONS: [Vec2D<isize>; 4] = [
     Vec2D { x: -1, y: 0 },
 ];
 
-fn bfs(parsed: &Parsed, start:Vec2D<usize>) -> usize {
+fn bfs(parsed: &Parsed, start: Vec2D<usize>) -> usize {
     let mut score = 0;
     let mut visited = Array2::from_elem(parsed.dim(), false);
     let mut queue = VecDeque::new();
@@ -65,10 +72,10 @@ fn bfs(parsed: &Parsed, start:Vec2D<usize>) -> usize {
             if let Some(n) = n
                 && n.y < parsed.nrows()
                 && n.x < parsed.ncols()
+                && !visited[n]
+                && parsed[n] == ch + 1
             {
-                if !visited[n] && parsed[n] == ch + 1 {
-                    queue.push_back((n, ch + 1));
-                }
+                queue.push_back((n, ch + 1));
             }
         }
     }
@@ -84,15 +91,16 @@ fn dfs(parsed: &Parsed, visited: &mut Array2<bool>, pos: Vec2D<usize>, ch: usize
     let mut count = 0;
     for dir in DIRECTIONS {
         let n = pos.checked_add_signed(dir);
-        
-        if let Some(n) = n 
+
+        if let Some(n) = n
             && n.y < parsed.nrows()
-            && n.x < parsed.ncols() {
-            if !visited[n] && parsed[n] == ch + 1 {
-                visited[n] = true;
-                count += dfs(parsed, visited, n, ch + 1);
-                visited[n] = false;
-            }
+            && n.x < parsed.ncols()
+            && !visited[n]
+            && parsed[n] == ch + 1
+        {
+            visited[n] = true;
+            count += dfs(parsed, visited, n, ch + 1);
+            visited[n] = false;
         }
     }
 
