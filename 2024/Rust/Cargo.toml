@@ -21,6 +21,7 @@ rayon = "1.10.0"
 itertools = "0.13.0"
 nalgebra = "0.33.2"
 num = "0.4.3"
+compact_str = "0.8.0"
 
 [[bench]]
 name = "day01"
@@ -84,4 +85,8 @@ harness = false
 
 [[bench]]
 name = "day16"
+harness = false
+
+[[bench]]
+name = "day17"
 harness = false

@@ -3,6 +3,7 @@
 #![feature(const_collections_with_hasher)]
 #![feature(build_hasher_default_const_new)]
 #![feature(let_chains)]
+#![feature(array_chunks)]
 
 use std::process::ExitCode;
 
@@ -27,7 +28,7 @@ mod day13;
 mod day14;
 mod day15;
 mod day16;
-
+mod day17;
 
 fn main() -> Result<ExitCode> {
     let opt = Opt::parse();
@@ -51,6 +52,7 @@ fn main() -> Result<ExitCode> {
         14 => day14::run(&aoc.read_or_fetch(14)?),
         15 => day15::run(&aoc.read_or_fetch(15)?),
         16 => day16::run(&aoc.read_or_fetch(16)?),
+        17 => day17::run(&aoc.read_or_fetch(17)?),
         _ => {
             eprintln!();
             return Ok(ExitCode::FAILURE);

@@ -3,6 +3,7 @@
 #![feature(const_collections_with_hasher)]
 #![feature(build_hasher_default_const_new)]
 #![feature(let_chains)]
+#![feature(array_chunks)]
 
 pub mod day01;
 pub mod day02;
@@ -20,3 +21,4 @@ pub mod day13;
 pub mod day14;
 pub mod day15;
 pub mod day16;
+pub mod day17;
