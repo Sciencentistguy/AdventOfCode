@@ -148,11 +148,19 @@ pub fn part1(parsed: &Parsed) -> u64 {
 }
 
 pub fn part2(parsed: &Parsed) -> CompactString {
-    (0..parsed.len())
-        .into_par_iter()
-        .find_first(|&i| djikstra(&parsed[..i]).is_none())
-        .map(|i| format_compact!("{},{}", parsed[i - 1].x, parsed[i - 1].y))
-        .unwrap()
+    // binary search the number of bytes to simulate
+    let mut low = 0;
+    let mut high = parsed.len();
+    while low < high {
+        let mid = (low + high) / 2;
+        if djikstra(&parsed[..mid]).is_none() {
+            high = mid;
+        } else {
+            low = mid + 1;
+        }
+    }
+
+    format_compact!("{},{}", parsed[low - 1].x, parsed[low - 1].y)
 }
 
 pub fn run(input: &str) {
