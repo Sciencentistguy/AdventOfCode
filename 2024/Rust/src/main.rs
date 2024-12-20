@@ -30,6 +30,7 @@ mod day15;
 mod day16;
 mod day17;
 mod day18;
+mod day19;
 
 fn main() -> Result<ExitCode> {
     let opt = Opt::parse();
@@ -55,6 +56,7 @@ fn main() -> Result<ExitCode> {
         16 => day16::run(&aoc.read_or_fetch(16)?),
         17 => day17::run(&aoc.read_or_fetch(17)?),
         18 => day18::run(&aoc.read_or_fetch(18)?),
+        19 => day19::run(&aoc.read_or_fetch(19)?),
         _ => {
             eprintln!();
             return Ok(ExitCode::FAILURE);
