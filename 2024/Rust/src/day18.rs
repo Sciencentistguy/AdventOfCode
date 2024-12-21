@@ -4,12 +4,10 @@ use std::collections::VecDeque;
 use std::hash::BuildHasherDefault;
 
 use common::Vec2D;
-use compact_str::format_compact;
 use compact_str::CompactString;
+use compact_str::format_compact;
 use fxhash::FxHashMap as HashMap;
 use fxhash::FxHashSet as HashSet;
-
-use rayon::prelude::*;
 
 type Parsed = Vec<Vec2D<usize>>;
 
@@ -33,18 +31,6 @@ const GRID_SIZE: usize = 70;
 const GRID_SIZE: usize = 6;
 
 fn djikstra(invalid: &[Vec2D<usize>]) -> Option<u64> {
-    // thread local static muts to avoid re-allocating memory
-    // see unsafe blocks below
-    #[thread_local]
-    static mut INVALID: HashSet<Vec2D<usize>> = HashSet::with_hasher(BuildHasherDefault::new());
-    #[thread_local]
-    static mut VISITED: HashSet<Vec2D<usize>> = HashSet::with_hasher(BuildHasherDefault::new());
-    #[thread_local]
-    static mut DISTANCES: HashMap<Vec2D<usize>, u64> =
-        HashMap::with_hasher(BuildHasherDefault::new());
-    #[thread_local]
-    static mut QUEUE: VecDeque<State> = VecDeque::new();
-
     const START: Vec2D<usize> = Vec2D { x: 0, y: 0 };
     const DEST: Vec2D<usize> = Vec2D {
         x: GRID_SIZE,
@@ -75,25 +61,33 @@ fn djikstra(invalid: &[Vec2D<usize>]) -> Option<u64> {
         Vec2D { x: -1, y: 0 },
     ];
 
-    // Safety: These static muts are thread_local, and within each run of this function we are only
-    // one thread
+    // Safety: Only one &mut is created per run of this function
     let invalid = {
+        #[thread_local]
+        static mut INVALID: HashSet<Vec2D<usize>> = HashSet::with_hasher(BuildHasherDefault::new());
         let invalid2 = unsafe { &mut *&raw mut INVALID };
         invalid2.clear();
         invalid2.extend(invalid.iter().copied());
         invalid2
     };
     let visited = {
+        #[thread_local]
+        static mut VISITED: HashSet<Vec2D<usize>> = HashSet::with_hasher(BuildHasherDefault::new());
         let visited = unsafe { &mut *&raw mut VISITED };
         visited.clear();
         visited
     };
     let distances = {
+        #[thread_local]
+        static mut DISTANCES: HashMap<Vec2D<usize>, u64> =
+            HashMap::with_hasher(BuildHasherDefault::new());
         let distances = unsafe { &mut *&raw mut DISTANCES };
         distances.clear();
         distances
     };
     let queue = {
+        #[thread_local]
+        static mut QUEUE: VecDeque<State> = VecDeque::new();
         let queue = unsafe { &mut *&raw mut QUEUE };
         queue.clear();
         queue
