@@ -1,4 +1,7 @@
+use std::mem::MaybeUninit;
+
 use fxhash::FxHashSet as HashSet;
+use ndarray::ArrayView2;
 
 type Parsed = (Vec<[usize; 5]>, Vec<[usize; 5]>);
 type Solution = u64;
@@ -8,30 +11,31 @@ pub fn parse(input: &str) -> Parsed {
     let mut locks = Vec::new();
 
     for x in input.split("\n\n") {
-        let mut arr = [[false; 5]; 7];
-        for (i, line) in x.lines().enumerate() {
-            for (j, c) in line.chars().enumerate() {
-                arr[i][j] = c == '#';
+        let arr = {
+            let mut arr: MaybeUninit<[&[u8; 5]; 7]> = MaybeUninit::uninit();
+            for (x, line) in x.lines().enumerate() {
+                unsafe {
+                    arr.as_mut_ptr()
+                        .cast::<&[u8; 5]>()
+                        .add(x)
+                        .write(line.as_bytes().try_into().unwrap_unchecked())
+                };
             }
-        }
-
-        let key = if arr[0].iter().all(|x| *x) {
-            false
-        } else if arr[6].iter().all(|x| *x) {
-            true
-        } else {
-            unreachable!("Neither top nor bottom row is entirely filled: {x}");
+            unsafe { arr.assume_init() }
         };
+
+        let key = arr[6].iter().all(|&x| x == b'#');
 
         let mut res = [0; 5];
         for j in 0..5 {
             for i in 0..7 {
-                if arr[i][j] {
+                if arr[i][j] == b'#' {
                     res[j] += 1;
                 }
             }
         }
-        res = res.map(|x| x - 1);
+        res = res.map(|x| x - 1); // The top or bottom row is always full, but ignored in the counts
+
         if key {
             keys.push(res);
         } else {
