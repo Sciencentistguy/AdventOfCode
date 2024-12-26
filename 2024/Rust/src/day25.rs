@@ -1,7 +1,6 @@
 use std::mem::MaybeUninit;
 
 use fxhash::FxHashSet as HashSet;
-use ndarray::ArrayView2;
 
 type Parsed = (Vec<[usize; 5]>, Vec<[usize; 5]>);
 type Solution = u64;
@@ -11,17 +10,17 @@ pub fn parse(input: &str) -> Parsed {
     let mut locks = Vec::new();
 
     for x in input.split("\n\n") {
+        // Safety: The input is 5x7. Invalid input is not considered
         let arr = {
-            let mut arr: MaybeUninit<[&[u8; 5]; 7]> = MaybeUninit::uninit();
+            let mut arr: [MaybeUninit<&[u8; 5]>; 7] = MaybeUninit::uninit_array();
             for (x, line) in x.lines().enumerate() {
                 unsafe {
-                    arr.as_mut_ptr()
-                        .cast::<&[u8; 5]>()
-                        .add(x)
+                    arr[x]
+                        .as_mut_ptr()
                         .write(line.as_bytes().try_into().unwrap_unchecked())
                 };
             }
-            unsafe { arr.assume_init() }
+            unsafe { MaybeUninit::array_assume_init(arr) }
         };
 
         let key = arr[6].iter().all(|&x| x == b'#');
@@ -46,12 +45,7 @@ pub fn parse(input: &str) -> Parsed {
 }
 
 fn try_together(key: &[usize; 5], lock: &[usize; 5]) -> bool {
-    for i in 0..5 {
-        if key[i] + lock[i] >= 6 {
-            return false;
-        }
-    }
-    true
+    key.iter().zip(lock.iter()).all(|(&a, &b)| a + b < 6)
 }
 
 pub fn part1((keys, locks): &Parsed) -> Solution {
