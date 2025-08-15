@@ -96,3 +96,7 @@ parseLines p = traverse (parse p "(input)") . Text.lines
 
 absdiff :: Int -> Int -> Int
 absdiff a b = abs (a - b)
+
+ok :: Either a1 a2 -> Maybe a2
+ok (Right x) = Just x
+ok _ = Nothing
