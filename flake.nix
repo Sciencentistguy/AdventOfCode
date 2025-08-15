@@ -51,28 +51,14 @@
           default = pkgs.mkShell {
             name = "aoc";
             inputsFrom = [
-              config.haskellProjects.aoc.outputs.devShell
+              haskell
+              rust
             ];
-            nativeBuildInputs = with pkgs;
-              [
-                fenix.complete.toolchain
-                pkg-config
-                openssl
-                cargo-criterion
-                cargo-flamegraph
-                just
-              ]
-              ++ lib.optionals (pkgs.stdenv.isDarwin) ([
-                  iconv
-                ]
-                ++ (with pkgs.darwin.apple_sdk.frameworks; [
-                  SystemConfiguration
-                ]));
           };
           haskell = pkgs.mkShell {
             name = "aoc-haskell";
             inputsFrom = [
-              config.haskellProjects.default.outputs.devShell
+              config.haskellProjects.aoc.outputs.devShell
             ];
           };
           rust = pkgs.mkShell {
