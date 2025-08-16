@@ -8,6 +8,7 @@ import Text.Megaparsec
 import Text.Megaparsec.Char (space1)
 import qualified Text.Megaparsec.Char.Lexer as L
 import qualified Data.Text as Text
+import Data.Text.Read (decimal)
 
 split :: (Eq a) => a -> [a] -> [[a]]
 split _ [] = []
@@ -90,7 +91,6 @@ combinations coins = concat [combs i coins | i <- [1 .. length coins]]
     combs _ [] = []
     combs k (x : xs) = map (x :) (combs (k - 1) xs) ++ combs k xs
 
-
 parseLines :: Parsec e Text b -> Text -> Either (ParseErrorBundle Text e) [b]
 parseLines p = traverse (parse p "(input)") . Text.lines
 
@@ -100,3 +100,6 @@ absdiff a b = abs (a - b)
 ok :: Either a1 a2 -> Maybe a2
 ok (Right x) = Just x
 ok _ = Nothing
+
+readText :: Text -> Maybe Int
+readText = fmap fst . ok . decimal
