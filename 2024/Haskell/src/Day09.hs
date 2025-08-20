@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# OPTIONS_GHC -Wno-incomplete-patterns #-}
 
 module Day09
   ( day09,
@@ -6,17 +7,23 @@ module Day09
 where
 
 import AoC
+import Control.Monad (forM_, guard, join)
+import Control.Monad.Extra
+import Control.Monad.Primitive
+import Control.Monad.ST
 import Data.Bits
 import Data.List (findIndex, sortBy)
+import Data.List.Extra (groupSortBy)
+import Data.Maybe (catMaybes, fromJust, isJust, isNothing)
 import Data.Ord
 import Data.Text (Text)
 import Data.Text qualified as Text
+import Data.Vector (MVector, Vector)
+import Data.Vector qualified as V
+import Data.Vector.Mutable qualified as MV
 import Debug.Trace
-import Data.Maybe (catMaybes, isNothing, fromJust)
-import Data.List.Extra (groupSortBy)
-import Control.Monad (join)
 
-type Parsed = [Maybe Int]
+type Parsed = Vector (Maybe Int)
 
 type Solution = Int
 
@@ -33,42 +40,39 @@ parse input = do
   let ids = mkIDs <$> [0 ..]
       x = zip ids numbers
   return $
-    x >>= \(a, b) -> case a of
-      Just a -> take b $ repeat $ Just a
-      Nothing -> take b $ repeat Nothing
+    V.fromList $
+      x >>= \(a, b) -> case a of
+        Just a -> take b $ repeat $ Just a
+        Nothing -> take b $ repeat Nothing
 
-fileIds :: Parsed -> [(Int, Int)]
+fileIds :: [Maybe Int] -> [(Int, Int)]
 fileIds parsed =
-  let x = zip parsed [0..]
+  let x = zip parsed [0 ..]
       x' = filter (not . isNothing . fst) x
       x'' = fmap (\(a, b) -> (fromJust a, b)) x'
       sorted' = join $ (sortBy (comparing Down)) <$> groupSortBy (comparing snd) x''
-  in reverse sorted'
+   in reverse sorted'
 
-findFreeSpace :: [Maybe Int] -> Int -> Maybe Int
-findFreeSpace disk 1 = findIndex (== Nothing) disk
-findFreeSpace disk length = undefined
-
-solve lengthResolver disk =
-  let files = fileIds disk
-      go' = foldl' (\acc (length, src) -> case findFreeSpace acc (lengthResolver length) of
-            Just dest | isNothing $ disk !! dest -> swap src dest acc
-            _-> acc
-              ) 
-      disk' = go' disk files
-   in return $ checksum $ disk'
-
-swap :: Int -> Int -> [a] -> [a]
-swap x y xs
-  | x == y = error "Cannot swap the same index"
-  | otherwise = [select i e | (i, e) <- zip [0 ..] xs]
+ffs disk 1 = go disk 0
   where
-    ex = xs !! x
-    ey = xs !! y
-    select i e
-      | i == x = ey
-      | i == y = ex
-      | otherwise = e
+    go disk i = do
+      val <- MV.read disk i
+      case val of
+        Just _ -> go disk (i + 1)
+        Nothing -> return i
+
+-- find the first block of n Nothings
+
+solve lR disk =
+  let files = fileIds (V.toList disk)
+      x = runST $ do
+        disk <- V.thaw disk
+        forM_ files $ \(length, src) -> do
+          dest <- ffs disk (lR length)
+          destVal <- MV.read disk dest
+          when ((isNothing destVal) && (src > dest)) $ MV.swap disk src dest
+        V.freeze disk
+   in checksum $ traceShowId (V.toList x)
 
 checksum :: [Maybe Int] -> Int
 checksum = sum . catMaybes . zipWith (fmap . (*)) [0 ..]
@@ -83,7 +87,8 @@ day09 =
       parser :: Text -> Maybe Parsed
       parser = parse
       part1 :: Parsed -> Maybe Solution
-      part1 = {-parse testInput >>=-} solve (const 1)
+      -- part1 _ = parse testInput >>= return . solve (const 1)
+      part1 = return . solve (const 1)
       part2 :: Parsed -> Maybe Solution
-      part2 = undefined
+      part2 = return . solve id
    in Runner {..}

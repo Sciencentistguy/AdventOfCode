@@ -1,0 +1,54 @@
+src/Day09.hs:9:1: warning: [GHC-66111] [-Wunused-imports]
+    The import of ‘Control.Monad’ is redundant
+      except perhaps to import instances from ‘Control.Monad’
+    To import instances alone, use: import Control.Monad()
+  |
+9 | import Control.Monad (forM_, guard, join)
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/Day09.hs:11:1: warning: [GHC-66111] [-Wunused-imports]
+    The import of ‘Control.Monad.Primitive’ is redundant
+      except perhaps to import instances from ‘Control.Monad.Primitive’
+    To import instances alone, use: import Control.Monad.Primitive()
+   |
+11 | import Control.Monad.Primitive
+   | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+src/Day09.hs:14:19: warning: [GHC-38856] [-Wunused-imports]
+    The import of ‘findIndex’ from module ‘Data.List’ is redundant
+   |
+14 | import Data.List (findIndex, sortBy)
+   |                   ^^^^^^^^^
+
+src/Day09.hs:20:21: warning: [GHC-38856] [-Wunused-imports]
+    The import of ‘MVector’ from module ‘Data.Vector’ is redundant
+   |
+20 | import Data.Vector (MVector, Vector)
+   |                     ^^^^^^^
+
+src/Day09.hs:55:1: warning: [GHC-38417] [-Wmissing-signatures]
+    Top-level binding with no type signature:
+      ffs :: PrimMonad m =>
+             MVector (PrimState m) (Maybe a) -> m (Maybe Int)
+   |
+55 | ffs disk = go disk 0
+   | ^^^
+
+src/Day09.hs:64:7: warning: [GHC-40910] [-Wunused-matches]
+    Defined but not used: ‘lengthResolver’
+   |
+64 | solve lengthResolver disk =
+   |       ^^^^^^^^^^^^^^
+
+src/Day09.hs:68:25: warning: [GHC-40910] [-Wunused-matches]
+    Defined but not used: ‘length’
+   |
+68 |         forM_ files $ \(length, src) -> do
+   |                         ^^^^^^
+
+src/Day09.hs:86:1: warning: [GHC-40910] [-Wunused-top-binds]
+    Defined but not used: ‘testInput’
+   |
+86 | testInput = "2333133121414131402"
+   | ^^^^^^^^^
+
