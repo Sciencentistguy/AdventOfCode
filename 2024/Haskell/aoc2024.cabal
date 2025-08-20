@@ -46,6 +46,7 @@ library
         Day03
         Day05
         Day07
+        Day09
 
 executable aoc2024
     import: flags

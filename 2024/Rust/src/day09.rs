@@ -51,6 +51,8 @@ pub fn part1(parsed: &Parsed) -> Solution {
     }
 
     files.sort_by_key(|&(file_id, _,)| std::cmp::Reverse(file_id));
+    dbg!(&disk);
+    dbg!(&files);
 
     for (_, src) in files {
         if let Some(dest) = find_free_space(&disk[..src], 1) {
