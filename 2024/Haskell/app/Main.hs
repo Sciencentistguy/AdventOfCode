@@ -6,6 +6,7 @@ import AoC
 import Day01
 import Day02
 import Day03
+import Day04
 import Day05
 import Day07
 import Day09
@@ -28,6 +29,7 @@ main = do
     1 -> runDay day01
     2 -> runDay day02
     3 -> runDay day03
+    4 -> runDay day04
     5 -> runDay day05
     7 -> runDay day07
     9 -> runDay day09
