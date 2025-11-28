@@ -1,5 +1,4 @@
 #![feature(pattern)]
-#![feature(mixed_integer_ops_unsigned_sub)]
 
 use std::str::pattern::Pattern;
 

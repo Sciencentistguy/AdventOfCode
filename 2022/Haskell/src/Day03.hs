@@ -6,7 +6,7 @@ import Data.List
 import Data.List.Split (chunksOf)
 import Data.Maybe
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 
 type Parsed = [(String, String)]
 
@@ -48,4 +48,4 @@ day03 =
       part1 :: Parsed -> Maybe Int
       part1 = return . sum . fmap part1'
       part2 = return . sum . fmap part2' . chunksOf 3
-   in Runner {..}
+   in Runner{..}

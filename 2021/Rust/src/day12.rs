@@ -30,7 +30,7 @@ impl Cave<'_> {
     }
 }
 
-fn parse(input: &str) -> Input {
+fn parse(input: &str) -> Input<'_> {
     let mut out = MultiMap::new();
     for line in input.lines() {
         let line = line.trim();

@@ -12,9 +12,9 @@ import Data.Foldable
 import Data.Functor
 import Data.List
 import Data.Map (Map)
-import qualified Data.Map as Map
+import Data.Map qualified as Map
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Safe
 
 type Parsed = [Person]

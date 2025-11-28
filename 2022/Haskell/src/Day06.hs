@@ -3,7 +3,7 @@ module Day06 (day06) where
 import AoC
 import Common (windows)
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 
 type Parsed = String
 
@@ -11,7 +11,7 @@ allDifferent :: (Eq a) => [a] -> Bool
 allDifferent [] = True
 allDifferent (x : xs) = x `notElem` xs && allDifferent xs
 
-detect :: Eq a => Int -> [a] -> Int
+detect :: (Eq a) => Int -> [a] -> Int
 detect len packet =
   let w = zip [0 ..] $ windows len packet
    in len + fst (head $ filter (snd . fmap allDifferent) w)

@@ -7,7 +7,7 @@ import Common (split, trim)
 import Data.Bifunctor (Bifunctor (..))
 import Data.List (elemIndex)
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 
 type Parsed = [Bag]
 

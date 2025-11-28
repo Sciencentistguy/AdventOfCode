@@ -134,7 +134,7 @@ impl ValueRange {
     }
 }
 
-pub fn parse(input: &str) -> (HashMap<&str, Workflow>, Vec<Part>) {
+pub fn parse(input: &str) -> (HashMap<&str, Workflow<'_>>, Vec<Part>) {
     let (workflows, parts) = input.split_once("\n\n").unwrap();
 
     let workflows = workflows

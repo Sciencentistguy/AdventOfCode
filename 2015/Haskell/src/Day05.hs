@@ -5,14 +5,10 @@ where
 
 import AoC
 import AoC.Common
-import Control.Applicative (liftA2, liftA3)
-import Data.Functor (($>))
-import Data.HashSet (HashSet)
-import qualified Data.HashSet as HS
-import Data.Hashable (Hashable)
+import Control.Applicative (liftA3)
 import Data.List
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 
 type Parsed = [String]
 

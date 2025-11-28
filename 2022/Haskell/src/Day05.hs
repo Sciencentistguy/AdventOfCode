@@ -12,7 +12,7 @@ import Data.Text (Text)
 import Data.Void (Void)
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parser = ParsecT Void Text Identity
 
@@ -43,7 +43,7 @@ pInstruction = do
   to <- pred <$> L.decimal -- 1-indexed
   return Instruction {..}
 
-indexAll :: Show a => [Int] -> [a] -> [a]
+indexAll :: (Show a) => [Int] -> [a] -> [a]
 indexAll indices ls = (ls !!) <$> indices
 
 pCrates :: Parser Crates

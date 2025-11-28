@@ -1,13 +1,11 @@
-module Day01
-  ( day01,
-  )
+module Day01 (
+  day01,
+)
 where
 
 import AoC
 import Control.Monad (guard)
-import Data.Text (Text)
-import qualified Data.Text as Text
-import qualified Data.Text.IO as Text
+import Data.Text qualified as Text
 import Safe (readMay)
 
 type Parsed = [Int]
@@ -28,4 +26,4 @@ day01 =
         z <- input
         guard $ x + y + z == 2020
         return $ x * y * z
-   in Runner {..}
+   in Runner{..}

@@ -4,7 +4,7 @@ use fxhash::FxHashSet as HashSet;
 type Parsed<'a> = (HashSet<&'a str>, Vec<&'a str>);
 type Solution = usize;
 
-pub fn parse(input: &str) -> Parsed {
+pub fn parse(input: &str) -> Parsed<'_> {
     let (patterns, designs) = input.split_once("\n\n").unwrap();
     (patterns.split(", ").collect(), designs.lines().collect())
 }

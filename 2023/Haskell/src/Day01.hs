@@ -6,7 +6,7 @@ import AoC
 import Data.Char (digitToInt, isDigit)
 import Data.Functor ((<&>))
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 
 type Parsed = [Text]
 

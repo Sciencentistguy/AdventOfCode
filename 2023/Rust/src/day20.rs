@@ -81,7 +81,7 @@ struct Message<'a> {
     pulse: Pulse,
 }
 
-pub fn parse(input: &str) -> HashMap<&str, Module> {
+pub fn parse(input: &str) -> HashMap<&str, Module<'_>> {
     input
         .lines()
         .map(|line| {

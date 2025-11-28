@@ -28,7 +28,7 @@ impl Range {
     }
 }
 
-fn parse_input(input: &str) -> (Parsed, Duration) {
+fn parse_input(input: &str) -> (Parsed<'_>, Duration) {
     let start = Instant::now();
 
     let group_0_regex = Regex::new(r"^([\w ]+): (\d+)-(\d+) or (\d+)-(\d+)").unwrap();

@@ -1,23 +1,20 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day04
-  ( day04,
-  )
+module Day04 (
+  day04,
+)
 where
 
 import AoC
 import Common
 import Control.Monad (join)
 import Data.IntSet (IntSet)
-import qualified Data.IntSet as IS
+import Data.IntSet qualified as IS
 import Data.List (find, transpose, (\\))
 import Data.Text (Text)
-import qualified Data.Text as Text
-import Data.Vector (Vector)
-import qualified Data.Vector as Vector
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parsed = ([Int], [Board])
 
@@ -93,4 +90,4 @@ day04 =
       parser = unwrapParser . parse pInput "input"
       part1 (numbers, boards) = return $ getFirstWinner numbers boards
       part2 (numbers, boards) = return $ getLastWinner numbers boards
-   in Runner {..}
+   in Runner{..}

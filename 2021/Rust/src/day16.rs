@@ -194,7 +194,7 @@ impl Packet {
         }
     }
 }
-fn parse(input: &str) -> Input {
+fn parse(input: &str) -> Input<'_> {
     let bin: String = input
         .trim()
         .chars()

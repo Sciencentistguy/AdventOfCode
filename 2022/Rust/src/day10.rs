@@ -84,7 +84,9 @@ impl DerefMut for Crt {
 impl Crt {
     fn render(self) -> String {
         let mut out = String::with_capacity(250); // a little more than 240 + newlines
-        for line in self.array_chunks::<40>() {
+        let (chunks, rem) = self.as_chunks::<40>();
+        debug_assert!(rem.is_empty());
+        for line in chunks {
             for char in line {
                 out.push(*char);
             }

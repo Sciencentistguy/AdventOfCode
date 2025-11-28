@@ -116,7 +116,9 @@ pub fn part1(almanac: &Alamanac) -> usize {
 }
 
 pub fn part2(almanac: &Alamanac) -> usize {
-    let seed_ranges = almanac.seeds.array_chunks().map(|&[a, b]| a..a + b);
+    let (chunks, remaining) = almanac.seeds.as_chunks();
+    debug_assert!(remaining.is_empty());
+    let seed_ranges = chunks.into_iter().map(|&[a, b]| a..a + b);
 
     seed_ranges
         .flat_map(|seed_range| {

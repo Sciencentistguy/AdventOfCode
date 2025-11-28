@@ -1,7 +1,5 @@
 #![feature(iter_array_chunks)]
-#![feature(array_chunks)]
 #![feature(array_windows)]
-#![feature(let_chains)]
 
 pub mod day01;
 pub mod day02;

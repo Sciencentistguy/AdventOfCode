@@ -2,16 +2,16 @@ module Day03 where
 
 import AoC
 import Common
+import Control.Monad
 import Data.Foldable
 import Data.List
 import Data.Map (Map)
-import qualified Data.Map as M
+import Data.Map qualified as M
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
-import Control.Monad
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parsed = Map Coord Int
 
@@ -22,10 +22,10 @@ data Instruction = Instruction Direction Int
 pDirection :: Parser Direction
 pDirection =
   asum
-    [ char 'U' >> return Up,
-      char 'D' >> return Down,
-      char 'R' >> return Day03.Right,
-      char 'L' >> return Day03.Left
+    [ char 'U' >> return Up
+    , char 'D' >> return Down
+    , char 'R' >> return Day03.Right
+    , char 'L' >> return Day03.Left
     ]
 
 pInstruction :: Parser Instruction
@@ -51,7 +51,7 @@ generatePath =
   let f (Instruction d n) = replicate n $ toUnitVector d
    in scanl1 addCoord . (=<<) f
 
-manhattan :: Num a => (a, a) -> a
+manhattan :: (Num a) => (a, a) -> a
 manhattan (a, b) = abs a + abs b
 
 addCoord :: Coord -> Coord -> Coord
@@ -77,4 +77,4 @@ day03 =
               <$> Text.lines input
       part1 = return . nearestDistanceToOrigin
       part2 = return . minimum
-   in Runner {..}
+   in Runner{..}

@@ -6,12 +6,12 @@ module Day14
 where
 
 import AoC
-import AoC.Common (modifyAtN, runNTimes)
+import AoC.Common (runNTimes)
 import Control.Lens
 import Data.List.Extra (maximumOn)
 import Data.Maybe (fromJust)
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Safe
 
 type Parsed = [Reindeer]

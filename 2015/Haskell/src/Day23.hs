@@ -12,12 +12,12 @@ import Control.Applicative ((<|>))
 import Control.Lens
 import Data.Functor (($>))
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Data.Vector (Vector)
-import qualified Data.Vector as Vector
+import Data.Vector qualified as Vector
 import Text.Megaparsec (parse)
 import Text.Megaparsec.Char (char, space1, string)
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parsed = Vector Instruction
 

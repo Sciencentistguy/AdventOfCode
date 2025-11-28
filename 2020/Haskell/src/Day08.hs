@@ -1,8 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Day08
-  ( day08,
-  )
+module Day08 (
+  day08,
+)
 where
 
 import AoC
@@ -10,20 +10,17 @@ import Common
 import Control.Comonad.Store (ComonadStore (peeks))
 import Control.Lens (holesOf)
 import Control.Lens.Tuple (_1)
-import Control.Monad.Primitive (PrimMonad (PrimState), RealWorld)
+import Control.Monad.Primitive (PrimMonad (PrimState))
 import Control.Monad.ST
-import Data.Functor (($>))
 import Data.Maybe (catMaybes)
-import Data.Text (Text)
-import qualified Data.Text as Text
-import qualified Data.Text.IO as Text
+import Data.Text qualified as Text
 import Data.Vector (Vector)
-import qualified Data.Vector as V
+import Data.Vector qualified as V
 import Data.Vector.Mutable (MVector)
-import qualified Data.Vector.Mutable as MV
+import Data.Vector.Mutable qualified as MV
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
 data Instruction = Nop Int | Acc Int | Jmp Int
   deriving (Show)
@@ -48,40 +45,40 @@ runInstr pc acc instr = case instr of
   Acc op -> (pc + 1, acc + op)
   Jmp op -> (pc + op, acc)
 
-part1 :: PrimMonad m => MVector (PrimState m) (Instruction, Bool) -> m Int
+part1 :: (PrimMonad m) => MVector (PrimState m) (Instruction, Bool) -> m Int
 part1 trackedInstructions = go 0 0
-  where
-    go pc acc = do
-      (instr, ranBefore) <- MV.read trackedInstructions pc
-      if ranBefore
-        then return acc
-        else do
-          MV.write trackedInstructions pc (instr, True)
-          let (pc', acc') = runInstr pc acc instr
-          go pc' acc'
+ where
+  go pc acc = do
+    (instr, ranBefore) <- MV.read trackedInstructions pc
+    if ranBefore
+      then return acc
+      else do
+        MV.write trackedInstructions pc (instr, True)
+        let (pc', acc') = runInstr pc acc instr
+        go pc' acc'
 
-part2 :: PrimMonad m => Vector (Instruction, Bool) -> m Int
+part2 :: (PrimMonad m) => Vector (Instruction, Bool) -> m Int
 part2 instructions = do
   let programs = peeks flipInstr <$> holesOf (traverse . _1) instructions
   programs <- traverse V.thaw programs
   ranPrograms <- traverse (go 0 0) programs
   return $ head $ catMaybes ranPrograms
-  where
-    go pc acc trackedInstructions = do
-      --(instr, ranBefore) <- trackedInstructions `readMay` pc
-      instrpair <- trackedInstructions `readMay` pc
-      case instrpair of
-        -- past the end, program terminated
-        Nothing -> return $ Just acc
-        Just (instr, ranBefore) -> do
-          if ranBefore
-            then return Nothing
-            else do
-              MV.write trackedInstructions pc (instr, True)
-              let (pc', acc') = runInstr pc acc instr
-              go pc' acc' trackedInstructions
+ where
+  go pc acc trackedInstructions = do
+    -- (instr, ranBefore) <- trackedInstructions `readMay` pc
+    instrpair <- trackedInstructions `readMay` pc
+    case instrpair of
+      -- past the end, program terminated
+      Nothing -> return $ Just acc
+      Just (instr, ranBefore) -> do
+        if ranBefore
+          then return Nothing
+          else do
+            MV.write trackedInstructions pc (instr, True)
+            let (pc', acc') = runInstr pc acc instr
+            go pc' acc' trackedInstructions
 
-readMay :: PrimMonad m => MVector (PrimState m) a -> Int -> m (Maybe a)
+readMay :: (PrimMonad m) => MVector (PrimState m) a -> Int -> m (Maybe a)
 readMay vec idx =
   if idx >= MV.length vec
     then return Nothing
@@ -107,4 +104,4 @@ day08 =
         return $ V.zip instructions (V.replicate (V.length instructions) False)
       part1 x = return $ runST $ V.thaw x >>= Day08.part1
       part2 x = return $ runST $ Day08.part2 x
-   in Runner {..}
+   in Runner{..}

@@ -1,5 +1,4 @@
 {-# LANGUAGE OverloadedStrings #-}
-{-# LANGUAGE TemplateHaskell #-}
 
 module Day15
   ( day15,
@@ -10,10 +9,10 @@ import AoC
 import AoC.Common (Parser, unwrapParser)
 import Control.Lens
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Text.Megaparsec (parse, some)
 import Text.Megaparsec.Char (alphaNumChar)
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parsed = [Ingredient]
 

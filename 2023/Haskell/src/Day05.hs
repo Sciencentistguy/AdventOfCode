@@ -6,7 +6,7 @@ module Day05 (day05) where
 import AoC
 import Common (ok)
 import Common.Range (Range (..))
-import qualified Common.Range as Range
+import Common.Range qualified as Range
 import Control.Monad (MonadPlus, guard)
 import Control.Monad.ST
 import Data.Foldable (foldlM, for_)
@@ -16,9 +16,9 @@ import Data.List.Split
 import Data.Maybe (mapMaybe, maybeToList)
 import Data.STRef (STRef, modifySTRef', newSTRef, readSTRef, writeSTRef)
 import Data.Text (Text)
-import qualified Data.Text as Text
-import qualified Data.Text.Read as Text
-import qualified Data.Vector as V
+import Data.Text qualified as Text
+import Data.Text.Read qualified as Text
+import Data.Vector qualified as V
 
 type Parsed = Almanac
 

@@ -6,10 +6,8 @@ where
 import AoC
 import AoC.Common
 import Control.Applicative
-import Control.Monad ((<=<))
 import Data.Char (chr, ord)
-import Data.Functor ((<&>))
-import Data.List (find, group)
+import Data.List (group)
 import Data.Text (Text)
 import qualified Data.Text as Text
 import Safe

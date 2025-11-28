@@ -95,7 +95,7 @@ pub fn part1(parsed: &Parsed) -> Solution {
     count
 }
 
-fn tolerate(v: &[u64]) -> impl Iterator<Item = TwoPartSlice<u64>> {
+fn tolerate(v: &[u64]) -> impl Iterator<Item = TwoPartSlice<'_, u64>> {
     (0..v.len()).map(move |i| {
         let (a, b) = v.split_at(i);
         TwoPartSlice(a, &b[1..])

@@ -1,8 +1,6 @@
-#![feature(array_chunks)]
 #![feature(array_windows)]
 #![feature(pattern)]
 #![feature(never_type)]
-#![feature(let_chains)]
 
 use std::process::ExitCode;
 

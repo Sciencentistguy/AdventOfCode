@@ -4,11 +4,10 @@ module Day01
 where
 
 import AoC
-import Control.Applicative (Applicative (liftA2))
 import Data.List (inits)
 import Data.List.Extra (elemIndex)
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 
 type Parsed = [Char]
 

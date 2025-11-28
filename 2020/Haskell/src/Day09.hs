@@ -5,14 +5,10 @@ module Day09 (day09) where
 import AoC
 import Common (windows)
 import Control.Monad (guard)
-import Control.Monad.Extra (anyM)
 import Data.List (scanl')
-import Data.Maybe (fromJust)
 import Data.Text (Text)
-import qualified Data.Text as Text
-import qualified Data.Text.IO as Text
-import qualified Data.Vector as V
-import Data.Vector.Fusion.Bundle (inplace)
+import Data.Text qualified as Text
+import Data.Vector qualified as V
 import Safe (readMay)
 
 isSumOfTwo :: (Eq a, Num a) => a -> [a] -> Bool
@@ -36,16 +32,16 @@ part2 input target = do
   (i, j) <- findBounds cumulative target
   let xs = take (j - i) $ drop i input
   return $ minimum xs + maximum xs
-  where
-    findBounds ns goal = go 0 1
-      where
-        go !i !j = do
-          x <- ns V.!? i
-          y <- ns V.!? j
-          case compare (y - x) goal of
-            LT -> go i (j + 1)
-            EQ -> pure (i, j)
-            GT -> go (i + 1) j
+ where
+  findBounds ns goal = go 0 1
+   where
+    go !i !j = do
+      x <- ns V.!? i
+      y <- ns V.!? j
+      case compare (y - x) goal of
+        LT -> go i (j + 1)
+        EQ -> pure (i, j)
+        GT -> go (i + 1) j
 
 type Parsed = [Int]
 
@@ -59,4 +55,4 @@ day09 =
       part2 x =
         let p1 = Day09.part1 x
          in Day09.part2 x p1
-   in Runner {..}
+   in Runner{..}

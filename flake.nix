@@ -7,7 +7,7 @@
       url = "github:numtide/flake-utils";
     };
     fenix = {
-      url = "github:Sciencentistguy/fenix/fix-vscode-call";
+      url = "github:nix-community/fenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     flake-parts = {
@@ -35,16 +35,7 @@
       in {
         haskellProjects.aoc = {
           projectFlakeName = "aoc-haskell";
-          basePackages = pkgs.haskell.packages.ghc9101;
-          packages = {
-            # the lastest release of hlint does not work with ghc 9.10.1 - pinning to a commit that does
-            hlint.source = pkgs.fetchFromGitHub {
-              owner = "ndmitchell";
-              repo = "hlint";
-              rev = "ad9a1f8485eb34d40a59cc0bd1457d03fbffd50d";
-              sha256 = "sha256-IqGhE9pAaK6CtVTPrsOpWvZMkvICng8pwv6KSGVAg9I=";
-            };
-          };
+          basePackages = pkgs.haskell.packages.ghc9103;
         };
 
         devShells = rec {

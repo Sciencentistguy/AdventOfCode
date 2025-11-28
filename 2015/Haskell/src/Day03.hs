@@ -7,13 +7,10 @@ import AoC
 import AoC.Common
 import Data.Functor (($>))
 import Data.HashSet (HashSet)
-import qualified Data.HashSet as HS
-import Data.Hashable (Hashable)
+import Data.HashSet qualified as HS
 import Data.Text (Text)
-import qualified Data.Text as Text
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
 
 type Parsed = [Motion]
 
@@ -25,10 +22,14 @@ data Mode = RoboSanta | Santa deriving (Eq)
 
 pMotion :: Parser Motion
 pMotion =
-  char '^' $> North
-    <|> char 'v' $> South
-    <|> char '>' $> East
-    <|> char '<' $> West
+  char '^'
+    $> North
+      <|> char 'v'
+    $> South
+      <|> char '>'
+    $> East
+      <|> char '<'
+    $> West
 
 pInput :: Parser Parsed
 pInput = many pMotion
@@ -39,9 +40,9 @@ initialHS = HS.fromList [(0, 0)]
 advanceCoords :: Motion -> Point -> Point
 advanceCoords direction (x, y) = case direction of
   North -> (x, y + 1)
-  South -> (x, y -1)
+  South -> (x, y - 1)
   East -> (x + 1, y)
-  West -> (x -1, y)
+  West -> (x - 1, y)
 
 trackLocations :: [Motion] -> Int
 trackLocations directions = go directions (0, 0) initialHS

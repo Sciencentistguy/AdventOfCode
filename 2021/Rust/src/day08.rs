@@ -7,7 +7,7 @@ struct InputLine<'a> {
     output: Vec<&'a str>,
 }
 
-fn parse(input: &str) -> Vec<InputLine> {
+fn parse(input: &str) -> Vec<InputLine<'_>> {
     input
         .lines()
         .map(|line| {

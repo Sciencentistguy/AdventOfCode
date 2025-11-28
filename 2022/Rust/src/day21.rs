@@ -113,7 +113,7 @@ impl<'a> Table<'a> {
         })
     }
 
-    fn operands(&self, name: &str) -> (Identifier, Identifier) {
+    fn operands(&self, name: &str) -> (Identifier<'_>, Identifier<'_>) {
         use Operation::*;
         match self[name] {
             Add(lhs, rhs) | Sub(lhs, rhs) | Mul(lhs, rhs) | Div(lhs, rhs) => (lhs, rhs),
@@ -122,7 +122,7 @@ impl<'a> Table<'a> {
     }
 }
 
-pub fn parse(inpt: &str) -> Table {
+pub fn parse(inpt: &str) -> Table<'_> {
     Table(
         inpt.lines()
             .map(|line| {

@@ -11,16 +11,16 @@ import Text.Megaparsec (ParseErrorBundle, ShowErrorComponent, TraversableStream,
 split :: (Eq a) => a -> [a] -> [[a]]
 split _ [] = []
 split onChar toSplit = before : split onChar (drop 1 after)
-  where
-    (before, after) = span (/= onChar) toSplit
+ where
+  (before, after) = span (/= onChar) toSplit
 
 unwrapPEB ::
-    (VisualStream s, TraversableStream s, ShowErrorComponent e) =>
-    Either (ParseErrorBundle s e) a ->
-    Maybe a
+  (VisualStream s, TraversableStream s, ShowErrorComponent e) =>
+  Either (ParseErrorBundle s e) a ->
+  Maybe a
 unwrapPEB (Left e) = unsafePerformIO $ do
-    putStrLn $ errorBundlePretty e
-    return Nothing
+  putStrLn $ errorBundlePretty e
+  return Nothing
 unwrapPEB (Right x) = Just x
 
 transpose' :: [[a]] -> [[a]]
@@ -31,8 +31,8 @@ windows m = transpose' . take m . tails
 
 trim :: String -> String
 trim = f . f
-  where
-    f = reverse . dropWhile isSpace
+ where
+  f = reverse . dropWhile isSpace
 
 ok :: (MonadPlus m) => Either a b -> m b
 ok (Left _) = mzero

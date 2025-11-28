@@ -7,22 +7,14 @@ module Day12
 where
 
 import AoC
-import AoC.Common
-import Control.Applicative
 import Data.Aeson
-import qualified Data.Aeson.KeyMap as KM
-import Data.ByteString.Builder (toLazyByteString)
-import qualified Data.ByteString.Lazy as BSL
-import Data.Char (isDigit)
+import Data.Aeson.KeyMap qualified as KM
+import Data.ByteString.Lazy qualified as BSL
 import Data.Function
-import Data.List (groupBy)
-import Data.Maybe (catMaybes, mapMaybe)
 import Data.Scientific (Scientific)
-import qualified Data.Scientific as S
+import Data.Scientific qualified as S
 import Data.Text (Text)
-import qualified Data.Text as Text
-import qualified Data.Text.Encoding as Text
-import Safe
+import Data.Text.Encoding qualified as Text
 
 type Parsed = Value
 

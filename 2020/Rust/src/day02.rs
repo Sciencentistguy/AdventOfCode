@@ -29,7 +29,7 @@ impl Password<'_> {
     }
 }
 
-fn p(input: &str) -> IResult<&str, Password> {
+fn p(input: &str) -> IResult<&str, Password<'_>> {
     let mut parse_num = map_res(take_while(|c| is_digit(c as u8)), &str::parse::<u64>);
     let (input, num1) = parse_num(input)?;
     let (input, _) = char('-')(input)?;
@@ -50,7 +50,7 @@ fn p(input: &str) -> IResult<&str, Password> {
     ))
 }
 
-fn parse_input(input: &str) -> (Vec<Password>, Duration) {
+fn parse_input(input: &str) -> (Vec<Password<'_>>, Duration) {
     let start = Instant::now();
     let res = input.lines().map(p).map(|x| x.unwrap().1).collect();
     let end = Instant::now();

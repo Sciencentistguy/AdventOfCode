@@ -9,10 +9,9 @@ import AoC
 import AoC.Common (Parser, unwrapParser)
 import Data.List.Extra (minimumOn)
 import Data.Text (Text)
-import qualified Data.Text as Text
-import Debug.Trace (traceShowId)
+import Data.Text qualified as Text
 import Text.Megaparsec (parse)
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parsed = [Int]
 

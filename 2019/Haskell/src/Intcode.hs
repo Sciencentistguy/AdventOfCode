@@ -1,14 +1,14 @@
 module Intcode where
 
 import Common
+import Control.Monad
 import Control.Monad.Primitive
 import Control.Monad.ST
-import Data.STRef
-import qualified Data.Vector.Unboxed as V
-import qualified Data.Vector.Unboxed.Mutable as VM
-import Debug.Trace
-import Control.Monad
 import Control.Monad.Trans
+import Data.STRef
+import Data.Vector.Unboxed qualified as V
+import Data.Vector.Unboxed.Mutable qualified as VM
+import Debug.Trace
 
 type Memory m = V.MVector (PrimState m) Int
 
@@ -26,22 +26,22 @@ data Instruction
   | Halt
 
 instructionLength :: Instruction -> Int
-instructionLength Add {} = 4
-instructionLength Multiply {} = 4
-instructionLength Input {} = 2
-instructionLength Output {} = 2
+instructionLength Add{} = 4
+instructionLength Multiply{} = 4
+instructionLength Input{} = 2
+instructionLength Output{} = 2
 instructionLength Halt = 1
-instructionLength JumpIfTrue {} = 3
-instructionLength JumpIfFalse {} = 3
-instructionLength LessThan {} = 4
-instructionLength Equals {} = 4
+instructionLength JumpIfTrue{} = 3
+instructionLength JumpIfFalse{} = 3
+instructionLength LessThan{} = 4
+instructionLength Equals{} = 4
 
 data IntcodeComputer s = IntcodeComputer
-  { memory :: Memory (ST s),
-    pcPtr :: STRef s Int,
-    inputsPtr :: STRef s [Int],
-    outputsPtr :: STRef s [Int],
-    debug :: Bool
+  { memory :: Memory (ST s)
+  , pcPtr :: STRef s Int
+  , inputsPtr :: STRef s [Int]
+  , outputsPtr :: STRef s [Int]
+  , debug :: Bool
   }
 
 data IntcodeError
@@ -69,7 +69,7 @@ instance Show IntcodeError where
       ++ "`"
   show NoInputError = "Error: No input available"
 
---initIntcode :: [Int] -> ST a IntcodeComputer
+-- initIntcode :: [Int] -> ST a IntcodeComputer
 initIntcode :: [Int] -> ST s (IntcodeComputer s)
 initIntcode source = do
   pcPtr <- newSTRef 0
@@ -77,20 +77,20 @@ initIntcode source = do
   inputsPtr <- newSTRef []
   outputsPtr <- newSTRef []
   let debug = False
-  return IntcodeComputer {..}
+  return IntcodeComputer{..}
 
 setInput :: [Int] -> IntcodeComputer s -> ST s (IntcodeComputer s)
-setInput ls pc@IntcodeComputer {..} = writeSTRef inputsPtr ls >> return pc
+setInput ls pc@IntcodeComputer{..} = writeSTRef inputsPtr ls >> return pc
 
-setDebug :: Monad m => IntcodeComputer s -> m (IntcodeComputer s)
-setDebug IntcodeComputer {..} = do
+setDebug :: (Monad m) => IntcodeComputer s -> m (IntcodeComputer s)
+setDebug IntcodeComputer{..} = do
   let debug = True
-  return IntcodeComputer {..}
+  return IntcodeComputer{..}
 
 data Status = Finished | NotFinished
 
 runInstruction :: IntcodeComputer s -> STResult s IntcodeError Status
-runInstruction IntcodeComputer {..} = do
+runInstruction IntcodeComputer{..} = do
   pc <- lift $ readSTRef pcPtr
   instr <- do
     rawOpcode <- readPosition pc
@@ -138,9 +138,9 @@ runInstruction IntcodeComputer {..} = do
 
   when debug $ lift do
     x <- readSTRef pcPtr
-    return $ trace  ("pc = " ++ show x) ()
+    return $ trace ("pc = " ++ show x) ()
 
-  --return $ unsafePerformIO $ debugInstr instr
+  -- return $ unsafePerformIO $ debugInstr instr
 
   case instr of
     Halt -> return Finished
@@ -190,139 +190,139 @@ runInstruction IntcodeComputer {..} = do
         else writePosition arg3 0
       lift $ modifySTRef' pcPtr (+ instructionLength instr)
       return NotFinished
-  where
-    --address :: AddressingMode -> Int -> STResult s IntcodeError Int
-    address mode arg = case mode of
-      Position -> readPosition arg
-      --when debug $ lift do
-      --putStr "read at "
-      --putStr $ show arg
-      --putStr ": "
-      --print val
-      Immediate -> return arg
+ where
+  -- address :: AddressingMode -> Int -> STResult s IntcodeError Int
+  address mode arg = case mode of
+    Position -> readPosition arg
+    -- when debug $ lift do
+    -- putStr "read at "
+    -- putStr $ show arg
+    -- putStr ": "
+    -- print val
+    Immediate -> return arg
 
-    --readPosition :: Int -> STResult s IntcodeError Int
-    readPosition pos =
-      if VM.length memory < pos
-        then throwError $ MemoryOutOfBoundsError pos (VM.length memory)
-        else VM.read memory pos
+  -- readPosition :: Int -> STResult s IntcodeError Int
+  readPosition pos =
+    if VM.length memory < pos
+      then throwError $ MemoryOutOfBoundsError pos (VM.length memory)
+      else VM.read memory pos
 
-    --writePosition :: Int -> Int -> STResult s IntcodeError ()
-    writePosition pos val = do
-      if VM.length memory < pos
-        then throwError $ MemoryOutOfBoundsError pos (VM.length memory)
-        else do
-          {-
-           -when debug $ lift do
-           -  a <- VM.read memory pos
-           -  putStr "write at "
-           -  putStr $ show pos
-           -  putStr ": "
-           -  putStr $ show a
-           -  putStr " -> "
-           -  print val
-           -}
-          VM.write memory pos val
+  -- writePosition :: Int -> Int -> STResult s IntcodeError ()
+  writePosition pos val = do
+    if VM.length memory < pos
+      then throwError $ MemoryOutOfBoundsError pos (VM.length memory)
+      else do
+        {-
+         -when debug $ lift do
+         -  a <- VM.read memory pos
+         -  putStr "write at "
+         -  putStr $ show pos
+         -  putStr ": "
+         -  putStr $ show a
+         -  putStr " -> "
+         -  print val
+         -}
+        VM.write memory pos val
 
-    --setPC :: Int -> ExceptT IntcodeError (ST s) ()
-    setPC newVal = lift $ writeSTRef pcPtr newVal
-    --when debug $ lift do
-    --putStr "pc "
-    --readSTRef pcPtr >>= putStr . show
-    --putStr " -> "
-    --print newVal
+  -- setPC :: Int -> ExceptT IntcodeError (ST s) ()
+  setPC newVal = lift $ writeSTRef pcPtr newVal
+  -- when debug $ lift do
+  -- putStr "pc "
+  -- readSTRef pcPtr >>= putStr . show
+  -- putStr " -> "
+  -- print newVal
 
-    --popInput :: STResult IntcodeError Int
-    popInput = do
-      inputs <- lift $ readSTRef inputsPtr
-      if null inputs
-        then throwError NoInputError
-        else do
-          let (x : inputs') = inputs
-          lift $ writeSTRef inputsPtr inputs'
-          return x
+  -- popInput :: STResult IntcodeError Int
+  popInput = do
+    inputs <- lift $ readSTRef inputsPtr
+    if null inputs
+      then throwError NoInputError
+      else do
+        let (x : inputs') = inputs
+        lift $ writeSTRef inputsPtr inputs'
+        return x
 
-    --pushOutput :: Int -> STResult IntcodeError ()
-    pushOutput x = lift $ modifySTRef' outputsPtr (++ [x])
+  -- pushOutput :: Int -> STResult IntcodeError ()
+  pushOutput x = lift $ modifySTRef' outputsPtr (++ [x])
 
-    debugInstr :: Instruction -> IO ()
-    debugInstr instr = when debug do
-      case instr of
-        Halt -> putStr "hlt"
-        Add (arg1, mode1) (arg2, mode2) (arg3, mode3) -> do
-          putStr "add  "
-          when (mode1 == Immediate) $ putStr "*"
-          putStr $ show arg1
-          putStr " "
-          when (mode2 == Immediate) $ putStr "*"
-          putStr $ show arg2
-          putStr " "
-          when (mode3 == Immediate) $ putStr "*"
-          putStr $ show arg3
-        Multiply (arg1, mode1) (arg2, mode2) (arg3, mode3) -> do
-          putStr "mul  "
-          when (mode1 == Immediate) $ putStr "*"
-          putStr $ show arg1
-          putStr " "
-          when (mode2 == Immediate) $ putStr "*"
-          putStr $ show arg2
-          putStr " "
-          when (mode3 == Immediate) $ putStr "*"
-          putStr $ show arg3
-        Input (arg, _) -> do
-          putStr "in   "
-          putStr $ show arg
-        Output (arg, mode) -> do
-          putStr "out  "
-          when (mode == Immediate) $ putStr "*"
-          putStr $ show arg
-        JumpIfTrue (arg1, mode1) (arg2, mode2) -> do
-          putStr "jit  "
-          when (mode1 == Immediate) $ putStr "*"
-          putStr $ show arg1
-          putStr " "
-          when (mode2 == Immediate) $ putStr "*"
-          putStr $ show arg2
-        JumpIfFalse (arg1, mode1) (arg2, mode2) -> do
-          putStr "jif  "
-          when (mode1 == Immediate) $ putStr "*"
-          putStr $ show arg1
-          putStr " "
-          when (mode2 == Immediate) $ putStr "*"
-          putStr $ show arg2
-        LessThan (arg1, mode1) (arg2, mode2) (arg3, mode3) -> do
-          putStr "lt   "
-          when (mode1 == Immediate) $ putStr "*"
-          putStr $ show arg1
-          putStr " "
-          when (mode2 == Immediate) $ putStr "*"
-          putStr $ show arg2
-          putStr " "
-          when (mode3 == Immediate) $ putStr "*"
-          putStr $ show arg3
-        Equals (arg1, mode1) (arg2, mode2) (arg3, mode3) -> do
-          putStr "eq   "
-          when (mode1 == Immediate) $ putStr "*"
-          putStr $ show arg1
-          putStr " "
-          when (mode2 == Immediate) $ putStr "*"
-          putStr $ show arg2
-          putStr " "
-          when (mode3 == Immediate) $ putStr "*"
-          putStr $ show arg3
-      putStrLn ""
+  debugInstr :: Instruction -> IO ()
+  debugInstr instr = when debug do
+    case instr of
+      Halt -> putStr "hlt"
+      Add (arg1, mode1) (arg2, mode2) (arg3, mode3) -> do
+        putStr "add  "
+        when (mode1 == Immediate) $ putStr "*"
+        putStr $ show arg1
+        putStr " "
+        when (mode2 == Immediate) $ putStr "*"
+        putStr $ show arg2
+        putStr " "
+        when (mode3 == Immediate) $ putStr "*"
+        putStr $ show arg3
+      Multiply (arg1, mode1) (arg2, mode2) (arg3, mode3) -> do
+        putStr "mul  "
+        when (mode1 == Immediate) $ putStr "*"
+        putStr $ show arg1
+        putStr " "
+        when (mode2 == Immediate) $ putStr "*"
+        putStr $ show arg2
+        putStr " "
+        when (mode3 == Immediate) $ putStr "*"
+        putStr $ show arg3
+      Input (arg, _) -> do
+        putStr "in   "
+        putStr $ show arg
+      Output (arg, mode) -> do
+        putStr "out  "
+        when (mode == Immediate) $ putStr "*"
+        putStr $ show arg
+      JumpIfTrue (arg1, mode1) (arg2, mode2) -> do
+        putStr "jit  "
+        when (mode1 == Immediate) $ putStr "*"
+        putStr $ show arg1
+        putStr " "
+        when (mode2 == Immediate) $ putStr "*"
+        putStr $ show arg2
+      JumpIfFalse (arg1, mode1) (arg2, mode2) -> do
+        putStr "jif  "
+        when (mode1 == Immediate) $ putStr "*"
+        putStr $ show arg1
+        putStr " "
+        when (mode2 == Immediate) $ putStr "*"
+        putStr $ show arg2
+      LessThan (arg1, mode1) (arg2, mode2) (arg3, mode3) -> do
+        putStr "lt   "
+        when (mode1 == Immediate) $ putStr "*"
+        putStr $ show arg1
+        putStr " "
+        when (mode2 == Immediate) $ putStr "*"
+        putStr $ show arg2
+        putStr " "
+        when (mode3 == Immediate) $ putStr "*"
+        putStr $ show arg3
+      Equals (arg1, mode1) (arg2, mode2) (arg3, mode3) -> do
+        putStr "eq   "
+        when (mode1 == Immediate) $ putStr "*"
+        putStr $ show arg1
+        putStr " "
+        when (mode2 == Immediate) $ putStr "*"
+        putStr $ show arg2
+        putStr " "
+        when (mode3 == Immediate) $ putStr "*"
+        putStr $ show arg3
+    putStrLn ""
 
 data FinishedComputer = FinishedComputer
-  { memory' :: V.Vector Int,
-    output :: V.Vector Int
+  { memory' :: V.Vector Int
+  , output :: V.Vector Int
   }
   deriving (Show)
 
 finish :: IntcodeComputer s -> ST s FinishedComputer
-finish IntcodeComputer {..} = do
+finish IntcodeComputer{..} = do
   memory' <- V.freeze memory
   output <- V.fromList <$> readSTRef outputsPtr
-  return FinishedComputer {..}
+  return FinishedComputer{..}
 
 runIntcode :: IntcodeComputer s -> STResult s IntcodeError FinishedComputer
 runIntcode computer = do

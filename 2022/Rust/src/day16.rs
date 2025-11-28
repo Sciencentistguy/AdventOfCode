@@ -6,7 +6,7 @@ use tap::Tap;
 
 type Valves<'a> = Vec<(&'a str, u16, Vec<&'a str>)>;
 
-pub fn parse(inpt: &str) -> Valves {
+pub fn parse(inpt: &str) -> Valves<'_> {
     assert!(inpt.is_ascii());
     inpt.lines()
         .map(|line| {

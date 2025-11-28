@@ -12,7 +12,7 @@ pub fn parse(input: &str) -> Parsed {
     for x in input.split("\n\n") {
         // Safety: The input is 5x7. Invalid input is not considered
         let arr = {
-            let mut arr: [MaybeUninit<&[u8; 5]>; 7] = MaybeUninit::uninit_array();
+            let mut arr: [MaybeUninit<&[u8; 5]>; 7] = [MaybeUninit::uninit(); 7];
             for (x, line) in x.lines().enumerate() {
                 unsafe {
                     arr[x]
@@ -60,14 +60,10 @@ pub fn part1((keys, locks): &Parsed) -> Solution {
     successes.len() as u64
 }
 
-pub fn part2(parsed: &Parsed) -> Solution {
-    todo!()
-}
 
 pub fn run(input: &str) {
     let parsed = parse(input);
     println!("Part 1: {}", part1(&parsed));
-    println!("Part 2: {}", part2(&parsed));
 }
 
 #[cfg(test)]
@@ -105,7 +101,6 @@ mod tests {
 ###.#
 ###.#
 #####
-
 .....
 .....
 .....
@@ -116,14 +111,9 @@ mod tests {
 ";
 
     const P1_SOLUTION: Solution = 3;
-    // const P2_SOLUTION: Solution = todo!();
 
     #[test]
     fn test_part1() {
         assert_eq!(part1(&parse(INPUT)), P1_SOLUTION);
-    }
-    #[test]
-    fn test_part2() {
-        // assert_eq!(part2(&parse(INPUT)), P2_SOLUTION);
     }
 }

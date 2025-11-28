@@ -2,30 +2,29 @@ module Common where
 
 import Data.Foldable (Foldable (toList))
 import Data.List (tails, transpose)
-import Data.Maybe
 import Data.Text (Text)
 import Data.Void (Void)
 import Text.Megaparsec
 import Text.Megaparsec.Char (space1)
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
-split :: Eq a => a -> [a] -> [[a]]
+split :: (Eq a) => a -> [a] -> [[a]]
 split _ [] = []
 split onChar toSplit = before : split onChar (drop 1 after)
-  where
-    (before, after) = span (/= onChar) toSplit
+ where
+  (before, after) = span (/= onChar) toSplit
 
 countOccurences :: (Foldable t, Eq a) => t a -> a -> Int
 countOccurences str c = countTrue (== c) str
 
-countTrue :: Foldable t => (a -> Bool) -> t a -> Int
+countTrue :: (Foldable t) => (a -> Bool) -> t a -> Int
 countTrue p = length . filter p . toList
 
 groupEntries :: [String] -> [String]
 groupEntries [] = []
 groupEntries strings = unwords group : groupEntries (drop (length group + 1) strings)
-  where
-    group = takeWhile (not . null) strings
+ where
+  group = takeWhile (not . null) strings
 
 unreachable :: String -> a
 unreachable msg =
@@ -50,7 +49,7 @@ symbol = L.symbol spaces
 windows :: Int -> [a] -> [[a]]
 windows n xs = transpose $ take n $ tails xs
 
-unzipWith :: Functor f => (a -> b -> c) -> f (a, b) -> f c
+unzipWith :: (Functor f) => (a -> b -> c) -> f (a, b) -> f c
 unzipWith f = fmap (uncurry f)
 
 unwrapParser ::

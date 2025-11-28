@@ -28,7 +28,6 @@ pub fn criterion_benchmark(c: &mut Criterion) {
     bench_day!(c, aoc, day03);
     bench_day!(c, aoc, day04);
     bench_day!(c, aoc, day05);
-    // bench_day!(c, aoc, day06);
     // day 6 is special
     {
         use aoc_2024::day06;
@@ -50,7 +49,6 @@ pub fn criterion_benchmark(c: &mut Criterion) {
     bench_day!(c, aoc, day12);
     bench_day!(c, aoc, day13);
     bench_day!(c, aoc, day14);
-    // bench_day!(c, aoc, day15);
     // day 15 is special
     {
         use aoc_2024::day15;
@@ -69,7 +67,18 @@ pub fn criterion_benchmark(c: &mut Criterion) {
     bench_day!(c, aoc, day19);
     bench_day!(c, aoc, day23);
     bench_day!(c, aoc, day24);
-    bench_day!(c, aoc, day25);
+    // 25 has no part 2
+    {
+        use aoc_2024::day25;
+        let input = aoc.read_or_fetch(25).unwrap();
+        let parsed = day25::parse(&input);
+        c.bench_function(concat!(stringify!(day25), "::parse"), |b| {
+            b.iter(|| day25::parse(&input))
+        });
+        c.bench_function(concat!(stringify!(day25), "::part1"), |b| {
+            b.iter(|| day25::part1(&parsed))
+        });
+    };
 }
 
 criterion_group!(benches, criterion_benchmark);

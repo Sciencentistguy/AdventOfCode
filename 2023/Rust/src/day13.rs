@@ -58,7 +58,7 @@ impl<'a> Map<'a> {
     }
 }
 
-pub fn parse(input: &str) -> Vec<Map> {
+pub fn parse(input: &str) -> Vec<Map<'_>> {
     input
         .split("\n\n")
         .map(|string| {

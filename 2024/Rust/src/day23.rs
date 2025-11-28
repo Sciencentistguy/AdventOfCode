@@ -6,7 +6,7 @@ use tap::Tap;
 type Parsed<'a> = HashMap<&'a str, HashSet<&'a str>>;
 type Solution = u64;
 
-pub fn parse(input: &str) -> Parsed {
+pub fn parse(input: &str) -> Parsed<'_> {
     let lines = input.lines().collect::<Vec<_>>();
     let mut rules: HashMap<&str, HashSet<&str>> = HashMap::default();
     for line in lines {

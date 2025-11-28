@@ -4,7 +4,7 @@ module Day01 (
 where
 
 import AoC
-import AoC.Common (Parser, parseLines, unwrapParser, absdiff)
+import AoC.Common (Parser, absdiff, parseLines, unwrapParser)
 import Data.Bifunctor (Bifunctor (..))
 import Data.List (sort)
 import Data.Text (Text)

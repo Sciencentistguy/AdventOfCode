@@ -4,17 +4,15 @@ module Day04
 where
 
 import AoC
-import qualified Crypto.Hash as Hash
+import Crypto.Hash qualified as Hash
 import Data.Bits (shiftR, (.&.))
-import qualified Data.ByteString.Char8 as BC
+import Data.ByteArray qualified as BA
+import Data.ByteString.Char8 qualified as BC
 import Data.Char (intToDigit)
 import Data.List (find)
-import Data.Maybe
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import GHC.Word (Word8)
-import Crypto.Hash (Digest)
-import qualified Data.ByteArray as BA
 
 type Parsed = String
 
@@ -23,7 +21,6 @@ byteHex b = intToDigit <$> [fromIntegral b `shiftR` 4, fromIntegral b .&. 0xf]
 
 showHex :: [Word8] -> String
 showHex = (=<<) byteHex
-
 
 hashString :: String -> String
 hashString s = showHex $ BA.unpack $ Hash.hashWith Hash.MD5 $ BC.pack s

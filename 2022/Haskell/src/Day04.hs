@@ -1,15 +1,15 @@
 module Day04 (day04) where
 
 import AoC
+import Common
 import Control.Applicative
 import Data.Functor.Identity (Identity)
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Data.Void (Void)
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
-import Common
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parser = ParsecT Void Text Identity
 

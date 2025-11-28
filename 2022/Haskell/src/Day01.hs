@@ -17,5 +17,6 @@ day01 =
       parser = traverse (traverse readMay) . split "" . lines . Text.unpack
       part1 :: Parsed -> Maybe Int
       part1 = return . maximum . fmap sum
-      part2 = return . sum . take 3 . reverse . sort . fmap sum
+      part2 = return . sum . take 3 . sortBy (comparing Data.Ord.Down) . fmap sum
+
    in Runner {..}

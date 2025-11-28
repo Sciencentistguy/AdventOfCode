@@ -6,24 +6,10 @@ module Day08
 where
 
 import AoC
-import AoC.Common
 import Control.Arrow ((&&&))
-import Control.Monad.ST
-import Data.Array.ST
-import Data.Bifunctor (Bifunctor, bimap)
-import Data.Foldable
-import Data.Functor (($>))
-import Data.HashSet (HashSet)
-import qualified Data.HashSet as HS
-import Data.Hashable (Hashable)
+import Data.Bifunctor (bimap)
 import Data.Text (Text)
-import qualified Data.Text as Text
-import Data.Vector (Vector)
-import Debug.Trace
-import Safe
-import Text.Megaparsec
-import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
+import Data.Text qualified as Text
 
 type Parsed = [String]
 
@@ -45,7 +31,7 @@ lenMemory s = go s 0
 lenStringed :: String -> Int
 lenStringed = length . show
 
-diffTuple :: Num a => (a, a) -> a
+diffTuple :: (Num a) => (a, a) -> a
 diffTuple (a, b) = a - b
 
 sumUnzipped :: ([Int], [Int]) -> (Int, Int)

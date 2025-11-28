@@ -11,16 +11,11 @@ import Control.Monad.ST
 import Data.Array.ST
 import Data.Foldable
 import Data.Functor (($>))
-import Data.HashSet (HashSet)
-import qualified Data.HashSet as HS
-import Data.Hashable (Hashable)
 import Data.Text (Text)
-import qualified Data.Text as Text
-import Data.Vector (Vector)
-import Safe
+import Data.Text qualified as Text
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parsed = [Instruction]
 
@@ -60,13 +55,13 @@ allCoords = [(x, y) | x <- [0 .. bound], y <- [0 .. bound]]
 
 type LightArray s a = (STUArray s) (Int, Int) a
 
-operateLights :: MArray a t f => a (Int, Int) t -> (t -> t) -> Range -> f ()
+operateLights :: (MArray a t f) => a (Int, Int) t -> (t -> t) -> Range -> f ()
 operateLights lights op range = traverse_ modifyWithOp $ eachCoordWithin range
   where
     eachCoordWithin ((Range (x1, y1) (x2, y2))) =
       [ (x, y)
-        | x <- [x1 `min` x2 .. x1 `max` x2],
-          y <- [y1 `min` y2 .. y1 `max` y2]
+      | x <- [x1 `min` x2 .. x1 `max` x2],
+        y <- [y1 `min` y2 .. y1 `max` y2]
       ]
     modifyWithOp coord = do
       b <- readArray lights coord
@@ -84,14 +79,14 @@ elvish TurnOff x = 0 `max` (x - 1)
 elvish TurnOn x = x + 1
 elvish Toggle x = x + 2
 
-runCommand :: MArray a t f => a (Int, Int) t -> Interpretation t -> Instruction -> f ()
+runCommand :: (MArray a t f) => a (Int, Int) t -> Interpretation t -> Instruction -> f ()
 runCommand lights interp (Instruction op range) = operateLights lights (interp op) range
 
-initLights :: MArray (STUArray s) a (ST s) => a -> ST s (LightArray s a)
+initLights :: (MArray (STUArray s) a (ST s)) => a -> ST s (LightArray s a)
 initLights = newArray ((0, 0), (bound, bound))
 
 solve ::
-  MArray (STUArray s) a (ST s) =>
+  (MArray (STUArray s) a (ST s)) =>
   [Instruction] ->
   a ->
   Interpretation a ->

@@ -4,13 +4,10 @@ module Day10
 where
 
 import AoC
-import AoC.Common
-import Control.Applicative
 import Control.Monad ((<=<))
 import Data.List (group)
 import Data.Text (Text)
-import qualified Data.Text as Text
-import Safe
+import Data.Text qualified as Text
 
 type Parsed = String
 

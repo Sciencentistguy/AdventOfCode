@@ -7,10 +7,10 @@ import AoC
 import AoC.Common
 import Data.List
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type Present = (Int, Int, Int)
 

@@ -1,4 +1,3 @@
-{-# OPTIONS_GHC -Wno-type-defaults #-}
 module Main where
 
 import AoC
@@ -16,7 +15,7 @@ main :: IO ()
 main = do
   args <- getArgs
   let day = case args of
-        [x] -> readMay x
+        [x] -> readMay x :: Maybe Int
         _ -> Nothing
   token <- getToken
   case day of
@@ -29,6 +28,6 @@ main = do
     Just 6 -> runAoC token day06
     Just 7 -> runAoC token day07
     Just x -> do
-      putStr "Day '" 
+      putStr "Day '"
       putStr $ show x
       putStrLn "' not implemented yet."

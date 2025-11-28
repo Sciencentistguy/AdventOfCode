@@ -2,15 +2,15 @@ module Day02 where
 
 import AoC
 import Common
+import Control.Monad ((>=>))
 import Control.Monad.ST
 import Data.List
 import Data.Maybe
 import Data.Text (Text)
-import qualified Data.Text as Text
-import qualified Data.Vector.Unboxed as V
+import Data.Text qualified as Text
+import Data.Vector.Unboxed qualified as V
 import Intcode
 import Safe (readMay)
-import Control.Monad ((>=>))
 
 type Parsed = [Int]
 
@@ -46,4 +46,4 @@ day02 =
       parser input = traverse readMay (split ',' $ Text.unpack input)
       part1 = return . runPart1
       part2 = return . runPart2
-   in Runner {..}
+   in Runner{..}

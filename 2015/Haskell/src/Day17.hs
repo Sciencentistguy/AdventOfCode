@@ -8,9 +8,9 @@ where
 import AoC
 import AoC.Common (Parser, combinations, unwrapParser)
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Text.Megaparsec (parse)
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type Parsed = [Int]
 

@@ -1,12 +1,11 @@
 module Day06 (day06) where
 
 import AoC
-import Control.Applicative (liftA2)
 import Control.Arrow ((&&&))
 import Data.Char (isDigit)
 import Data.Maybe (mapMaybe)
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 import Text.Read (readMaybe)
 
 type Parsed = ([Race], Race)

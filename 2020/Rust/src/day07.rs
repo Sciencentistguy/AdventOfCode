@@ -9,7 +9,7 @@ struct Rule<'a> {
     number: usize,
 }
 
-fn parse_input(input: &str) -> ((HashMap<&str, Vec<Rule>>, Vec<&str>), Duration) {
+fn parse_input(input: &str) -> ((HashMap<&str, Vec<Rule<'_>>>, Vec<&str>), Duration) {
     let start = Instant::now();
     let mut bags: Vec<&str> = Vec::new();
     let mut rules: HashMap<&str, Vec<Rule>> = HashMap::new();

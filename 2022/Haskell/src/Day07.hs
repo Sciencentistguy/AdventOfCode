@@ -1,10 +1,9 @@
 module Day07 (day07) where
 
 import AoC hiding (Token)
-import Common
 import Data.List (isPrefixOf)
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 
 type Parsed = File
 

@@ -6,16 +6,12 @@ module Day07
 where
 
 import AoC (Runner (..))
-import AoC.Common
 import Data.Bits (Bits (complement, shiftL, shiftR, (.&.), (.|.)))
 import Data.Char (isAlpha, isDigit)
-import Data.Functor (($>), (<&>))
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HM
+import Data.HashMap.Strict qualified as HM
 import Data.Text (Text)
-import qualified Data.Text as Text
-
--- import Data.Word (Int)
+import Data.Text qualified as Text
 
 data Name
   = ConstName Int

@@ -5,29 +5,21 @@ where
 
 import AoC
 import AoC.Common
-import Control.Applicative
-import Control.Arrow ((&&&))
-import Data.Bifunctor (Bifunctor, bimap)
 import Data.Foldable
-import Data.Functor (($>))
 import Data.HashMap.Strict (HashMap)
-import qualified Data.HashMap.Strict as HM
-import Data.HashSet (HashSet)
-import qualified Data.HashSet as HS
-import Data.Hashable (Hashable)
+import Data.HashMap.Strict qualified as HM
+import Data.HashSet qualified as HS
 import Data.List (permutations)
 import Data.Ord (comparing)
 import Data.Text (Text)
-import qualified Data.Text as Text
-import Data.Vector (Vector)
-import GHC.Err (undefined)
+import Data.Text qualified as Text
 import Safe
 
 type Distances = HashMap (String, String) Int
 
 type Parsed = ([String], Distances)
 
-pRoute :: Read a => [String] -> Maybe (String, String, a)
+pRoute :: (Read a) => [String] -> Maybe (String, String, a)
 pRoute [origin, "to", destination, "=", distance] = do
   distance <- readMay distance
   return (origin, destination, distance)
@@ -35,7 +27,7 @@ pRoute _ = error "bad input"
 
 pInput :: String -> Maybe Parsed
 pInput inpt =
-  let routes = traverse pRoute $ words <$> lines inpt
+  let routes = traverse (pRoute . words) $ lines inpt
       cities = HS.toList . foldl' insertCities mempty <$> routes
       distances = foldl' insertBothWays mempty <$> routes
    in liftA2 (,) cities distances

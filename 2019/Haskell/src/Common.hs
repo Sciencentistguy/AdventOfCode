@@ -1,7 +1,7 @@
-module Common
-  ( module Common,
-    module Control.Monad.Except,
-  )
+module Common (
+  module Common,
+  module Control.Monad.Except,
+)
 where
 
 import Control.Monad.Except
@@ -10,17 +10,17 @@ import Data.Text (Text)
 import Data.Void (Void)
 import Text.Megaparsec
 import Text.Megaparsec.Char
-import qualified Text.Megaparsec.Char.Lexer as L
+import Text.Megaparsec.Char.Lexer qualified as L
 
 type STResult s e = ExceptT e (ST s)
 
 type Parser = Parsec Void Text
 
-split :: Eq a => a -> [a] -> [[a]]
+split :: (Eq a) => a -> [a] -> [[a]]
 split _ [] = []
 split onChar toSplit = before : split onChar (drop 1 after)
-  where
-    (before, after) = span (/= onChar) toSplit
+ where
+  (before, after) = span (/= onChar) toSplit
 
 unwrap :: (Monad m, Show a) => ExceptT a m b -> m b
 unwrap res =
@@ -28,7 +28,7 @@ unwrap res =
     Right a -> return a
     Left err -> error $ show err
 
-liftMaybe :: MonadError e m => e -> Maybe a -> m a
+liftMaybe :: (MonadError e m) => e -> Maybe a -> m a
 liftMaybe _ (Just a) = return a
 liftMaybe err Nothing = throwError err
 

@@ -6,12 +6,11 @@ module Day18
 where
 
 import AoC
-import Data.List
 import Data.Map (Map)
-import qualified Data.Map as Map
+import Data.Map qualified as Map
 import Data.Maybe (mapMaybe)
 import Data.Text (Text)
-import qualified Data.Text as Text
+import Data.Text qualified as Text
 
 data State = On | Off deriving (Show, Eq)
 

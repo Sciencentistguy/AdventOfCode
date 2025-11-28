@@ -37,7 +37,7 @@ impl Step {
     }
 }
 
-pub fn parse(inpt: &str) -> Map {
+pub fn parse(inpt: &str) -> Map<'_> {
     let (rules, rest) = inpt.split_once("\n\n").unwrap();
     let rules = rules
         .chars()

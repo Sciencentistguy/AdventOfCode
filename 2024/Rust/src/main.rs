@@ -1,11 +1,6 @@
 #![feature(array_windows)]
 #![feature(thread_local)]
-#![feature(const_collections_with_hasher)]
-#![feature(build_hasher_default_const_new)]
-#![feature(let_chains)]
-#![feature(array_chunks)]
 #![feature(maybe_uninit_array_assume_init)]
-#![feature(maybe_uninit_uninit_array)]
 
 use std::process::ExitCode;
 

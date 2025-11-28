@@ -1,16 +1,14 @@
-module Day04
-  ( day04,
-  )
+module Day04 (
+  day04,
+)
 where
 
 import AoC
 import Common
 import Data.Char
 import Data.List
-import Data.Text (Text)
-import qualified Data.Text as Text
-import qualified Data.Text.IO as Text
-import Text.Read (readMaybe)
+import Data.Text qualified as Text
+import Data.Text.IO qualified as Text
 
 type Parsed = [String]
 
@@ -23,9 +21,9 @@ isValidPassport (key : value : _) = case key of
     "cm" -> not $ height < 150 || height > 193
     "in" -> not $ height < 59 || height > 76
     _ -> False
-    where
-      unit = drop (length value - 2) value
-      height = read $ take (length value - 2) value :: Int
+   where
+    unit = drop (length value - 2) value
+    height = read $ take (length value - 2) value :: Int
   "byr" -> not $ valueAsInt < 1920 || valueAsInt > 2002
   "iyr" -> not $ valueAsInt < 2010 || valueAsInt > 2020
   "eyr" -> not $ valueAsInt < 2020 || valueAsInt > 2030
@@ -42,8 +40,8 @@ isValidPassport (key : value : _) = case key of
   "pid" -> (length value == 9) && all isDigit value
   "cid" -> True
   _ -> False
-  where
-    valueAsInt = read value
+ where
+  valueAsInt = read value
 isValidPassport _ = unreachable ""
 
 day04 :: Runner Parsed Int
@@ -58,4 +56,4 @@ day04 =
       part2 p =
         let splitted = fmap (split ':') . split ' ' <$> p
          in return $ length $ filter (all isValidPassport) splitted
-   in Runner {..}
+   in Runner{..}

@@ -18,7 +18,7 @@ pub enum Wire<'a> {
     Value(bool),
 }
 
-pub fn parse(input: &str) -> Parsed {
+pub fn parse(input: &str) -> Parsed<'_> {
     let (init, productions) = input.split_once("\n\n").unwrap();
     let mut wires: Parsed = HashMap::default();
     for line in init.lines() {
@@ -74,7 +74,7 @@ fn get<'a>(parsed: &Parsed<'a>, memo: &mut HashMap<&'a str, bool>, wire: &'a str
     value
 }
 
-pub fn part2(parsed: &Parsed) -> Solution {
+pub fn part2(_: &Parsed) -> Solution {
     todo!()
 }
 

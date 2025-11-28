@@ -1,15 +1,11 @@
-{-# LANGUAGE LambdaCase #-}
-
 module Main where
 
 import AoC
-import qualified Data.Text as Text
 import Day01
 import Day02
 import Day03
 import Day04
 import Day05
-import System.Environment (lookupEnv)
 
 main :: IO ()
 main = do

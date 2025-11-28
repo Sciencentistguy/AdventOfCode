@@ -37,7 +37,7 @@ impl Coordinates {
             .0
             .iter()
             .enumerate()
-            .find(|(_, &(_, x))| x == 0)
+            .find(|(_, (_, x))| *x == 0)
             .unwrap();
 
         [1000, 2000, 3000]
