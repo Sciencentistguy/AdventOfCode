@@ -176,6 +176,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "aoc-2025"
+version = "0.1.0"
+dependencies = [
+ "atoi",
+ "clap 4.5.21",
+ "color-eyre",
+ "common",
+ "compact_str",
+ "criterion 0.5.1",
+ "emergence",
+ "fxhash",
+ "itertools 0.13.0",
+ "memchr",
+ "nalgebra",
+ "ndarray 0.16.1",
+ "num",
+ "rayon",
+ "smallvec 2.0.0-alpha.7",
+ "tap",
+]
+
+[[package]]
 name = "aoc2020"
 version = "0.1.0"
 dependencies = [

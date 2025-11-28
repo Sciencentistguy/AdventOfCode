@@ -1,0 +1,35 @@
+[package]
+name = "aoc-2025"
+version = "0.1.0"
+edition = "2024"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+emergence = { path = "../../emergence" }
+common = { path = "../../aoc-common-rs" }
+clap = { version = "4.5.21", features = ["derive", "env"] }
+color-eyre = "0.6.3"
+criterion = "0.5.1"
+atoi = "2.0.0"
+memchr = "2.7.4"
+tap = "1.0.1"
+ndarray = "0.16.1"
+fxhash = "0.2.1"
+smallvec = "2.0.0-alpha.7"
+rayon = "1.10.0"
+itertools = "0.13.0"
+nalgebra = "0.33.2"
+num = "0.4.3"
+compact_str = "0.8.0"
+
+[[bench]]
+name = "aoc_2025"
+harness = false
+
+[profile.release]
+lto = "thin"
+
+[profile.bench]
+codegen-units = 1
+lto = "thin"
