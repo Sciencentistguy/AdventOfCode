@@ -1,3 +1,5 @@
+use rayon::prelude::*;
+
 type Parsed = [[ButtonPress; 4]; 5];
 type Solution = u64;
 
@@ -9,15 +11,6 @@ pub enum ButtonPress {
     Down,
     Left,
     Right,
-}
-
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub enum Movement {
-    Up,
-    Down,
-    Left,
-    Right,
-    Press,
 }
 
 trait NumericValue {
@@ -63,7 +56,7 @@ struct Keypad {
 }
 
 impl Keypad {
-    fn get_path_to(&mut self, target: ButtonPress) -> Vec<Movement> {
+    fn get_path_to(&mut self, target: ButtonPress) -> Vec<ButtonPress> {
         let target_pos = match self.layout {
             KeypadLayout::Numeric => match target {
                 ButtonPress::Num(7) => (0, 0),
@@ -106,15 +99,15 @@ impl Keypad {
         // If moving Left would hit the gap, move Up/Down first.
         // If moving Down would hit the gap, move Left/Right first.
         let move_vert = if dr < 0 {
-            vec![Movement::Up; dr.abs() as usize]
+            vec![ButtonPress::Up; dr.abs() as usize]
         } else {
-            vec![Movement::Down; dr.abs() as usize]
+            vec![ButtonPress::Down; dr.abs() as usize]
         };
 
         let move_horiz = if dc < 0 {
-            vec![Movement::Left; dc.abs() as usize]
+            vec![ButtonPress::Left; dc.abs() as usize]
         } else {
-            vec![Movement::Right; dc.abs() as usize]
+            vec![ButtonPress::Right; dc.abs() as usize]
         };
 
         // Check if horizontal move first hits gap
@@ -142,7 +135,7 @@ impl Keypad {
             }
         }
 
-        moves.push(Movement::Press);
+        moves.push(ButtonPress::A);
         self.position = target_pos;
         moves
     }
@@ -162,57 +155,42 @@ pub fn parse(input: &str) -> Parsed {
     ret
 }
 
-pub fn part1(parsed: &Parsed) -> Solution {
-    let mut ret = 0;
-    for sequence in parsed {
-        let mut keypad = Keypad {
-            layout: KeypadLayout::Numeric,
-            position: (3, 2),
-        };
-        let mut path = Vec::new();
-        for &button in sequence {
-            let moves = keypad.get_path_to(button);
-            path.extend(moves);
-        }
-        let mut keypad = Keypad {
-            layout: KeypadLayout::Directional,
-            position: /*start at A */ (0, 2),
-        };
-        let mut path2 = Vec::new();
-        for &button in &path {
-            let moves = keypad.get_path_to(match button {
-                Movement::Up => ButtonPress::Up,
-                Movement::Down => ButtonPress::Down,
-                Movement::Left => ButtonPress::Left,
-                Movement::Right => ButtonPress::Right,
-                Movement::Press => ButtonPress::A,
-            });
-            path2.extend(moves);
-        }
-        let mut keypad = Keypad {
-            layout: KeypadLayout::Directional,
-            position: /*start at A */ (0, 2),
-        };
-        let mut path3 = Vec::new();
-        for &button in &path2 {
-            let moves = keypad.get_path_to(match button {
-                Movement::Up => ButtonPress::Up,
-                Movement::Down => ButtonPress::Down,
-                Movement::Left => ButtonPress::Left,
-                Movement::Right => ButtonPress::Right,
-                Movement::Press => ButtonPress::A,
-            });
-            path3.extend(moves);
-        }
-        let complexity = path3.len() as u64 * sequence.numeric_component();
-        ret += complexity;
-    }
+fn solve(parsed: &Parsed, intermedite_numpads: u64) -> Solution {
+    parsed
+        .par_iter()
+        .map(|sequence| {
+            let mut final_keypad = Keypad {
+                layout: KeypadLayout::Numeric,
+                position: (3, 2),
+            };
+            let mut path = Vec::new();
+            for &button in sequence {
+                let moves = final_keypad.get_path_to(button);
+                path.extend(moves);
+            }
+            for _ in 0..intermedite_numpads {
+                let mut keypad = Keypad {
+                    layout: KeypadLayout::Directional,
+                    position: (0, 2),
+                };
+                let mut path2 = Vec::new();
+                for &button in &path {
+                    let moves = keypad.get_path_to(button);
+                    path2.extend(moves);
+                }
+                path = path2;
+            }
+            path.len() as u64 * sequence.numeric_component()
+        })
+        .sum()
+}
 
-    ret
+pub fn part1(parsed: &Parsed) -> Solution {
+    solve(parsed, 2)
 }
 
 pub fn part2(parsed: &Parsed) -> Solution {
-    todo!()
+    solve(parsed, 25)
 }
 
 pub fn run(input: &str) {
