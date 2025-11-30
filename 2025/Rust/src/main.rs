@@ -10,7 +10,7 @@ mod day01;
 fn main() -> Result<ExitCode> {
     let opt = Opt::parse();
 
-    let aoc = AoC::new(2024)?;
+    let aoc = AoC::new(2025)?;
 
     match opt.day {
         1 => day01::run(&aoc.read_or_fetch(1)?),
