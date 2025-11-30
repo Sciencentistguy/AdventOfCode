@@ -1,4 +1,5 @@
 use rayon::prelude::*;
+use smallvec::SmallVec;
 
 type Parsed = [[ButtonPress; 4]; 5];
 type Solution = u64;
@@ -56,7 +57,7 @@ struct Keypad {
 }
 
 impl Keypad {
-    fn get_path_to(&mut self, target: ButtonPress) -> Vec<ButtonPress> {
+    fn get_path_to(&mut self, target: ButtonPress) -> SmallVec<ButtonPress, 16> {
         let target_pos = match self.layout {
             KeypadLayout::Numeric => match target {
                 ButtonPress::Num(7) => (0, 0),
@@ -84,7 +85,7 @@ impl Keypad {
 
         let (curr_r, curr_c) = self.position;
         let (target_r, target_c) = target_pos;
-        let mut moves = Vec::new();
+        let mut moves = SmallVec::new();
 
         let dr = target_r as isize - curr_r as isize;
         let dc = target_c as isize - curr_c as isize;
@@ -99,15 +100,19 @@ impl Keypad {
         // If moving Left would hit the gap, move Up/Down first.
         // If moving Down would hit the gap, move Left/Right first.
         let move_vert = if dr < 0 {
-            vec![ButtonPress::Up; dr.abs() as usize]
+            std::iter::repeat_n(ButtonPress::Up, dr.abs() as usize)
+            // vec![ButtonPress::Up; dr.abs() as usize]
         } else {
-            vec![ButtonPress::Down; dr.abs() as usize]
+            // vec![ButtonPress::Down; dr.abs() as usize]
+            std::iter::repeat_n(ButtonPress::Down, dr.abs() as usize)
         };
 
         let move_horiz = if dc < 0 {
-            vec![ButtonPress::Left; dc.abs() as usize]
+            // vec![ButtonPress::Left; dc.abs() as usize]
+            std::iter::repeat_n(ButtonPress::Left, dc.abs() as usize)
         } else {
-            vec![ButtonPress::Right; dc.abs() as usize]
+            // vec![ButtonPress::Right; dc.abs() as usize]
+            std::iter::repeat_n(ButtonPress::Right, dc.abs() as usize)
         };
 
         // Check if horizontal move first hits gap
@@ -168,17 +173,17 @@ fn solve(parsed: &Parsed, intermedite_numpads: u64) -> Solution {
                 let moves = final_keypad.get_path_to(button);
                 path.extend(moves);
             }
-            for _ in 0..intermedite_numpads {
+            for i in 0..intermedite_numpads {
+                eprintln!("Intermediate keypad {}", i + 1);
                 let mut keypad = Keypad {
                     layout: KeypadLayout::Directional,
                     position: (0, 2),
                 };
-                let mut path2 = Vec::new();
-                for &button in &path {
-                    let moves = keypad.get_path_to(button);
-                    path2.extend(moves);
-                }
-                path = path2;
+                path = path
+                    .iter()
+                    .map(|&button| keypad.get_path_to(button))
+                    .flatten()
+                    .collect::<Vec<_>>();
             }
             path.len() as u64 * sequence.numeric_component()
         })
