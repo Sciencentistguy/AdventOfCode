@@ -65,9 +65,10 @@
               ++ lib.optionals (pkgs.stdenv.isDarwin) ([
                   iconv
                 ]
-                ++ (with pkgs.darwin.apple_sdk.frameworks; [
-                  SystemConfiguration
-                ]));
+                # ++ (with pkgs.darwin.apple_sdk.frameworks; [
+                  # SystemConfiguration
+                # ])
+                                );
           };
           nix = pkgs.mkShell {
             name = "aoc-nix";
