@@ -1,6 +1,7 @@
 use std::collections::HashMap;
 
 use atoi::FromRadix10;
+use fxhash::FxHashMap;
 
 
 type Parsed = (Vec<u64>, Vec<u64>);
@@ -36,8 +37,8 @@ pub fn part1((left, right): &Parsed) -> Solution {
         .sum()
 }
 
-fn count(v: &[u64]) -> HashMap<u64, u64> {
-    let mut counts = HashMap::with_capacity(v.len());
+fn count(v: &[u64]) -> FxHashMap<u64, u64> {
+    let mut counts = FxHashMap::with_capacity_and_hasher(v.len(), Default::default());
     for &num in v {
         *counts.entry(num).or_insert(0) += 1;
     }

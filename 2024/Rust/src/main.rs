@@ -28,6 +28,7 @@ mod day16;
 mod day17;
 mod day18;
 mod day19;
+mod day21;
 mod day23;
 mod day24;
 mod day25;
@@ -57,6 +58,7 @@ fn main() -> Result<ExitCode> {
         17 => day17::run(&aoc.read_or_fetch(17)?),
         18 => day18::run(&aoc.read_or_fetch(18)?),
         19 => day19::run(&aoc.read_or_fetch(19)?),
+        21 => day21::run(&aoc.read_or_fetch(21)?),
         23 => day23::run(&aoc.read_or_fetch(23)?),
         24 => day24::run(&aoc.read_or_fetch(24)?),
         25 => day25::run(&aoc.read_or_fetch(25)?),
