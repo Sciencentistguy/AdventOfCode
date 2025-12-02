@@ -1,3 +1,6 @@
+#![feature(portable_simd)]
+#![feature(iter_array_chunks)]
+
 use std::process::ExitCode;
 
 use clap::Parser;

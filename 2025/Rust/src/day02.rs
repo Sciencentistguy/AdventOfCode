@@ -1,3 +1,5 @@
+use bstr::ByteSlice;
+use common::ByteSplit;
 use rayon::prelude::*;
 
 type Parsed = Vec<(u64, u64)>;
@@ -6,9 +8,15 @@ type Solution = u64;
 pub fn parse(input: &str) -> Parsed {
     input
         .trim()
-        .split(',')
-        .map(|pair| pair.split_once('-').unwrap())
-        .map(|(a, b)| (a.parse().unwrap(), b.parse().unwrap()))
+        .as_bytes()
+        .byte_split(b',')
+        .map(|pair| unsafe {
+            let (a, b) = pair.byte_split_once(b'-').unwrap_unchecked();
+            (
+                a.to_str_unchecked().parse().unwrap(),
+                b.to_str_unchecked().parse().unwrap(),
+            )
+        })
         .collect()
 }
 
