@@ -1,3 +1,5 @@
+use rayon::prelude::*;
+
 type Parsed = Vec<(u64, u64)>;
 type Solution = u64;
 
@@ -12,69 +14,36 @@ pub fn parse(input: &str) -> Parsed {
 
 pub fn part1(parsed: &Parsed) -> Solution {
     parsed
-        .iter()
+        .par_iter()
         .flat_map(|(a, b)| *a..=*b)
-        .filter(|id| is_repeated_sequence_2(*id))
+        .filter(|x| match x {
+            10..=99 => x % 11 == 0,
+            1000..=9999 => x % 101 == 0,
+            100000..=999999 => x % 1001 == 0,
+            10000000..=99999999 => x % 10001 == 0,
+            1000000000..=9999999999 => x % 100001 == 0,
+            _ => false,
+        })
         .sum::<u64>()
 }
 
-fn is_repeated_sequence_2(n: u64) -> bool {
-    if n == 0 {
-        return false; // breaks for 0
-    }
-
-    let digits = n.ilog10() + 1;
-    if digits % 2 != 0 {
-        return false; // skip odd digit numbers
-    }
-
-    let half_digits = digits / 2;
-    let divisor = 10u64.pow(half_digits);
-
-    let upper = n / divisor;
-    let lower = n % divisor;
-
-    upper == lower
-}
-
-fn is_repeated_sequence_n(n: u64) -> bool {
-    if n == 0 {
-        return false;
-    }
-
-    let digits = n.ilog10() + 1;
-
-    for period in 1..=digits / 2 {
-        if digits % period != 0 {
-            continue; // if not divisible, can't be repeated
-        }
-
-        let divisor = 10u64.pow(period);
-        let pattern = n % divisor;
-        let mut temp = n;
-        let mut matches = true;
-
-        while temp > 0 {
-            if temp % divisor != pattern {
-                matches = false;
-                break;
-            }
-            temp /= divisor;
-        }
-
-        if matches {
-            return true;
-        }
-    }
-
-    false
-}
-
+#[rustfmt::skip]
 pub fn part2(parsed: &Parsed) -> Solution {
     parsed
-        .iter()
+        .par_iter()
         .flat_map(|(a, b)| *a..=*b)
-        .filter(|id| is_repeated_sequence_n(*id))
+        .filter(|id| match id {
+            10..=99 => id % 11 == 0,
+            100..=999 => id % 111 == 0,
+            1000..=9999 => id % 101 == 0 || id % 1111 == 0,
+            10000..=99999 => id % 11111 == 0,
+            100000..=999999 => id % 1001 == 0 || id % 10101 == 0 || id % 111111 == 0,
+            1000000..=9999999 => id % 1111111 == 0,
+            10000000..=99999999 => id % 10001 == 0 || id % 1010101 == 0 || id % 11111111 == 0,
+            100000000..=999999999 => id % 1001001 == 0 || id % 111111111 == 0,
+            1000000000..=9999999999 => id % 100001 == 0 || id % 101010101 == 0 || id % 1111111111 == 0,
+            _ => false,
+        })
         .sum::<u64>()
 }
 
