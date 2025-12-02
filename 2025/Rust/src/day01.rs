@@ -27,19 +27,16 @@ pub fn parse(input: &str) -> Parsed {
 pub fn part1(parsed: &Parsed) -> Solution {
     let mut count = 0;
     let mut current_sum: i16 = 50;
-    let mut i = 0;
 
-    // process 64 lanes at a time
     const LANES: usize = 64;
 
-    let chunks = parsed.len() / LANES;
+    let (chunks, rest) = parsed.as_chunks::<LANES>();
 
-    for _ in 0..chunks {
-        let chunk = &parsed[i..i + LANES];
-        let mut vec = Simd::<i16, LANES>::from_slice(chunk);
+    for chunk in chunks {
+        let mut vec = Simd::<i16, LANES>::from_array(*chunk);
 
         const ZERO: Simd<i16, LANES> = Simd::splat(0);
-        
+
         // Generate prefix sums via iterative doubling
         // after this, vec[i] contains sum of elements up to and including i in the chunk
         // i.e. [a, a+b, a+b+c, ...]
@@ -131,12 +128,10 @@ pub fn part1(parsed: &Parsed) -> Solution {
         // Check divisibility by 100 and count matches (this is the bit that is much faster with SIMD)
         let mask = (vec % Simd::splat(100)).simd_eq(Simd::splat(0));
         count += mask.to_bitmask().count_ones() as u64;
-
-        i += LANES;
     }
 
     // Handle remaining elements
-    for &rotation in &parsed[i..] {
+    for &rotation in rest {
         current_sum += rotation;
         if current_sum % 100 == 0 {
             count += 1;
@@ -146,17 +141,15 @@ pub fn part1(parsed: &Parsed) -> Solution {
 }
 
 pub fn part2(parsed: &Parsed) -> Solution {
-    // vectorized 64-lane implementation
     let mut count: u64 = 0;
     let mut current_sum: i16 = 50;
-    let mut i = 0;
 
     const LANES: usize = 64;
 
-    let chunks = parsed.len() / LANES;
-    for _ in 0..chunks {
-        let chunk = &parsed[i..i + LANES];
-        let orig = Simd::<i16, LANES>::from_slice(chunk);
+    let (chunks, rest) = parsed.as_chunks::<LANES>();
+
+    for chunk in chunks {
+        let orig = Simd::<i16, LANES>::from_array(*chunk);
 
         // same as above: prefix sums via iterative doubling
         let mut pref = orig;
@@ -266,12 +259,10 @@ pub fn part2(parsed: &Parsed) -> Solution {
 
         // update global running sum from last lane
         current_sum = end_vec[LANES - 1];
-
-        i += LANES;
     }
 
     // scalar tail
-    for &rotation in &parsed[i..] {
+    for &rotation in rest {
         let start = current_sum;
         let end = start + rotation;
         if rotation > 0 {
