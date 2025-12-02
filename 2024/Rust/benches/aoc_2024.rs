@@ -8,13 +8,13 @@ macro_rules! bench_day {
             .unwrap();
         let parsed = $day::parse(&input);
 
-        $c.bench_function(concat!(stringify!($day), "::parse"), |b| {
+        $c.bench_function(concat!("2024::", stringify!($day), "::parse"), |b| {
             b.iter(|| $day::parse(&input))
         });
-        $c.bench_function(concat!(stringify!($day), "::part1"), |b| {
+        $c.bench_function(concat!("2024::", stringify!($day), "::part1"), |b| {
             b.iter(|| $day::part1(&parsed))
         });
-        $c.bench_function(concat!(stringify!($day), "::part2"), |b| {
+        $c.bench_function(concat!("2024::", stringify!($day), "::part2"), |b| {
             b.iter(|| $day::part2(&parsed))
         });
     }};
@@ -35,9 +35,9 @@ pub fn criterion_benchmark(c: &mut Criterion) {
         let parsed = day06::parse(&input);
         let (_, visited) = day06::part1(&parsed);
 
-        c.bench_function("day06::parse", |b| b.iter(|| day06::parse(&input)));
-        c.bench_function("day06::part1", |b| b.iter(|| day06::part1(&parsed)));
-        c.bench_function("day06::part2", |b| {
+        c.bench_function("2024::day06::parse", |b| b.iter(|| day06::parse(&input)));
+        c.bench_function("2024::day06::part1", |b| b.iter(|| day06::part1(&parsed)));
+        c.bench_function("2024::day06::part2", |b| {
             b.iter(|| day06::part2(&parsed, &visited))
         });
     }
@@ -54,10 +54,10 @@ pub fn criterion_benchmark(c: &mut Criterion) {
         use aoc_2024::day15;
         let input = aoc.read_or_fetch(15).unwrap();
 
-        c.bench_function("day15::part1", |b| {
+        c.bench_function("2024::day15::part1", |b| {
             b.iter(|| day15::part1(input.as_bytes()))
         });
-        c.bench_function("day15::part2", |b| {
+        c.bench_function("2024::day15::part2", |b| {
             b.iter(|| day15::part2(input.as_bytes()))
         });
     }
@@ -72,10 +72,10 @@ pub fn criterion_benchmark(c: &mut Criterion) {
         use aoc_2024::day25;
         let input = aoc.read_or_fetch(25).unwrap();
         let parsed = day25::parse(&input);
-        c.bench_function(concat!(stringify!(day25), "::parse"), |b| {
+        c.bench_function(concat!("2024::", stringify!(day25), "::parse"), |b| {
             b.iter(|| day25::parse(&input))
         });
-        c.bench_function(concat!(stringify!(day25), "::part1"), |b| {
+        c.bench_function(concat!("2024::", stringify!(day25), "::part1"), |b| {
             b.iter(|| day25::part1(&parsed))
         });
     };

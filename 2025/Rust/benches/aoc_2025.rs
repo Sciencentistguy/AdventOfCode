@@ -8,13 +8,13 @@ macro_rules! bench_day {
             .unwrap();
         let parsed = $day::parse(&input);
 
-        $c.bench_function(concat!(stringify!($day), "::parse"), |b| {
+        $c.bench_function(concat!("2025::", stringify!($day), "::parse"), |b| {
             b.iter(|| $day::parse(&input))
         });
-        $c.bench_function(concat!(stringify!($day), "::part1"), |b| {
+        $c.bench_function(concat!("2025::", stringify!($day), "::part1"), |b| {
             b.iter(|| $day::part1(&parsed))
         });
-        $c.bench_function(concat!(stringify!($day), "::part2"), |b| {
+        $c.bench_function(concat!("2025::", stringify!($day), "::part2"), |b| {
             b.iter(|| $day::part2(&parsed))
         });
     }};
