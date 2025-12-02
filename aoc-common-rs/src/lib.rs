@@ -7,6 +7,8 @@ use smallvec::SmallVec;
 
 pub mod vec2d;
 pub use vec2d::*;
+pub mod byte_split;
+pub use byte_split::*;
 
 pub trait ArraySplit {
     type Out<'a>

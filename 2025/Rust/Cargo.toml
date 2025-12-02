@@ -22,14 +22,8 @@ itertools = "0.13.0"
 nalgebra = "0.33.2"
 num = "0.4.3"
 compact_str = "0.8.0"
+bstr = "1.12.1"
 
 [[bench]]
 name = "aoc_2025"
 harness = false
-
-[profile.release]
-lto = "thin"
-
-[profile.bench]
-codegen-units = 1
-lto = "thin"

@@ -2,6 +2,7 @@
 resolver = "3"
 members = [
     "emergence",
+    "2015/Rust",
     "2020/Rust",
     "2021/Rust",
     "2022/Rust",
@@ -16,3 +17,7 @@ codegen-units = 1
 lto = "thin"
 panic = "abort"
 debug = true
+
+[profile.bench]
+codegen-units = 1
+lto = "fat"

@@ -5,5 +5,6 @@ edition = "2024"
 
 [dependencies]
 collect_slice = "1.2.0"
+memchr = "2.7.6"
 ndarray = "0.16.1"
 smallvec = "2.0.0-alpha.7"
