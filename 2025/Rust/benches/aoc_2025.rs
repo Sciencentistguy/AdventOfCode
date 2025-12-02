@@ -24,6 +24,7 @@ pub fn criterion_benchmark(c: &mut Criterion) {
     let aoc = emergence::AoC::new(2025).unwrap();
 
     bench_day!(c, aoc, day01);
+    bench_day!(c, aoc, day02);
 }
 
 criterion_group!(benches, criterion_benchmark);
