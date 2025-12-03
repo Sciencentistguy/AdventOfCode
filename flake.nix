@@ -61,14 +61,15 @@
                 openssl
                 cargo-criterion
                 cargo-flamegraph
+                (cargo-show-asm.overrideAttrs (old: {cargoBuildFlags = old.cargoBuildFlags or [] ++ ["--features=disasm"];}))
+                hyperfine
               ]
-              ++ lib.optionals (pkgs.stdenv.isDarwin) ([
-                  iconv
-                ]
-                # ++ (with pkgs.darwin.apple_sdk.frameworks; [
-                  # SystemConfiguration
-                # ])
-                                );
+              ++ lib.optionals (pkgs.stdenv.isDarwin) [
+                iconv
+              ]
+              ++ lib.optionals (pkgs.stdenv.isLinux) [
+                perf
+              ];
           };
           nix = pkgs.mkShell {
             name = "aoc-nix";

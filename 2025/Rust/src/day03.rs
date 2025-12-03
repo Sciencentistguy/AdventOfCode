@@ -1,29 +1,67 @@
 use rayon::prelude::*;
 
-type Parsed = Vec<Vec<u32>>;
+type Parsed = Vec<Vec<u8>>;
 type Solution = u64;
 
 pub fn parse(input: &str) -> Parsed {
     input
+        .trim()
         .lines()
-        .map(|line| line.chars().flat_map(|c| c.to_digit(10)).collect())
+        .map(|line| line.bytes().map(|c| c - b'0').collect())
         .collect()
 }
 
-fn compute_max_joltage(input: &[u32], length: usize) -> u64 {
+fn simd_max(input: &[u8]) -> (usize, u8) {
+    use std::simd::prelude::*;
+
+    const LANES: usize = 32;
+    type Sv = Simd<u8, LANES>;
+
+    let mut best = (0, 0);
+    let (chunks, remainder) = input.as_chunks::<LANES>();
+
+    let mut index = 0;
+    let mut max_values = Sv::splat(0);
+    let mut max_indices = Sv::splat(0);
+
+    for chunk in chunks {
+        let values = Sv::from_array(*chunk);
+        let indices = {
+            let mut arr = [0u8; LANES];
+            for i in 0..LANES {
+                arr[i] = (index + i) as u8;
+            }
+            Sv::from_array(arr)
+        };
+
+        let mask = values.simd_gt(max_values);
+        max_values = mask.select(values, max_values);
+        max_indices = mask.select(indices, max_indices);
+
+        index += 16;
+    }
+
+    for i in 0..16 {
+        if max_values[i] > best.1 {
+            best = (max_indices[i] as usize, max_values[i]);
+        }
+    }
+    for (i, &value) in remainder.iter().enumerate() {
+        if value > best.1 {
+            best = (index + i, value);
+        }
+    }
+    best
+}
+
+fn compute_max_joltage(input: &[u8], length: usize) -> u64 {
     let mut joltage: u64 = 0;
     let mut pos = 0;
     for i in (0..length).rev() {
-        // let mut best = (0, 0);
-        let best = input[pos..input.len() - i]
-            .iter()
-            .enumerate()
-            .rev()
-            .max_by_key(|x| x.1)
-            .unwrap();
+        let (idx, val) = simd_max(&input[pos..input.len() - i]);
 
-        pos += best.0 + 1;
-        joltage += (10 as u64).pow(i as u32) * *best.1 as u64;
+        pos += idx + 1;
+        joltage += (10 as u64).pow(i as u32) * val as u64;
     }
     joltage
 }
