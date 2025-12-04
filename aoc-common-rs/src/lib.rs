@@ -3,6 +3,7 @@
 use std::str::pattern::Pattern;
 
 use collect_slice::CollectSlice;
+use ndarray::Array2;
 use smallvec::SmallVec;
 
 pub mod vec2d;
@@ -85,4 +86,41 @@ pub fn generate_combs_n<T: Clone, const N: usize>(vals: &[T], n: usize) -> Vec<S
     let mut current = SmallVec::<_, N>::with_capacity(n);
     generate_combs_recursive(vals, n, &mut current, &mut result);
     result
+}
+
+pub trait Neighbours {
+    #[rustfmt::skip]
+    const NEIGHBOUR_OFFSETS: [(isize, isize); 8] = [
+        (-1, -1), (0, -1), (1, -1),
+        (-1,  0),          (1,  0),
+        (-1,  1), (0,  1), (1,  1),
+    ];
+
+    type T;
+    fn neighbours(&self, pos: (usize, usize)) -> impl Iterator<Item = Self::T>;
+}
+
+impl<U: Copy> Neighbours for [Vec<U>] {
+    type T = U;
+
+    #[inline(always)]
+    fn neighbours(&self, (x, y): (usize, usize)) -> impl Iterator<Item = Self::T> {
+        Self::NEIGHBOUR_OFFSETS.iter().flat_map(move |(dx, dy)| {
+            self.get(y.wrapping_add_signed(*dy))
+                .and_then(|row| row.get(x.wrapping_add_signed(*dx)))
+                .copied()
+        })
+    }
+}
+
+impl<U: Copy> Neighbours for Array2<U> {
+    type T = U;
+
+    #[inline(always)]
+    fn neighbours(&self, (x, y): (usize, usize)) -> impl Iterator<Item = Self::T> {
+        Self::NEIGHBOUR_OFFSETS.iter().flat_map(move |(dx, dy)| {
+            self.get((x.wrapping_add_signed(*dx), y.wrapping_add_signed(*dy)))
+                .copied()
+        })
+    }
 }

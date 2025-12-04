@@ -30,10 +30,10 @@ pub fn part1(parsed: &Parsed) -> Solution {
         .map(|(a, b)| {
             let mut sum: u64 = 0;
 
-            let mut chunks = (*a..=*b).into_iter().array_chunks::<LANES>();
+            let mut chunks = (*a..=*b).array_chunks::<LANES>();
 
             // full SIMD chunks
-            while let Some(arr) = chunks.next() {
+            for arr in &mut chunks {
                 let vec = Sv::from_array(arr);
 
                 // prepare splats
@@ -62,7 +62,7 @@ pub fn part1(parsed: &Parsed) -> Solution {
                     & (vec % Sv::splat(1001)).simd_eq(Sv::splat(0));
                 let mask_8 = (vec.simd_ge(V10000000) & vec.simd_le(V99999999))
                     & (vec % Sv::splat(10001)).simd_eq(Sv::splat(0));
-                let mask_10 = (vec.simd_ge(V1000000000) & vec.simd_le(V9999999999.into()))
+                let mask_10 = (vec.simd_ge(V1000000000) & vec.simd_le(V9999999999))
                     & (vec % Sv::splat(100001)).simd_eq(Sv::splat(0));
 
                 let mask = mask_2 | mask_4 | mask_6 | mask_8 | mask_10;
