@@ -44,6 +44,14 @@ where
         Self { ranges: Vec::new() }
     }
 
+    #[inline]
+    #[must_use]
+    pub fn with_capacity(n: usize) -> Self {
+        Self {
+            ranges: Vec::with_capacity(n),
+        }
+    }
+
     /// Insert a range that implements `RangeBounds` trait into `MergedRange`
     ///
     /// will clone data because of the `RangeBounds` just provides reference
@@ -177,10 +185,9 @@ where
         R: RangeBounds<K>,
     {
         if let (Bound::Included(k1), Bound::Included(k2)) = (range.start_bound(), range.end_bound())
+            && k1 == k2
         {
-            if k1 == k2 {
-                return self.contains(k1);
-            }
+            return self.contains(k1);
         }
 
         let check_end = |l_end, r_end| match (l_end, r_end) {
@@ -251,7 +258,6 @@ where
     pub fn bounds(&self) -> &[(Bound<K>, Bound<K>)] {
         &self.ranges
     }
-
 }
 
 impl<K, R> FromIterator<R> for MergedRange<K>
@@ -261,13 +267,23 @@ where
 {
     #[inline]
     fn from_iter<T: IntoIterator<Item = R>>(iter: T) -> Self {
-        iter.into_iter().fold(MergedRange::new(), |mut set, range| {
-            set.insert_range(&range);
-            set
-        })
+        let iter = iter.into_iter();
+        let size_hint = iter.size_hint();
+        iter.fold(
+            if let (_, Some(upper)) = size_hint {
+                MergedRange::with_capacity(upper)
+            } else {
+                MergedRange::with_capacity(size_hint.0)
+            },
+            |mut set, range| {
+                set.insert_range(&range);
+                set
+            },
+        )
     }
 }
 
+#[allow(clippy::single_range_in_vec_init)]
 #[cfg(test)]
 mod test {
 

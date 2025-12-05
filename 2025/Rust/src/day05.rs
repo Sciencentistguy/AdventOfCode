@@ -1,44 +1,40 @@
-use std::ops::{Bound, RangeInclusive};
+use atoi::FromRadix10;
+use std::ops::Bound;
 
-use common::MergedRange;
+use common::{ByteSplit, MergedRange};
 
-type Parsed = (Vec<RangeInclusive<u64>>, Vec<u64>);
+type Parsed = (MergedRange<u64>, Vec<u64>);
 type Solution = u64;
 
 pub fn parse(input: &str) -> Parsed {
     let (ranges, values) = input.trim().split_once("\n\n").unwrap();
 
     let ranges = ranges
-        .lines()
+        .as_bytes()
+        .byte_lines()
         .map(|line| {
-            let (from, to) = line.split_once('-').unwrap();
-            let from = from.parse().unwrap();
-            let to = to.parse().unwrap();
+            let (from, to) = line.byte_split_once(b'-').unwrap();
+            let from = u64::from_radix_10(from).0;
+            let to = u64::from_radix_10(to).0;
             from..=to
         })
-        .collect();
+        .collect::<MergedRange<_>>();
 
-    let values = values.lines().map(|line| line.parse().unwrap()).collect();
+    let values = values
+        .lines()
+        .map(|line| u64::from_radix_10(line.as_bytes()).0)
+        .collect();
 
     (ranges, values)
 }
 
 pub fn part1((ranges, values): &Parsed) -> Solution {
-    values
-        .iter()
-        .filter(|val| ranges.iter().any(|x| x.contains(val)))
-        .count() as _
+    values.iter().filter(|val| ranges.contains(val)).count() as _
 }
 
 pub fn part2((ranges, _): &Parsed) -> Solution {
-    let mut mr = MergedRange::new();
-
-    for rng in ranges {
-        mr.insert_range(rng);
-    }
-
     let mut count = 0;
-    for (lower, upper) in mr.bounds() {
+    for (lower, upper) in ranges.bounds() {
         let upper = match upper {
             Bound::Included(n) => n + 1,
             Bound::Excluded(n) => *n,
