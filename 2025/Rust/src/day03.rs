@@ -1,5 +1,3 @@
-use rayon::prelude::*;
-
 type Parsed = Vec<Vec<u8>>;
 type Solution = u64;
 
@@ -28,6 +26,7 @@ fn simd_max(input: &[u8]) -> (usize, u8) {
         let values = Sv::from_array(*chunk);
         let indices = {
             let mut arr = [0u8; LANES];
+            #[allow(clippy::needless_range_loop)] // it is cleaner than using enumerate imo
             for i in 0..LANES {
                 arr[i] = (index + i) as u8;
             }
@@ -61,14 +60,13 @@ fn compute_max_joltage(input: &[u8], length: usize) -> u64 {
         let (idx, val) = simd_max(&input[pos..input.len() - i]);
 
         pos += idx + 1;
-        joltage += (10 as u64).pow(i as u32) * val as u64;
+        joltage += 10_u64.pow(i as u32) * val as u64;
     }
     joltage
 }
 
 pub fn part1(parsed: &Parsed) -> Solution {
     parsed
-        // .par_iter()
         .iter()
         .map(|bank| compute_max_joltage(bank, 2))
         .sum()
@@ -76,7 +74,6 @@ pub fn part1(parsed: &Parsed) -> Solution {
 
 pub fn part2(parsed: &Parsed) -> Solution {
     parsed
-        // .par_iter()
         .iter()
         .map(|bank| compute_max_joltage(bank, 12))
         .sum()

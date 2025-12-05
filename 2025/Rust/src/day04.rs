@@ -68,13 +68,13 @@ pub fn part2(input: &Parsed) -> Solution {
                     continue;
                 }
 
-                let neighbor_count = input
+                let neighbour_count = input
                     .neighbours((x, y))
                     .filter(|x| *x == Entry::Roll)
                     .count();
 
                 let ch = unsafe { input.get_mut((x, y)).unwrap_unchecked() };
-                if *ch == Entry::Roll && neighbor_count < 4 {
+                if *ch == Entry::Roll && neighbour_count < 4 {
                     *ch = Entry::Space;
                     count += 1;
                     diff += 1;
