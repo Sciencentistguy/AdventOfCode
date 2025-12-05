@@ -35,7 +35,7 @@
       in {
         haskellProjects.aoc = {
           projectFlakeName = "aoc-haskell";
-          basePackages = pkgs.haskell.packages.ghc9103;
+          basePackages = pkgs.haskell.packages.ghc9122;
         };
 
         devShells = rec {
