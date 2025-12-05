@@ -10,6 +10,8 @@ pub mod vec2d;
 pub use vec2d::*;
 pub mod byte_split;
 pub use byte_split::*;
+pub mod merged_range;
+pub use merged_range::*;
 
 pub trait ArraySplit {
     type Out<'a>
