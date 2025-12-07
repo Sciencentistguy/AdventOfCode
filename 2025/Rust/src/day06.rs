@@ -30,7 +30,6 @@ impl Operator {
     }
 }
 
-#[inline(never)]
 pub fn parse(input: &str) -> Parsed {
     let input = input.as_bytes();
     let first_newline = memchr(b'\n', input).unwrap();
@@ -83,7 +82,6 @@ pub fn parse(input: &str) -> Parsed {
     }
 }
 
-#[inline(never)]
 pub fn part1(
     Parsed {
         line_len,
@@ -127,7 +125,6 @@ pub fn part1(
         .sum()
 }
 
-#[inline(never)]
 pub fn part2(
     Parsed {
         line_len,

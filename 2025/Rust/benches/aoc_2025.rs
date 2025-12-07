@@ -29,6 +29,7 @@ pub fn criterion_benchmark(c: &mut Criterion) {
     bench_day!(c, aoc, day04);
     bench_day!(c, aoc, day05);
     bench_day!(c, aoc, day06);
+    bench_day!(c, aoc, day07);
 }
 
 criterion_group!(benches, criterion_benchmark);
