@@ -12,7 +12,7 @@ type Solution = Int
 
 dayXX :: Runner Parsed Solution
 dayXX =
-  let year = 2024
+  let year = 2025
       day = XX
       parser :: Text -> Maybe Parsed
       parser = undefined

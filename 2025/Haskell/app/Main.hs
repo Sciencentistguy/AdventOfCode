@@ -10,7 +10,7 @@ import System.Environment (getArgs)
 main :: IO ()
 main = do
   token <- getToken
-  let runDay :: forall out a. Show out => Runner a out -> IO ()
+  let runDay :: forall out a. (Show out) => Runner a out -> IO ()
       runDay = runAoC token
 
   (arg : _) <- getArgs
