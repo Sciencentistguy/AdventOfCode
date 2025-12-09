@@ -29,6 +29,7 @@ impl Vec3D {
         unsafe { std::mem::transmute(self) }
     }
 
+    //
     // A simd-powered 3D pythagoras
     fn distance(&self, other: &Vec3D) -> f64 {
         let v_self = Simd::from_array(*self.as_array()).cast::<f64>();

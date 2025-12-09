@@ -1,3 +1,4 @@
+#![feature(portable_simd)]
 #![feature(pattern)]
 
 use std::str::pattern::Pattern;

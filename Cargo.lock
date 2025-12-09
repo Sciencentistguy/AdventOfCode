@@ -532,6 +532,7 @@ dependencies = [
  "collect_slice",
  "memchr",
  "ndarray 0.16.1",
+ "num-traits",
  "smallvec 2.0.0-alpha.7",
 ]
 

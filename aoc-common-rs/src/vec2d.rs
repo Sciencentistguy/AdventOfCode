@@ -1,10 +1,12 @@
 use std::{
     fmt::Display,
     ops::{Add, AddAssign, Div, Mul, Neg, Rem, Sub},
+    simd::prelude::*,
 };
 
 use ndarray::{Dimension, Ix, Ix2, Ixs, NdIndex};
 
+#[repr(C)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, Default, PartialOrd)]
 pub struct Vec2D<T> {
     pub x: T,
@@ -17,7 +19,8 @@ impl<T> Vec2D<T> {
     pub const LEFT: Vec2D<isize> = Vec2D { x: -1, y: 0 };
     pub const RIGHT: Vec2D<isize> = Vec2D { x: 1, y: 0 };
 
-    pub const CARDINAL_DIRECTIONS: [Vec2D<isize>; 4] = [Self::UP, Self::RIGHT, Self::DOWN, Self::LEFT];
+    pub const CARDINAL_DIRECTIONS: [Vec2D<isize>; 4] =
+        [Self::UP, Self::RIGHT, Self::DOWN, Self::LEFT];
 
     pub const fn new(x: T, y: T) -> Self {
         Self { x, y }
@@ -40,6 +43,19 @@ impl<T> Vec2D<T> {
     {
         self.x % divisor == T::from(0) && self.y % divisor == T::from(0)
     }
+
+    fn as_array(&self) -> &[T; 2] {
+        // Safety: Self is repr(C), so the 3 fields are guaranteed to be contiguous and in order.
+        unsafe { std::mem::transmute(self) }
+    }
+
+    fn cross_product(&self, other: &Self) -> T
+    where
+        T: Sub<Output = T> + Mul<Output = T> + Copy,
+    {
+        self.x * other.y - self.y * other.x
+    }
+
 }
 
 impl<T> Add for Vec2D<T>
@@ -186,7 +202,7 @@ impl Vec2D<usize> {
             .iter()
             .filter_map(|&dir| self.checked_add_signed(dir))
     }
-    pub fn signed_neighbours(&self) -> impl Iterator<Item = Vec2D<isize>> + 'static  + use<> {
+    pub fn signed_neighbours(&self) -> impl Iterator<Item = Vec2D<isize>> + 'static + use<> {
         let signed = self.signed();
         Self::CARDINAL_DIRECTIONS
             .iter()
@@ -209,7 +225,6 @@ impl Vec2D<usize> {
     pub fn right(&self) -> Option<Self> {
         self.checked_add_signed(Self::RIGHT)
     }
-
 }
 
 impl Vec2D<isize> {
@@ -242,3 +257,27 @@ unsafe impl NdIndex<Ix2> for Vec2D<usize> {
         stride_offset(self.x, strides[0]) + stride_offset(self.y, strides[1])
     }
 }
+
+pub trait Distance {
+    fn distance(&self, other: &Self) -> f64;
+}
+
+macro_rules! distance_impl {
+    ($t:ty) => {
+        impl Distance for Vec2D<$t> {
+            fn distance(&self, other: &Self) -> f64 {
+                let v_self = Simd::from_array(*self.as_array()).cast::<f64>();
+                let v_other = Simd::from_array(*other.as_array()).cast::<f64>();
+
+                let v_d = v_self - v_other;
+
+                let v_sq = v_d * v_d;
+
+                v_sq.reduce_sum().sqrt()
+            }
+        }
+    };
+}
+
+distance_impl!(u64);
+distance_impl!(i64);
