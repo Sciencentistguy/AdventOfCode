@@ -54,6 +54,7 @@
           };
           rust = pkgs.mkShell {
             name = "aoc-rust";
+            buildInputs = [pkgs.z3.dev];
             nativeBuildInputs = with pkgs;
               [
                 fenix.complete.toolchain

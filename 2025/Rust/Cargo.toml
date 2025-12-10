@@ -24,6 +24,7 @@ num = "0.4.3"
 compact_str = "0.8.0"
 bstr = "1.12.1"
 petgraph = "0.8.3"
+z3 = "0.19.5"
 
 [[bench]]
 name = "aoc_2025"
