@@ -10,7 +10,7 @@ arrayvec = "0.7.2"
 clap = { version = "4.0.29", features = ["derive"] }
 emergence = { path = "../../emergence" }
 id_tree = "1.8.0"
-itertools = "0.10.5"
+itertools = "0.14.0"
 lazy_format = "2.0.0"
 memchr = "2.5.0"
 ndarray = "0.15.6"
