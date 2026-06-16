@@ -107,7 +107,7 @@ dependencies = [
  "common",
  "criterion 0.5.1",
  "emergence",
- "itertools 0.14.0",
+ "itertools 0.15.0",
 ]
 
 [[package]]
@@ -130,7 +130,7 @@ dependencies = [
  "criterion 0.4.0",
  "emergence",
  "id_tree",
- "itertools 0.10.5",
+ "itertools 0.15.0",
  "lazy_format",
  "memchr",
  "ndarray 0.15.6",
@@ -152,7 +152,7 @@ dependencies = [
  "criterion 0.5.1",
  "emergence",
  "fxhash",
- "itertools 0.10.5",
+ "itertools 0.15.0",
  "linked-hash-map",
  "memchr",
  "ndarray 0.15.6",
@@ -179,7 +179,7 @@ dependencies = [
  "criterion 0.5.1",
  "emergence",
  "fxhash",
- "itertools 0.13.0",
+ "itertools 0.15.0",
  "memchr",
  "nalgebra",
  "ndarray 0.16.1",
@@ -202,7 +202,7 @@ dependencies = [
  "criterion 0.5.1",
  "emergence",
  "fxhash",
- "itertools 0.13.0",
+ "itertools 0.15.0",
  "memchr",
  "nalgebra",
  "ndarray 0.16.1",
@@ -1296,9 +1296,9 @@ dependencies = [
 
 [[package]]
 name = "itertools"
-version = "0.14.0"
+version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "2b192c782037fadd9cfa75548310488aabdbf3d2da73885b31bd0abd03351285"
+checksum = "8b4baf93f58d4425749ca49a51c50ebab072c5df6994d08fed93541c331481dc"
 dependencies = [
  "either",
 ]
