@@ -5,6 +5,7 @@ module Main where
 import AoC
 import Day01
 import Day02
+import Day03
 import Safe
 import System.Environment (getArgs)
 
@@ -23,4 +24,5 @@ main = do
   case day of
     1 -> runDay day01
     2 -> runDay day02
+    3 -> runDay day03
     _ -> error $ "Day " ++ show day ++ " is not yet implemented."

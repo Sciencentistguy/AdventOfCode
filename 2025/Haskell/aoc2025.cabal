@@ -25,6 +25,7 @@ library
     exposed-modules:
         Day01
         Day02
+        Day03
 
 executable aoc2025
     import: flags
