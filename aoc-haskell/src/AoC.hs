@@ -104,7 +104,7 @@ fetchFromAPI (Token token) year day = do
         url
         NoReqBody
         bsResponse
-        (header (fromString "COOKIE") (fromString cookie))
+        (header (fromString "Cookie") (fromString cookie))
 
   return $ Text.decodeUtf8 $ responseBody r
 

@@ -24,6 +24,7 @@ library
         , safe
     exposed-modules:
         Day01
+        Day02
 
 executable aoc2025
     import: flags
