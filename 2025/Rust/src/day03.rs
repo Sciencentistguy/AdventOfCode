@@ -37,10 +37,10 @@ fn simd_max(input: &[u8]) -> (usize, u8) {
         max_values = mask.select(values, max_values);
         max_indices = mask.select(indices, max_indices);
 
-        index += 16;
+        index += LANES;
     }
 
-    for i in 0..16 {
+    for i in 0..LANES {
         if max_values[i] > best.1 {
             best = (max_indices[i] as usize, max_values[i]);
         }
@@ -57,7 +57,12 @@ fn compute_max_joltage(input: &[u8], length: usize) -> u64 {
     let mut joltage: u64 = 0;
     let mut pos = 0;
     for i in (0..length).rev() {
-        let (idx, val) = simd_max(&input[pos..input.len() - i]);
+        // let (idx, val) = simd_max(&input[pos..input.len() - i]);
+        let (idx, &val) = input[pos..input.len() - i]
+            .iter()
+            .enumerate().rev()
+            .max_by_key(|(i, v)| *v)
+            .unwrap();
 
         pos += idx + 1;
         joltage += 10_u64.pow(i as u32) * val as u64;
@@ -66,10 +71,7 @@ fn compute_max_joltage(input: &[u8], length: usize) -> u64 {
 }
 
 pub fn part1(parsed: &Parsed) -> Solution {
-    parsed
-        .iter()
-        .map(|bank| compute_max_joltage(bank, 2))
-        .sum()
+    parsed.iter().map(|bank| compute_max_joltage(bank, 2)).sum()
 }
 
 pub fn part2(parsed: &Parsed) -> Solution {
