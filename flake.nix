@@ -32,6 +32,7 @@
         ...
       }: let
         fenix = inputs.fenix.packages.${system};
+        libclangPath = "${pkgs.libclang.lib}/lib";
       in {
         haskellProjects.aoc = {
           projectFlakeName = "aoc-haskell";
@@ -41,6 +42,8 @@
         devShells = rec {
           default = pkgs.mkShell {
             name = "aoc";
+            LIBCLANG_PATH = libclangPath;
+            LD_LIBRARY_PATH = lib.makeLibraryPath [pkgs.z3];
             inputsFrom = [
               haskell
               rust
@@ -54,6 +57,7 @@
           };
           rust = pkgs.mkShell {
             name = "aoc-rust";
+            LIBCLANG_PATH = libclangPath;
             buildInputs = [pkgs.z3.dev];
             nativeBuildInputs = with pkgs;
               [
@@ -64,6 +68,8 @@
                 cargo-flamegraph
                 (cargo-show-asm.overrideAttrs (old: {cargoBuildFlags = old.cargoBuildFlags or [] ++ ["--features=disasm"];}))
                 hyperfine
+                libclang
+                z3.dev
               ]
               ++ lib.optionals (pkgs.stdenv.isDarwin) [
                 iconv
@@ -71,6 +77,7 @@
               ++ lib.optionals (pkgs.stdenv.isLinux) [
                 perf
               ];
+            LD_LIBRARY_PATH = lib.makeLibraryPath [pkgs.z3];
           };
           nix = pkgs.mkShell {
             name = "aoc-nix";
