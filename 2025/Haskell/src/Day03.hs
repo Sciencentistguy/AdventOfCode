@@ -5,8 +5,6 @@ where
 
 import AoC
 import Data.Char (digitToInt)
-import Data.List (elemIndex)
-import Data.Maybe
 import Data.Text (Text)
 import Data.Text qualified as Text
 
@@ -16,21 +14,33 @@ type Battery = String
 
 type Solution = Int
 
-initN :: Int -> [b] -> [b]
-initN n ls = fst <$> zip ls (drop n ls)
+data MonotonicStack a = MonotonicStack
+  { storage :: [a],
+    limit :: Int
+  }
+  deriving (Show)
 
-calibrate :: Int -> Battery -> Int
-calibrate size battery =
-  go battery (size - 1) 0
-  where
-    go :: Battery -> Int -> Int -> Int
-    go _ (-1) acc = acc
-    go battery size acc =
-      let max = maximum (initN size battery)
-          maxIdx = fromJust $ elemIndex max battery
-          battery' = drop (maxIdx + 1) battery
-          max' = digitToInt max
-       in go battery' (size - 1) (acc * 10 + max')
+push :: (Ord a) => MonotonicStack a -> a -> MonotonicStack a
+push (MonotonicStack {..}) x = case storage of
+  [] -> MonotonicStack [x] limit
+  (a : as) ->
+    if a >= x
+      then MonotonicStack (x : storage) limit
+      else
+        if limit > 0
+          then push (MonotonicStack as (limit - 1)) x
+          else MonotonicStack (x : storage) limit
+
+joltage :: Int -> MonotonicStack Char -> Int
+joltage len (MonotonicStack ls _) =
+  foldl' (\acc x -> acc * 10 + digitToInt x) 0 $ take len (reverse ls)
+
+empty :: Int -> MonotonicStack a
+empty = MonotonicStack []
+
+calibrate' :: Int -> Battery -> Int
+calibrate' size battery =
+  joltage size $ foldl' push (empty (length battery - size)) battery
 
 day03 :: Runner Parsed Solution
 day03 =
@@ -39,7 +49,7 @@ day03 =
       parser :: Text -> Maybe Parsed
       parser = return . fmap Text.unpack . Text.lines
       part1 :: Parsed -> Maybe Solution
-      part1 = return . sum . fmap (calibrate 2)
+      part1 = return . sum . fmap (calibrate' 2)
       part2 :: Parsed -> Maybe Solution
-      part2 = return . sum . fmap (calibrate 12)
+      part2 = return . sum . fmap (calibrate' 12)
    in Runner {..}
