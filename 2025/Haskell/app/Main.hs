@@ -6,6 +6,7 @@ import AoC
 import Day01
 import Day02
 import Day03
+import Day04
 import Safe
 import System.Environment (getArgs)
 
@@ -25,4 +26,5 @@ main = do
     1 -> runDay day01
     2 -> runDay day02
     3 -> runDay day03
+    4 -> runDay day04
     _ -> error $ "Day " ++ show day ++ " is not yet implemented."
