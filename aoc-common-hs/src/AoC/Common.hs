@@ -103,3 +103,10 @@ ok _ = Nothing
 
 readText :: Text -> Maybe Int
 readText = fmap fst . ok . decimal
+
+initN :: Int -> [b] -> [b]
+initN n ls = fst <$> zip ls (drop n ls)
+
+-- take a function, and a value, and returns the value of the fixed point
+fixp :: Eq a => (a -> a) -> a -> a
+fixp f x = let x' = f x in if x' == x then x  else fixp f x'

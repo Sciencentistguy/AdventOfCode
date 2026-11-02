@@ -10,5 +10,7 @@ packages:
     ./2024/Haskell
     ./2025/Haskell
 
+optimization: 2
+
 package *
-    ghc-options: -Wall -Wno-name-shadowing -Werror=missing-fields -threaded -rtsopts -with-rtsopts=-N -O2
+    ghc-options: -Wall -Wno-name-shadowing -Werror=missing-fields -rtsopts "-with-rtsopts=-A64m"

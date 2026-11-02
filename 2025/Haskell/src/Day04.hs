@@ -8,12 +8,14 @@ where
 import AoC
 import Data.Array.IArray
 import Data.Functor ((<&>))
+import Data.List ((\\))
 import Data.Maybe
 import Data.Text (Text)
 import Data.Text qualified as Text
 import Debug.Trace (traceShow, traceShowId)
 import Linear.V2
-import Data.List ((\\))
+import AoC.Common
+import Data.Foldable
 
 type Parsed = Array (V2 Int) Slot
 
@@ -36,18 +38,31 @@ parse input =
 
 -- countTrues = foldl' (\acc x -> if x then acc + 1 else acc) 0
 
-cardinals = range (V2 (-1) (-1), V2 1 1)  \\ [V2 0 0]
+cardinals = range (V2 (-1) (-1), V2 1 1) \\ [V2 0 0]
 
-p1 :: Parsed -> Int
-p1 parsed =
-  let x = assocs parsed
+removable grid  = 
+  let x = assocs grid
       y = filter ((== Paper) . snd) x
-      z = flip filter y $ \(ix, _) ->
+   in flip filter y $ \(ix, _) ->
         let a = (ix +) <$> cardinals
-            b = mapMaybe (parsed !?) a
+            b = mapMaybe (grid !?) a
             c = filter (== Paper) b
          in length c < 4
-   in length z
+
+p1 :: Parsed -> Int
+p1 = length . removable
+
+remove :: Parsed -> Parsed
+remove grid = grid // ((\(ix, _) -> (ix, Empty) ) <$>  removable grid)
+
+
+-- p2 grid = let grid' = remove grid 
+--             in if grid == grid' then n else go (n + 1)
+--  where go acc = 
+p2 grid = let fp = fixp remove grid
+              nbefore = length $ filter (== Paper) $ toList grid
+              nAfter =length $ filter (== Paper) $ toList fp 
+           in nbefore - nAfter
 
 -- testInput = "..@@.@@@@.\n@@@.@.@.@@\n@@@@@.@.@@\n@.@@@@..@.\n@@.@@@@.@@\n.@@@@@@@.@\n.@.@.@.@@@\n@.@@@.@@@@\n.@@@@@@@@.\n@.@.@@@.@."
 
@@ -60,5 +75,5 @@ day04 =
       part1 :: Parsed -> Maybe Solution
       part1 = return . p1
       part2 :: Parsed -> Maybe Solution
-      part2 = undefined
+      part2 = return . p2
    in Runner {..}
