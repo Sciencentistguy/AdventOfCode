@@ -6,7 +6,9 @@ module Day04
 where
 
 import AoC
+import AoC.Common
 import Data.Array.IArray
+import Data.Foldable
 import Data.Functor ((<&>))
 import Data.List ((\\))
 import Data.Maybe
@@ -14,8 +16,6 @@ import Data.Text (Text)
 import Data.Text qualified as Text
 import Debug.Trace (traceShow, traceShowId)
 import Linear.V2
-import AoC.Common
-import Data.Foldable
 
 type Parsed = Array (V2 Int) Slot
 
@@ -29,6 +29,7 @@ fromChar '@' = Paper
 fromChar '.' = Empty
 fromChar x = error $ "Unexpected char: " ++ [x]
 
+parse :: Text -> Parsed
 parse input =
   let lines = Text.unpack <$> Text.lines input
       width = length $ head lines
@@ -36,15 +37,15 @@ parse input =
       slots = lines >>= fmap fromChar
    in listArray (V2 0 0, V2 (height - 1) (width - 1)) slots
 
--- countTrues = foldl' (\acc x -> if x then acc + 1 else acc) 0
+neighbours :: [V2 Int]
+neighbours = range (V2 (-1) (-1), V2 1 1) \\ [V2 0 0]
 
-cardinals = range (V2 (-1) (-1), V2 1 1) \\ [V2 0 0]
-
-removable grid  = 
+removable :: Parsed -> [V2 Int]
+removable grid =
   let x = assocs grid
-      y = filter ((== Paper) . snd) x
-   in flip filter y $ \(ix, _) ->
-        let a = (ix +) <$> cardinals
+      y = fst <$> filter ((== Paper) . snd) x
+   in flip filter y $ \ix ->
+        let a = (ix +) <$> neighbours
             b = mapMaybe (grid !?) a
             c = filter (== Paper) b
          in length c < 4
@@ -53,18 +54,14 @@ p1 :: Parsed -> Int
 p1 = length . removable
 
 remove :: Parsed -> Parsed
-remove grid = grid // ((\(ix, _) -> (ix, Empty) ) <$>  removable grid)
+remove grid = grid // ((,Empty) <$> removable grid)
 
-
--- p2 grid = let grid' = remove grid 
---             in if grid == grid' then n else go (n + 1)
---  where go acc = 
-p2 grid = let fp = fixp remove grid
-              nbefore = length $ filter (== Paper) $ toList grid
-              nAfter =length $ filter (== Paper) $ toList fp 
-           in nbefore - nAfter
-
--- testInput = "..@@.@@@@.\n@@@.@.@.@@\n@@@@@.@.@@\n@.@@@@..@.\n@@.@@@@.@@\n.@@@@@@@.@\n.@.@.@.@@@\n@.@@@.@@@@\n.@@@@@@@@.\n@.@.@@@.@."
+p2 :: Parsed -> Int
+p2 grid =
+  let grid' = fixp remove grid
+      nbefore = countTrue (== Paper) grid
+      nAfter = countTrue (== Paper) grid'
+   in nbefore - nAfter
 
 day04 :: Runner Parsed Solution
 day04 =
