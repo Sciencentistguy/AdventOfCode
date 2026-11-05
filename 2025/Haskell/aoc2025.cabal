@@ -24,11 +24,14 @@ library
         , safe
         , array
         , linear
+        , containers
+        , lens
     exposed-modules:
         Day01
         Day02
         Day03
         Day04
+        Day05
 
 executable aoc2025
     import: flags
