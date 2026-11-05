@@ -1,14 +1,15 @@
 module AoC.Common where
 
+import Control.Applicative (ZipList (..))
 import Data.Foldable (Foldable (toList))
-import Data.List (tails, transpose)
+import Data.List (tails)
 import Data.Text (Text)
+import qualified Data.Text as Text
+import Data.Text.Read (decimal)
 import Data.Void (Void)
 import Text.Megaparsec
 import Text.Megaparsec.Char (space1)
 import qualified Text.Megaparsec.Char.Lexer as L
-import qualified Data.Text as Text
-import Data.Text.Read (decimal)
 
 split :: (Eq a) => a -> [a] -> [[a]]
 split _ [] = []
@@ -48,8 +49,11 @@ spaces =
 symbol :: Text -> Parser Text
 symbol = L.symbol spaces
 
+transpose' :: [[a]] -> [[a]]
+transpose' = getZipList . traverse ZipList
+
 windows :: Int -> [a] -> [[a]]
-windows n xs = transpose $ take n $ tails xs
+windows m = transpose' . take m . tails
 
 unzipWith :: (Functor f) => (a -> b -> c) -> f (a, b) -> f c
 unzipWith f = fmap (uncurry f)
@@ -108,5 +112,8 @@ initN :: Int -> [b] -> [b]
 initN n ls = fst <$> zip ls (drop n ls)
 
 -- take a function, and a value, and returns the value of the fixed point
-fixp :: Eq a => (a -> a) -> a -> a
-fixp f x = let x' = f x in if x' == x then x  else fixp f x'
+fixp :: (Eq a) => (a -> a) -> a -> a
+fixp f x = let x' = f x in if x' == x then x else fixp f x'
+
+enumerate :: [b] -> [(Int, b)]
+enumerate = zip [0 :: Int ..]

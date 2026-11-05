@@ -8,6 +8,7 @@ import Day02
 import Day03
 import Day04
 import Day05
+import Day06
 import Safe
 import System.Environment (getArgs)
 
@@ -29,4 +30,5 @@ main = do
     3 -> runDay day03
     4 -> runDay day04
     5 -> runDay day05
+    6 -> runDay day06
     _ -> error $ "Day " ++ show day ++ " is not yet implemented."

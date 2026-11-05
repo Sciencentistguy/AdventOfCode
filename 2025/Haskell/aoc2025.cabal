@@ -32,6 +32,7 @@ library
         Day03
         Day04
         Day05
+        Day06
 
 executable aoc2025
     import: flags
