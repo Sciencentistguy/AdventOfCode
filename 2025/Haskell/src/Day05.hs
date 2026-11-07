@@ -19,11 +19,6 @@ type Range = (Int, Int)
 
 type Solution = Int
 
-unwrapDecimal :: Either a1 (a2, b) -> a2
-unwrapDecimal x = case x of
-  Right (a, _) -> a
-  _ -> error "unwrap"
-
 listToTuple :: MonadFail m => [b] -> m (b, b)
 listToTuple x = do
     [a, b] <- return x

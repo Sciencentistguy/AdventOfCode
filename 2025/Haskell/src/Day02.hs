@@ -9,17 +9,13 @@ import AoC
 import Data.Text (Text)
 import Data.Text qualified as Text
 import Data.Text.Read qualified as Text
+import AoC.Common
 
 type Parsed = [Range]
 
 type Range = (Int, Int)
 
 type Solution = Int
-
-unwrapDecimal :: Either a1 (a2, b) -> a2
-unwrapDecimal x = case x of
-  Right (a, _) -> a
-  _ -> error "unwrap"
 
 readInt :: Text -> Int
 readInt = unwrapDecimal . Text.decimal

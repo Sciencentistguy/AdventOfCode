@@ -26,11 +26,6 @@ instance Show Parsed where
 
 type Solution = Int
 
-unwrapDecimal :: Either a1 (a2, b) -> a2
-unwrapDecimal x = case x of
-  Right (a, _) -> a
-  _ -> error "unwrap"
-
 windowRanges :: (Num a, Enum a, Show a) => [a] -> [[a]]
 windowRanges xs = f <$> windows 2 xs
   where

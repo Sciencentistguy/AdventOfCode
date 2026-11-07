@@ -117,3 +117,14 @@ fixp f x = let x' = f x in if x' == x then x else fixp f x'
 
 enumerate :: [b] -> [(Int, b)]
 enumerate = zip [0 :: Int ..]
+
+-- unwrapDecimal :: Either a1 (a2, b) -> a2
+unwrapDecimal :: (Show a1, Show a2, Show b) => Either a1 (a2, b) -> a2
+unwrapDecimal x = case x of
+  Right (a, _) -> a
+  e -> error $ "unwrap: " ++ show e
+
+choose :: Int -> [a] -> [[a]]
+choose 0 _ = [[]]
+choose _ [] = []
+choose k (x : xs) = map (x :) (choose (k - 1) xs) ++ choose k xs

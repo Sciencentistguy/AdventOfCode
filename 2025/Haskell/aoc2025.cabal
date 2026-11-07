@@ -26,6 +26,7 @@ library
         , linear
         , containers
         , lens
+        , fgl
     exposed-modules:
         Day01
         Day02
@@ -34,6 +35,7 @@ library
         Day05
         Day06
         Day07
+        Day08
 
 executable aoc2025
     import: flags
