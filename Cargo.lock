@@ -117,7 +117,7 @@ dependencies = [
  "emergence",
  "eyre",
  "multimap",
- "ndarray 0.15.6",
+ "ndarray",
  "nohash-hasher",
 ]
 
@@ -133,7 +133,7 @@ dependencies = [
  "itertools 0.10.5",
  "lazy_format",
  "memchr",
- "ndarray 0.15.6",
+ "ndarray",
  "pathfinding",
  "rustc-hash 1.1.0",
  "tap",
@@ -155,7 +155,7 @@ dependencies = [
  "itertools 0.10.5",
  "linked-hash-map",
  "memchr",
- "ndarray 0.15.6",
+ "ndarray",
  "nom",
  "nom-supreme",
  "num",
@@ -182,7 +182,7 @@ dependencies = [
  "itertools 0.13.0",
  "memchr",
  "nalgebra",
- "ndarray 0.16.1",
+ "ndarray",
  "num",
  "rayon",
  "smallvec 2.0.0-alpha.7",
@@ -205,7 +205,7 @@ dependencies = [
  "itertools 0.13.0",
  "memchr",
  "nalgebra",
- "ndarray 0.16.1",
+ "ndarray",
  "num",
  "petgraph",
  "rayon",
@@ -570,7 +570,7 @@ version = "0.1.0"
 dependencies = [
  "collect_slice",
  "memchr",
- "ndarray 0.16.1",
+ "ndarray",
  "num-traits",
  "smallvec 2.0.0-alpha.7",
 ]
@@ -1467,23 +1467,9 @@ dependencies = [
 
 [[package]]
 name = "ndarray"
-version = "0.15.6"
+version = "0.17.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "adb12d4e967ec485a5f71c6311fe28158e9d6f4bc4a447b474184d0f91a8fa32"
-dependencies = [
- "matrixmultiply",
- "num-complex",
- "num-integer",
- "num-traits",
- "rawpointer",
- "rayon",
-]
-
-[[package]]
-name = "ndarray"
-version = "0.16.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "882ed72dce9365842bf196bdeedf5055305f11fc8c03dee7bb0194a6cad34841"
+checksum = "520080814a7a6b4a6e9070823bb24b4531daac8c4627e08ba5de8c5ef2f2752d"
 dependencies = [
  "matrixmultiply",
  "num-complex",
